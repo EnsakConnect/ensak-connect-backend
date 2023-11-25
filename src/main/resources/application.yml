@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: Ensak-Connect
+  datasource:
+    username: 'ensak_connect'
+    url: jdbc:postgresql://localhost:5432/ensak_connect
+    password: 'letmein'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
