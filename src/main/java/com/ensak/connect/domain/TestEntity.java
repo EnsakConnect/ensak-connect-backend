@@ -12,17 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Test {
+public class TestEntity {
 
     @Id
-    @SequenceGenerator(
-            name = "test_id_sequence",
-            sequenceName = "test_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "test_id_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String test;
 }

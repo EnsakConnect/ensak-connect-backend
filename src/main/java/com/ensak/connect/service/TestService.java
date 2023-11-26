@@ -1,6 +1,6 @@
 package com.ensak.connect.service;
 
-import com.ensak.connect.domain.Test;
+import com.ensak.connect.domain.TestEntity;
 import com.ensak.connect.dto.TestRequest;
 import com.ensak.connect.repository.TestRepository;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ public class TestService {
 
     private final TestRepository testRepository;
     public void addTest(TestRequest request) {
-        Test test = Test.builder()
+        TestEntity test = TestEntity.builder()
                 .test(request.test())
                 .build();
         testRepository.save(test);

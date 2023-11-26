@@ -1,7 +1,7 @@
 package com.ensak.connect.repository;
 
-import com.ensak.connect.domain.Test;
+import com.ensak.connect.domain.TestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TestRepository extends JpaRepository<Test, Integer> {
+public interface TestRepository extends JpaRepository<TestEntity, Integer> {
 }
