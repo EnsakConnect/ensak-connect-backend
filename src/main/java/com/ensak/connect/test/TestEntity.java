@@ -1,4 +1,4 @@
-package com.ensak.connect.domain;
+package com.ensak.connect.test;
 
 
 import jakarta.persistence.*;

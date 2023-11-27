@@ -1,8 +1,9 @@
-package com.ensak.connect.service;
+package com.ensak.connect.testTest;
 
-import com.ensak.connect.domain.TestEntity;
-import com.ensak.connect.dto.TestRequest;
-import com.ensak.connect.repository.TestRepository;
+import com.ensak.connect.test.dto.TestRequest;
+import com.ensak.connect.test.TestEntity;
+import com.ensak.connect.test.TestRepository;
+import com.ensak.connect.test.TestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

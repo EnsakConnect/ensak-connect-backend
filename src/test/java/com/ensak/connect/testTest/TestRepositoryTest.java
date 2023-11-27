@@ -1,11 +1,12 @@
-package com.ensak.connect.repository;
+package com.ensak.connect.testTest;
 
 
 
+import com.ensak.connect.test.TestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import com.ensak.connect.domain.TestEntity;
+import com.ensak.connect.test.TestEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
