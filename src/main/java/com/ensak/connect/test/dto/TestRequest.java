@@ -1,4 +1,4 @@
-package com.ensak.connect.dto;
+package com.ensak.connect.test.dto;
 
 public record TestRequest(
         String test

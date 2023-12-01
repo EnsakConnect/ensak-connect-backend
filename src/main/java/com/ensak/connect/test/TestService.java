@@ -1,8 +1,6 @@
-package com.ensak.connect.service;
+package com.ensak.connect.test;
 
-import com.ensak.connect.domain.TestEntity;
-import com.ensak.connect.dto.TestRequest;
-import com.ensak.connect.repository.TestRepository;
+import com.ensak.connect.test.dto.TestRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
-package com.ensak.connect.controller;
+package com.ensak.connect.test;
 
 
-import com.ensak.connect.dto.TestRequest;
-import com.ensak.connect.dto.TestResponse;
-import com.ensak.connect.service.TestService;
+import com.ensak.connect.test.dto.TestRequest;
+import com.ensak.connect.test.dto.TestResponse;
+import com.ensak.connect.test.TestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
