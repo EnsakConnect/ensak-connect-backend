@@ -4,6 +4,7 @@ import com.ensak.connect.test.dto.TestRequest;
 import com.ensak.connect.test.dto.TestResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class TestControllerTest {
 
     @Autowired
@@ -88,6 +90,7 @@ public class TestControllerTest {
                 .andReturn();
 
         TestResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), TestResponse.class);
+        System.out.println("response content: "+ response.message());
         assertEquals("Get request works!", response.message());
    }
 }
