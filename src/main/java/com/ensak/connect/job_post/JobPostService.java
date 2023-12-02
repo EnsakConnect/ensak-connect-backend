@@ -1,7 +1,6 @@
 package com.ensak.connect.job_post;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
