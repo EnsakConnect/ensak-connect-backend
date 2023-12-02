@@ -1,5 +1,8 @@
 package com.ensak.connect.auth;
 
+import com.ensak.connect.auth.dto.AuthenticationRequest;
+import com.ensak.connect.auth.dto.AuthenticationResponse;
+import com.ensak.connect.auth.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
