@@ -1,5 +1,6 @@
 package com.ensak.connect.config;
 
+import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.config.api.ApiError;
 import org.springframework.core.Ordered;
@@ -22,6 +23,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNotFoundExceptions(NotFoundException ex) {
         String error = "Malformed JSON request";
         return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected ResponseEntity<Object> handleForbiddenException(ForbiddenException ex) {
+        return buildResponseEntity(new ApiError(HttpStatus.FORBIDDEN, ex));
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
