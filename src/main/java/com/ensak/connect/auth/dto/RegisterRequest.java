@@ -15,13 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    @NotBlank(message = "Firstname shouldn't be blank")
-    @Size(min = 3, max = 30, message = "Please enter a valid firstname")
-    private String firstname;
-
-    @NotBlank(message = "Lastname shouldn't be blank")
-    @Size(min = 3, max = 30, message = "Please enter a valid lastname")
-    private String lastname;
+    @NotBlank(message = "full name shouldn't be blank")
+    @Size(min = 3, max = 30, message = "Please enter a valid full name")
+    private String fullName;
 
     @Email(message = "Please enter a valid email")
     private String email;

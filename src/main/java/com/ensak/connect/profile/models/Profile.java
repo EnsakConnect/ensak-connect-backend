@@ -1,5 +1,7 @@
 package com.ensak.connect.profile.models;
 
+import com.ensak.connect.user.User;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +24,8 @@ public class Profile {
     @GeneratedValue
     private Integer id;
 
+    private String fullName;
+
     private String titre;
 
     private String phone;
@@ -30,11 +34,19 @@ public class Profile {
 
     private String address;
 
+    //PATH TO CV
+    //PATH TO banner
+    //PATH to profile pic
+
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Skill> skillList;

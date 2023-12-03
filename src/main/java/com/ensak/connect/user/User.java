@@ -20,16 +20,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "_user")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue
     private Integer id;
-
-    private String firstname;
-
-    private String lastname;
 
     private String email;
 
@@ -46,10 +41,6 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
-    private Profile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
