@@ -1,11 +1,16 @@
 package com.ensak.connect.auth;
 
+import com.ensak.connect.auth.dto.AuthenticationRequest;
+import com.ensak.connect.auth.dto.AuthenticationResponse;
+import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.config.JwtService;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +51,10 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
     }
 }
