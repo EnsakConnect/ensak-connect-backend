@@ -1,4 +1,4 @@
-package com.ensak.connect.auth;
+package com.ensak.connect.auth.dto;
 
 import com.ensak.connect.enumeration.Role;
 import jakarta.validation.constraints.Email;
