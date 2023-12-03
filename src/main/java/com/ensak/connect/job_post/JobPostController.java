@@ -4,7 +4,6 @@ package com.ensak.connect.job_post;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class JobPostController {
     @PostMapping("add")
     public ResponseEntity<?> addJobPost (
             @RequestBody @Valid JobPostRequest request
-    ) throws MethodArgumentNotValidException {
+    ) {
         jobPostService.save(request);
         return ResponseEntity.accepted().build();
     }
