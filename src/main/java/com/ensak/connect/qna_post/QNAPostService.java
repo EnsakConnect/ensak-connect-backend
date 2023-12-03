@@ -1,12 +1,16 @@
 package com.ensak.connect.qna_post;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.qna_post.dto.QNAPostRequestDTO;
 import com.ensak.connect.user.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 
 @Service
@@ -40,10 +44,15 @@ public class QNAPostService {
         return qnaRepository.save(post);
     }
 
+    @SneakyThrows
     public void deleteQNAPostById(Integer id) {
-        qnaRepository.findById(id).orElseThrow(
+        User auth = authenticationService.getAuthenticatedUser();
+        QNAPost post = qnaRepository.findById(id).orElseThrow(
             () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
+        if(!auth.getId().equals(post.getAuthor().getId())){
+            throw new ForbiddenException("Cannot delete posts made by other users");
+        }
         qnaRepository.deleteById(id);
     }
 }

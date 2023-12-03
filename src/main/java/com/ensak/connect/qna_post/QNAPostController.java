@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/question-and-answer")
 @RequiredArgsConstructor
-public class QNAController {
+public class QNAPostController {
     private final QNAPostService qnaService;
 
     @PostMapping
