@@ -1,4 +1,4 @@
-package com.ensak.connect.auth;
+package com.ensak.connect.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
