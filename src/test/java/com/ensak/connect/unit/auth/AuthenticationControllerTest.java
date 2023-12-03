@@ -1,6 +1,7 @@
-package com.ensak.connect.auth;
+package com.ensak.connect.unit.auth;
 
 import com.ensak.connect.auth.AuthenticationController;
+import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;

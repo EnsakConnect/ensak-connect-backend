@@ -1,6 +1,8 @@
-package com.ensak.connect.user;
+package com.ensak.connect.unit.user;
 
 import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.User;
+import com.ensak.connect.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

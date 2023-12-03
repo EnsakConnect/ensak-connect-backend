@@ -1,4 +1,4 @@
-package com.ensak.connect.job_post;
+package com.ensak.connect.unit.job_post;
 
 import com.ensak.connect.job_post.JobPost;
 import com.ensak.connect.job_post.JobPostRequest;
