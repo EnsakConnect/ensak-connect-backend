@@ -2,7 +2,11 @@ package com.ensak.connect.integration.qna_post;
 
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
+import com.ensak.connect.question_post.dto.answer.AnswerRequestDTO;
+import com.ensak.connect.question_post.dto.answer.AnswerResponseDTO;
+import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.question_post.repository.AnswerRepository;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +32,7 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
     @Autowired
     private QuestionPostRepository questionPostRepository;
     @Autowired
-    private QNAPostAnswerRepository qnaPostAnswerRepository;
+    private AnswerRepository answerRepository;
 
     private QuestionPost questionPost;
 
@@ -48,7 +52,7 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
         String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
 
         String answerJson = objectMapper.writeValueAsString(
-                QNAPostAnswerRequestDTO.builder()
+                AnswerRequestDTO.builder()
                         .content("Here is the answer to the question:\nFollow TDD!")
                         .build()
         );
@@ -58,22 +62,25 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
                         .content(answerJson)
         );
         String responseJson = response.andReturn().getResponse().getContentAsString();
-        QNAPostAnswer answer = objectMapper.readValue(responseJson. QnaPostAnswerResponseDTO.class);
+        AnswerResponseDTO answerResponse = objectMapper.readValue(responseJson, AnswerResponseDTO.class);
         QuestionPost newPost = questionPostRepository.findById(questionPost.getId()).orElseThrow(
                 () -> new NotFoundException("post not found")
         );
+        Answer newAnswer = answerRepository.findById(answerResponse.getId()).orElseThrow(
+                () -> new NotFoundException("Answer was not created")
+        );
 
         response.andExpect(status().isCreated());
-        Assertions.assertEquals(answerAuthor.getId(), answer.getAuthor().getId());
-        Assertions.assertEquals(questionPost.getId(), answer.getQnaPost().getId());
-        Assertions.assertEquals(1,newPost.getAnswers().size());
+        Assertions.assertEquals(answerAuthor.getId(), newAnswer.getAuthor().getId());
+        Assertions.assertEquals(questionPost.getId(), newAnswer.getQuestionPost().getId());
+        Assertions.assertEquals(1, newPost.getAnswers().size());
     }
 
     @Test
     public void itShouldNotAddAnswerToQNAPostWhenNotAuthenticated() throws Exception {
         String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
         String answerJson = objectMapper.writeValueAsString(
-                QNAPostAnswerRequestDTO.builder()
+                AnswerRequestDTO.builder()
                         .content("Here is the answer to the question:\nFollow TDD!")
                         .build()
         );
@@ -88,17 +95,17 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
     @Test
     public void itShouldAllowUserToEditHisOwnAnswer() throws Exception {
         User answerAuthor = this.authenticateAsUser();
-        QNAPostAnswer answer = qnaPostAnswerRepository.save(
-                QNAPostAnswer.builder()
+        Answer answer = answerRepository.save(
+                Answer.builder()
                         .content("My test answer")
                         .author(answerAuthor)
-                        .qnaPost(questionPost)
+                        .questionPost(questionPost)
                         .build()
         );
         String url = "/api/v1/questions/" + questionPost.getId() + "/answers/" + answer.getId();
 
         String answerJson = objectMapper.writeValueAsString(
-                QNAPostAnswerRequestDTO.builder()
+                AnswerRequestDTO.builder()
                         .content("Answer content updated")
                         .build()
         );
@@ -108,7 +115,8 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
                         .content(answerJson)
         );
         String responseJson = response.andReturn().getResponse().getContentAsString();
-        QNAPostAnswer newAnswer = qnaPostAnswerRepository.findById(answerResponse.getId()).orElseThrow(
+        AnswerResponseDTO answerResponse = objectMapper.readValue(responseJson, AnswerResponseDTO.class);
+        Answer newAnswer = answerRepository.findById(answerResponse.getId()).orElseThrow(
                 () -> new Exception("Answer was deleted or not created ?")
         );
 
@@ -119,17 +127,17 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
     @Test
     public void itShouldNotAllowUserToEditAnswerMadeByOtherUsers() throws Exception {
         this.authenticateAsUser();
-        QNAPostAnswer answer = qnaPostAnswerRepository.save(
-                QNAPostAnswer.builder()
+        Answer answer = answerRepository.save(
+                Answer.builder()
                         .content("My test answer")
                         .author(this.createDummyStudent())
-                        .qnaPost(questionPost)
+                        .questionPost(questionPost)
                         .build()
         );
         String url = "/api/v1/questions/" + questionPost.getId() + "/answers/" + answer.getId();
 
         String answerJson = objectMapper.writeValueAsString(
-                QNAPostAnswerRequestDTO.builder()
+                AnswerRequestDTO.builder()
                         .content("Answer content updated")
                         .build()
         );
@@ -138,7 +146,7 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(answerJson)
         );
-        QNAPostAnswer newAnswer = qnaPostAnswerRepository.findById(answerResponse.getId()).orElseThrow(
+        Answer newAnswer = answerRepository.findById(answer.getId()).orElseThrow(
                 () -> new Exception("Answer was deleted or not created ?")
         );
 
