@@ -20,20 +20,20 @@ public class QuestionPostController {
     public ResponseEntity<QuestionPostResponseDTO> create(
             @RequestBody @Valid QuestionPostRequestDTO request
     ) {
-        QuestionPost post = qnaService.createQNAPost(request);
+        QuestionPost post = qnaService.createQuestionPost(request);
 
         return new ResponseEntity<>(QuestionPostResponseDTO.map(post), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<QuestionPostResponseDTO> show(@PathVariable Integer id){
-        QuestionPost post = qnaService.getQNAPostById(id);
+        QuestionPost post = qnaService.getQuestionPostById(id);
         return ResponseEntity.ok(QuestionPostResponseDTO.map(post));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
-        qnaService.deleteQNAPostById(id);
+        qnaService.deleteQuestionPostById(id);
         return ResponseEntity.ok(null);
     }
 }

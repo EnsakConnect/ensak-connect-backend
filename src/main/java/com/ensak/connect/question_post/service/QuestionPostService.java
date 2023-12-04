@@ -19,13 +19,13 @@ public class QuestionPostService {
     private final QuestionPostRepository qnaRepository;
     private final AuthenticationService authenticationService;
 
-    public QuestionPost getQNAPostById(Integer id) {
+    public QuestionPost getQuestionPostById(Integer id) {
         return qnaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
     }
 
-    public QuestionPost createQNAPost(QuestionPostRequestDTO request) {
+    public QuestionPost createQuestionPost(QuestionPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
         return qnaRepository.save(
                 QuestionPost.builder()
@@ -36,7 +36,7 @@ public class QuestionPostService {
     }
 
     @Transactional
-    public QuestionPost updateQNAPostById(Integer id, QuestionPostRequestDTO request){
+    public QuestionPost updateQuestionPostById(Integer id, QuestionPostRequestDTO request){
         QuestionPost post = qnaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
@@ -45,7 +45,7 @@ public class QuestionPostService {
     }
 
     @SneakyThrows
-    public void deleteQNAPostById(Integer id) {
+    public void deleteQuestionPostById(Integer id) {
         User auth = authenticationService.getAuthenticatedUser();
         QuestionPost post = qnaRepository.findById(id).orElseThrow(
             () -> new NotFoundException("Could not find qna post with id " + id + ".")
