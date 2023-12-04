@@ -1,4 +1,5 @@
-package com.ensak.connect.qna_post.dto;
+package com.ensak.connect.question_post.dto.answer;
+
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QNAPostRequestDTO {
-
-    @NotBlank(message = "Question should not be blank")
-    private String question;
+public class AnswerRequestDTO {
+    @NotBlank(message = "Answer should not be blank")
+    private String content;
 }

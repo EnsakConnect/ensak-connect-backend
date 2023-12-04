@@ -1,34 +1,34 @@
-package com.ensak.connect.qna_post;
+package com.ensak.connect.question_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.exception.NotFoundException;
-import com.ensak.connect.qna_post.dto.QNAPostRequestDTO;
+import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
+import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.user.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 
 @Service
 @RequiredArgsConstructor
-public class QNAPostService {
-    private final QNAPostRepository qnaRepository;
+public class QuestionPostService {
+    private final QuestionPostRepository qnaRepository;
     private final AuthenticationService authenticationService;
 
-    public QNAPost getQNAPostById(Integer id) {
+    public QuestionPost getQuestionPostById(Integer id) {
         return qnaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
     }
 
-    public QNAPost createQNAPost(QNAPostRequestDTO request) {
+    public QuestionPost createQuestionPost(QuestionPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
         return qnaRepository.save(
-                QNAPost.builder()
+                QuestionPost.builder()
                         .question(request.getQuestion())
                         .author(author)
                         .build()
@@ -36,8 +36,8 @@ public class QNAPostService {
     }
 
     @Transactional
-    public QNAPost updateQNAPostById(Integer id, QNAPostRequestDTO request){
-        QNAPost post = qnaRepository.findById(id).orElseThrow(
+    public QuestionPost updateQuestionPostById(Integer id, QuestionPostRequestDTO request){
+        QuestionPost post = qnaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
         post.setQuestion(request.getQuestion());
@@ -45,9 +45,9 @@ public class QNAPostService {
     }
 
     @SneakyThrows
-    public void deleteQNAPostById(Integer id) {
+    public void deleteQuestionPostById(Integer id) {
         User auth = authenticationService.getAuthenticatedUser();
-        QNAPost post = qnaRepository.findById(id).orElseThrow(
+        QuestionPost post = qnaRepository.findById(id).orElseThrow(
             () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
         if(!auth.getId().equals(post.getAuthor().getId())){
