@@ -12,9 +12,13 @@ import lombok.NoArgsConstructor;
 public class ProfileRequestDTO {
     private String titre;
 
+    private String fullName;
+
     private String phone;
 
     private String city;
 
     private String address;
+
+    //gotta need to add the ids of all the resourceFile (Profile pic, Banner, CV)
 }

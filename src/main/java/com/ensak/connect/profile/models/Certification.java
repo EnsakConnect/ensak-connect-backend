@@ -31,6 +31,7 @@ public class Certification {
     private String link;
 
     @ManyToOne
+    @Column(nullable = false)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 }

@@ -27,7 +27,7 @@ public class Experience {
     @UpdateTimestamp
     private Date updatedAt;
 
-    private String position_title;
+    private String positionTitle;
 
     private ContractType contractType;
 
@@ -42,6 +42,7 @@ public class Experience {
     private String description;
 
     @ManyToOne
+    @Column(nullable = false)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 

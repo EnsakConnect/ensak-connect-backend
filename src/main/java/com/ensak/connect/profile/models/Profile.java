@@ -45,6 +45,7 @@ public class Profile {
     private Date updatedAt;
 
     @OneToOne(cascade = CascadeType.REMOVE)
+    @Column(nullable = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

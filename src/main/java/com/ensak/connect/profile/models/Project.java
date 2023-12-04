@@ -33,6 +33,7 @@ public class Project {
     private String description;
 
     @ManyToOne
+    @Column(nullable = false)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 }

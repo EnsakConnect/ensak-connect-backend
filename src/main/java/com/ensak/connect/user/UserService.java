@@ -1,9 +1,10 @@
 package com.ensak.connect.user;
 
-import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.enumeration.Role;
 import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.profile.ProfileService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final ProfileService profileService;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public User createUser(RegisterRequest registerRequest){
         User user = User.builder()
                 .email(registerRequest.getEmail())
@@ -26,7 +29,11 @@ public class UserService {
                 .build();
         // call the profile service to create an empty profile
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        profileService.createEmptyProfile(user, registerRequest.getFullName());
+
+
+        return user;
     }
 
     public User updateEmail(Integer id,String email){

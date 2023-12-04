@@ -33,6 +33,7 @@ public class Skill {
     private Level level;
 
     @ManyToOne
+    @Column(nullable = false)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
