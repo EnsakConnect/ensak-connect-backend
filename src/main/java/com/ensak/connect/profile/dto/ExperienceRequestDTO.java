@@ -3,9 +3,17 @@ package com.ensak.connect.profile.dto;
 import com.ensak.connect.profile.models.Education;
 import com.ensak.connect.profile.models.Experience;
 import com.ensak.connect.profile.models.util.ContractType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExperienceRequestDTO {
     private String positionTitle;
 

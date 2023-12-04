@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,11 +62,12 @@ public class ProfileService {
     }
 
     @Transactional
-    public void addCertification(Integer user_id, CertificationRequestDTO cDTO){
+    public Certification addCertification(Integer user_id, CertificationRequestDTO cDTO){
         Profile profile = getUserProfileById(user_id);
         Certification certif = CertificationRequestDTO.mapToCertification(cDTO);
         certif.setProfile(profile);
         certificationRepository.save(certif);
+        return certif;
     }
 
     @Transactional
@@ -77,8 +79,11 @@ public class ProfileService {
     }
 
     // Get skills for a user
+
     public List<Skill> getSkills(Integer userId) {
-        return getUserProfileById(userId).getSkillList();
+        Integer profileId = getUserProfileById(userId).getId();
+        Optional<List<Skill>> skills = skillRepository.findAllByProfileId(profileId);
+        return skills.orElse(null);
     }
 
     // Add a skill
@@ -107,11 +112,11 @@ public class ProfileService {
 
     // Add a language
     @Transactional
-    public void addLanguage(Integer userId, LanguageRequestDTO lDTO) {
+    public Language addLanguage(Integer userId, LanguageRequestDTO lDTO) {
         Profile profile = getUserProfileById(userId);
         Language language = LanguageRequestDTO.mapToLanguage(lDTO);
         language.setProfile(profile);
-        languageRepository.save(language);
+        return languageRepository.save(language);
     }
 
     // Delete a language
@@ -130,11 +135,11 @@ public class ProfileService {
 
     // Add an education
     @Transactional
-    public void addEducation(Integer userId, EducationRequestDTO eDTO) {
+    public Education addEducation(Integer userId, EducationRequestDTO eDTO) {
         Profile profile = getUserProfileById(userId);
         Education education = EducationRequestDTO.mapToEducation(eDTO);
         education.setProfile(profile);
-        educationRepository.save(education);
+        return educationRepository.save(education);
     }
 
     // Delete an education
@@ -153,11 +158,12 @@ public class ProfileService {
 
     // Add an experience
     @Transactional
-    public void addExperience(Integer userId, ExperienceRequestDTO eDTO) {
+    public Experience addExperience(Integer userId, ExperienceRequestDTO eDTO) {
         Profile profile = getUserProfileById(userId);
         Experience experience = ExperienceRequestDTO.mapToExperience(eDTO);
         experience.setProfile(profile);
         experienceRepository.save(experience);
+        return experience;
     }
 
     // Delete an experience
@@ -176,11 +182,12 @@ public class ProfileService {
 
     // Add a project
     @Transactional
-    public void addProject(Integer userId, ProjectRequestDTO pDTO) {
+    public Project addProject(Integer userId, ProjectRequestDTO pDTO) {
         Profile profile = getUserProfileById(userId);
         Project project = ProjectRequestDTO.mapToProject(pDTO);
         project.setProfile(profile);
         projectRepository.save(project);
+        return project;
     }
 
     // Delete a project

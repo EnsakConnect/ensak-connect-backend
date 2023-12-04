@@ -52,21 +52,21 @@ public class Profile {
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Skill> skillList = new ArrayList<>();
+    private List<Skill> skillList;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Language> languageList = new ArrayList<>();;
+    private List<Language> languageList;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Education> educationList = new ArrayList<>();;
+    private List<Education> educationList;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Certification> certificationList = new ArrayList<>();
+    private List<Certification> certificationList;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Experience> experienceList = new ArrayList<>();
+    private List<Experience> experienceList;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Project> projectList = new ArrayList<>();
+    private List<Project> projectList;
 
 }

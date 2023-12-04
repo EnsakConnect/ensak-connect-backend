@@ -1,9 +1,16 @@
 package com.ensak.connect.profile.dto;
 
 import com.ensak.connect.profile.models.Education;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EducationRequestDTO {
 
     private String field;
