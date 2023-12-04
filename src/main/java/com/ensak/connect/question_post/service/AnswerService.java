@@ -40,11 +40,15 @@ public class AnswerService {
 
     @SneakyThrows
     public Answer updateAnswerById(Integer questionPostId, Integer answerId, AnswerRequestDTO request) {
+        User auth = authService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new NotFoundException("Cannot find answer with the requested id.")
         );
         if(!questionPost.getId().equals(answer.getQuestionPost().getId())) {
+            throw new ForbiddenException("Cannot updated the requested answer.");
+        }
+        if(!answer.getAuthor().getId().equals(auth.getId())){
             throw new ForbiddenException("Cannot updated the requested answer.");
         }
         answer.setContent(request.getContent());

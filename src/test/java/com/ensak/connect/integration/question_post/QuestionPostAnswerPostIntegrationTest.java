@@ -180,6 +180,5 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
 
         response.andExpect(status().isForbidden());
         Assertions.assertNotEquals("Answer content updated", newAnswer.getContent());
-        Assertions.assertNotEquals("My test answer", newAnswer.getContent());
     }
 }
