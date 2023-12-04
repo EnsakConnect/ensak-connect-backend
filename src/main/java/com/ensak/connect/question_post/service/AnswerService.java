@@ -12,12 +12,19 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionPostService questionPostService;
     private final AuthenticationService authService;
+
+    public List<Answer> getAnswerByQuestionId(Integer questionPostId) {
+        QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
+        return questionPost.getAnswers();
+    }
 
     public Answer createAnswerForQuestionPost(Integer questionPostId, AnswerRequestDTO request) {
         QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);

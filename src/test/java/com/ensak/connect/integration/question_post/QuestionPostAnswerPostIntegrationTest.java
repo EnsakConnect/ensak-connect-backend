@@ -1,4 +1,4 @@
-package com.ensak.connect.integration.qna_post;
+package com.ensak.connect.integration.question_post;
 
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
@@ -9,7 +9,9 @@ import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.AnswerRepository;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.user.User;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,7 +52,8 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
     }
 
     @Test
-    public void itShouldAddAnswerToQNAPostWhenAuthenticated() throws Exception {
+    @Transactional
+    public void itShouldAddAnswerToQuestionPostWhenAuthenticated() throws Exception {
         User answerAuthor = this.authenticateAsUser();
         String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
 
@@ -61,23 +67,45 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(answerJson)
         );
+        response.andExpect(status().isCreated());
         String responseJson = response.andReturn().getResponse().getContentAsString();
         AnswerResponseDTO answerResponse = objectMapper.readValue(responseJson, AnswerResponseDTO.class);
-        QuestionPost newPost = questionPostRepository.findById(questionPost.getId()).orElseThrow(
-                () -> new NotFoundException("post not found")
-        );
         Answer newAnswer = answerRepository.findById(answerResponse.getId()).orElseThrow(
                 () -> new NotFoundException("Answer was not created")
         );
 
-        response.andExpect(status().isCreated());
         Assertions.assertEquals(answerAuthor.getId(), newAnswer.getAuthor().getId());
+        Assertions.assertEquals("Here is the answer to the question:\nFollow TDD!", newAnswer.getContent());
         Assertions.assertEquals(questionPost.getId(), newAnswer.getQuestionPost().getId());
-        Assertions.assertEquals(1, newPost.getAnswers().size());
     }
 
     @Test
-    public void itShouldNotAddAnswerToQNAPostWhenNotAuthenticated() throws Exception {
+    public void itShouldReturnListOfAnswersForAPostWhenAuthenticated() throws Exception {
+        User author = this.authenticateAsUser();
+        String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
+        Integer answersCount = 3;
+        for (int i = 0; i < answersCount; i++) {
+            answerRepository.save(
+                    Answer.builder()
+                            .author(author)
+                            .questionPost(questionPost)
+                            .content("My test answer number " + i + ".")
+                            .build()
+            );
+        }
+        var getResponse = api.perform(
+                get(url)
+        );
+        getResponse.andExpect(status().isOk());
+        List<AnswerResponseDTO> answers = objectMapper.readValue(
+                getResponse.andReturn().getResponse().getContentAsString(),
+                new TypeReference<List<AnswerResponseDTO>>() {}
+        );
+        Assertions.assertEquals(answersCount, answers.size());
+    }
+
+    @Test
+    public void itShouldNotAddAnswerToQuestionPostWhenNotAuthenticated() throws Exception {
         String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
         String answerJson = objectMapper.writeValueAsString(
                 AnswerRequestDTO.builder()

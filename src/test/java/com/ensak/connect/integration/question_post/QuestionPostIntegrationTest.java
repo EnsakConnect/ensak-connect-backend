@@ -1,4 +1,4 @@
-package com.ensak.connect.integration.qna_post;
+package com.ensak.connect.integration.question_post;
 
 import com.ensak.connect.config.api.ApiError;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;

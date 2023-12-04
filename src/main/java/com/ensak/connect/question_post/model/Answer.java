@@ -30,7 +30,7 @@ public class Answer {
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "qna_post_id", nullable = false)
+    @JoinColumn(name = "question_post_id", nullable = false)
     private QuestionPost questionPost;
 
     @CreationTimestamp
