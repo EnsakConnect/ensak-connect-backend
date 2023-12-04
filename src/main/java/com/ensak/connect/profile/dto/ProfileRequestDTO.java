@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class ProfileRequestDTO {
     private String titre;

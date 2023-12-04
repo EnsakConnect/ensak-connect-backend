@@ -8,6 +8,7 @@ import com.ensak.connect.config.JwtService;
 import com.ensak.connect.enumeration.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
+import com.ensak.connect.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -48,6 +49,9 @@ public class AuthenticationServiceTest {
     private JwtService jwtService;
 
     @Mock
+    private UserService userService;
+
+    @Mock
     private AuthenticationManager authenticationManager;
 
     @InjectMocks
@@ -56,25 +60,22 @@ public class AuthenticationServiceTest {
     @Test
     public void testRegister() {
         RegisterRequest request = new RegisterRequest();
-        request.setFirstname("John");
-        request.setLastname("Doe");
+        request.setFullname("John Dao");
         request.setEmail("johndoe@example.com");
         request.setPassword("password");
         request.setRole(Role.ROLE_STUDENT);
 
         User user = User.builder()
-                .firstname("John")
-                .lastname("Doe")
                 .email("johndoe@example.com")
                 .password("hashedPassword")
                 .role(Role.ROLE_STUDENT)
                 .build();
 
-        when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword");
+        when(userService.createUser(request)).thenReturn(user);
 
         authenticationService.register(request);
 
-        verify(userRepository, Mockito.times(1)).save(user);
+        //verify(userRepository, Mockito.times(1)).save(user);
         verify(jwtService, Mockito.times(1)).generateToken(user);
     }
 
@@ -84,20 +85,19 @@ public class AuthenticationServiceTest {
         User user = new User();
         user.setActivatedAt(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
         user.setEmail("jane.doe@example.org");
-        user.setFirstname("Jane");
         user.setId(1);
-        user.setLastname("Doe");
         user.setPassword("password");
         user.setRole(Role.ROLE_STUDENT);
         Optional<User> ofResult = Optional.of(user);
-        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
+        //when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
+        when(userService.getUserByEmail(Mockito.<String>any())).thenReturn(user);
         when(jwtService.generateToken(Mockito.<UserDetails>any())).thenReturn("ABC123");
         when(authenticationManager.authenticate(Mockito.<Authentication>any()))
                 .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
         AuthenticationResponse actualLoginResult = authenticationService
                 .login(new AuthenticationRequest("jane.doe@example.org", "password"));
         verify(jwtService).generateToken(Mockito.<UserDetails>any());
-        verify(userRepository).findByEmail(Mockito.<String>any());
+        verify(userService).getUserByEmail(Mockito.<String>any());
         verify(authenticationManager).authenticate(Mockito.<Authentication>any());
         assertEquals("ABC123", actualLoginResult.getToken());
 

@@ -32,8 +32,7 @@ public class AuthenticationControllerTest {
     @Test
     public void testRegister_validRequest_returnsOk() {
         RegisterRequest request = new RegisterRequest();
-        request.setFirstname("John");
-        request.setLastname("Doe");
+        request.setFullname("John Doe");
         request.setEmail("johndoe@example.com");
         request.setPassword("password");
         request.setRole(Role.ROLE_STUDENT);

@@ -83,11 +83,12 @@ public class ProfileService {
 
     // Add a skill
     @Transactional
-    public void addSkill(Integer userId, SkillRequestDTO sDTO) {
+    public Skill addSkill(Integer userId, SkillRequestDTO sDTO) {
         Profile profile = getUserProfileById(userId);
         Skill skill = SkillRequestDTO.mapToSkill(sDTO);
         skill.setProfile(profile);
-        skillRepository.save(skill);
+        System.out.println(skill.getName() +" " + skill.getLevel());
+        return skillRepository.save(skill);
     }
 
     // Delete a skill

@@ -1,6 +1,7 @@
 package com.ensak.connect.profile.models;
 
 import com.ensak.connect.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,27 +46,27 @@ public class Profile {
     @UpdateTimestamp
     private Date updatedAt;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.REMOVE)
-    @Column(nullable = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Skill> skillList;
+    private List<Skill> skillList = new ArrayList<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Language> languageList;
+    private List<Language> languageList = new ArrayList<>();;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Education> educationList;
+    private List<Education> educationList = new ArrayList<>();;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Certification> certificationList;
+    private List<Certification> certificationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Experience> experienceList;
+    private List<Experience> experienceList = new ArrayList<>();
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Project> projectList;
+    private List<Project> projectList = new ArrayList<>();
 
 }

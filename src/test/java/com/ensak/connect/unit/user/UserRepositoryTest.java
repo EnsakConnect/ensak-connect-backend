@@ -30,8 +30,6 @@ class UserRepositoryTest {
 
     {
         User user = User.builder()
-                .firstname("firstname")
-                .lastname("lastname")
                 .role(Role.ROLE_STUDENT)
                 .email("test@gmail.com")
                 .password("password")
@@ -39,8 +37,6 @@ class UserRepositoryTest {
         User savedUser = userRepository.save(user);
 
         assertEquals(user.getId(), savedUser.getId());
-        assertEquals(user.getFirstname(), savedUser.getFirstname());
-        assertEquals(user.getLastname(), savedUser.getLastname());
         assertEquals(user.getPassword(), savedUser.getPassword());
         assertEquals(user.getEmail(), savedUser.getEmail());
     }
@@ -51,8 +47,6 @@ class UserRepositoryTest {
         String email = "test@gmail.com";
 
         User user = User.builder()
-                .firstname("firstname")
-                .lastname("lastname")
                 .role(Role.ROLE_STUDENT)
                 .email(email)
                 .password("password")
@@ -68,8 +62,6 @@ class UserRepositoryTest {
 
         assertThat(foundUser.isPresent()).isTrue();
         assertEquals(user.getId(), foundUser.get().getId());
-        assertEquals(user.getFirstname(), foundUser.get().getFirstname());
-        assertEquals(user.getLastname(), foundUser.get().getLastname());
         assertEquals(user.getPassword(), foundUser.get().getPassword());
         assertEquals(user.getEmail(), foundUser.get().getEmail());
 

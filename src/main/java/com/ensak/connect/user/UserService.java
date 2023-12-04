@@ -30,7 +30,7 @@ public class UserService {
         // call the profile service to create an empty profile
 
         user = userRepository.save(user);
-        profileService.createEmptyProfile(user, registerRequest.getFullName());
+        profileService.createEmptyProfile(user, registerRequest.getFullname());
 
 
         return user;

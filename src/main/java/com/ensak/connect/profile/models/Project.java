@@ -1,5 +1,6 @@
 package com.ensak.connect.profile.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +33,8 @@ public class Project {
 
     private String description;
 
+    @JsonIgnore
     @ManyToOne
-    @Column(nullable = false)
-    @JoinColumn(name = "profile_id")
+    @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 }
