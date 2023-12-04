@@ -2,8 +2,8 @@ package com.ensak.connect.integration.qna_post;
 
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
-import com.ensak.connect.qna_post.QNAPost;
-import com.ensak.connect.qna_post.QNAPostRepository;
+import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -20,22 +20,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class QNAPostAnswerPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
+public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private QNAPostRepository qnaPostRepository;
+    private QuestionPostRepository questionPostRepository;
     @Autowired
-    private QNAPostANswerRepository qnaPostAnswerRepository;
+    private QNAPostAnswerRepository qnaPostAnswerRepository;
 
-    private QNAPost qnaPost;
+    private QuestionPost questionPost;
 
     @BeforeEach
     public void setup() {
-        qnaPost = qnaPostRepository.save(
-            QNAPost.builder()
+        questionPost = questionPostRepository.save(
+            QuestionPost.builder()
                 .author(this.createDummyUser())
                 .question("Does this post have answers ?")
                 .build()
@@ -45,7 +45,7 @@ public class QNAPostAnswerPostIntegrationTest extends AuthenticatedBaseIntegrati
     @Test
     public void itShouldAddAnswerToQNAPostWhenAuthenticated() throws Exception {
         User answerAuthor = this.authenticateAsUser();
-        String url = "/api/v1/questions/" + qnaPost.getId() + "/answers";
+        String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
 
         String answerJson = objectMapper.writeValueAsString(
                 QNAPostAnswerRequestDTO.builder()
@@ -59,19 +59,19 @@ public class QNAPostAnswerPostIntegrationTest extends AuthenticatedBaseIntegrati
         );
         String responseJson = response.andReturn().getResponse().getContentAsString();
         QNAPostAnswer answer = objectMapper.readValue(responseJson. QnaPostAnswerResponseDTO.class);
-        QNAPost newPost = qnaPostRepository.findById(qnaPost.getId()).orElseThrow(
+        QuestionPost newPost = questionPostRepository.findById(questionPost.getId()).orElseThrow(
                 () -> new NotFoundException("post not found")
         );
 
         response.andExpect(status().isCreated());
         Assertions.assertEquals(answerAuthor.getId(), answer.getAuthor().getId());
-        Assertions.assertEquals(qnaPost.getId(), answer.getQnaPost().getId());
+        Assertions.assertEquals(questionPost.getId(), answer.getQnaPost().getId());
         Assertions.assertEquals(1,newPost.getAnswers().size());
     }
 
     @Test
     public void itShouldNotAddAnswerToQNAPostWhenNotAuthenticated() throws Exception {
-        String url = "/api/v1/questions/" + qnaPost.getId() + "/answers";
+        String url = "/api/v1/questions/" + questionPost.getId() + "/answers";
         String answerJson = objectMapper.writeValueAsString(
                 QNAPostAnswerRequestDTO.builder()
                         .content("Here is the answer to the question:\nFollow TDD!")
@@ -92,10 +92,10 @@ public class QNAPostAnswerPostIntegrationTest extends AuthenticatedBaseIntegrati
                 QNAPostAnswer.builder()
                         .content("My test answer")
                         .author(answerAuthor)
-                        .qnaPost(qnaPost)
+                        .qnaPost(questionPost)
                         .build()
         );
-        String url = "/api/v1/questions/" + qnaPost.getId() + "/answers/" + answer.getId();
+        String url = "/api/v1/questions/" + questionPost.getId() + "/answers/" + answer.getId();
 
         String answerJson = objectMapper.writeValueAsString(
                 QNAPostAnswerRequestDTO.builder()
@@ -123,10 +123,10 @@ public class QNAPostAnswerPostIntegrationTest extends AuthenticatedBaseIntegrati
                 QNAPostAnswer.builder()
                         .content("My test answer")
                         .author(this.createDummyStudent())
-                        .qnaPost(qnaPost)
+                        .qnaPost(questionPost)
                         .build()
         );
-        String url = "/api/v1/questions/" + qnaPost.getId() + "/answers/" + answer.getId();
+        String url = "/api/v1/questions/" + questionPost.getId() + "/answers/" + answer.getId();
 
         String answerJson = objectMapper.writeValueAsString(
                 QNAPostAnswerRequestDTO.builder()

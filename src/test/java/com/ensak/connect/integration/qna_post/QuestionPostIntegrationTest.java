@@ -2,10 +2,10 @@ package com.ensak.connect.integration.qna_post;
 
 import com.ensak.connect.config.api.ApiError;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
-import com.ensak.connect.qna_post.QNAPost;
-import com.ensak.connect.qna_post.QNAPostRepository;
-import com.ensak.connect.qna_post.dto.QNAPostRequestDTO;
-import com.ensak.connect.qna_post.dto.QNAPostResponseDTO;
+import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.question_post.repository.QuestionPostRepository;
+import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
+import com.ensak.connect.question_post.dto.question.QuestionPostResponseDTO;
 import com.ensak.connect.user.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
+public class QuestionPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
 
     @Autowired
     private MockMvc api;
@@ -30,17 +30,17 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private QNAPostRepository qnaPostRepository;
+    private QuestionPostRepository questionPostRepository;
 
     @Test
     public void itShouldCreateQNAPostWhenAuthenticated() throws Exception {
         this.authenticateAsUser();
-        QNAPostRequestDTO request = QNAPostRequestDTO.builder()
+        QuestionPostRequestDTO request = QuestionPostRequestDTO.builder()
                 .question("Does this question exists?")
                 .build();
         String requestJSON = objectMapper.writeValueAsString(request);
         String response = api.perform(
-            post("/api/v1/question-and-answer")
+            post("/api/v1/questions")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestJSON)
         )
@@ -52,12 +52,12 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
 
     @Test
     public void itShouldNotCreateQNAPostWhenNotAuthenticated() throws Exception {
-        QNAPostRequestDTO request = QNAPostRequestDTO.builder()
+        QuestionPostRequestDTO request = QuestionPostRequestDTO.builder()
                 .question("Does this question exists?")
                 .build();
         String requestJSON = objectMapper.writeValueAsString(request);
         api.perform(
-            post("/api/v1/question-and-answer")
+            post("/api/v1/questions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJSON)
         )
@@ -70,21 +70,21 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Test
     public void isShouldGetQNAPostWhenAuthenticated() throws Exception {
         User user = this.authenticateAsUser();
-        QNAPost post = qnaPostRepository.save(
-                QNAPost.builder()
+        QuestionPost post = questionPostRepository.save(
+                QuestionPost.builder()
                         .question("Does this post exist ?")
                         .author(user)
                         .build()
         );
 
         String response = api.perform(
-                        get("/api/v1/question-and-answer/" + post.getId())
+                        get("/api/v1/questions/" + post.getId())
                 )
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        QNAPostResponseDTO postResponse = objectMapper.readValue(response, QNAPostResponseDTO.class);
+        QuestionPostResponseDTO postResponse = objectMapper.readValue(response, QuestionPostResponseDTO.class);
 
         Assertions.assertEquals(post.getId(), postResponse.getId());
         Assertions.assertEquals(post.getQuestion(), postResponse.getQuestion());
@@ -94,15 +94,15 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Test
     public void isShouldNotGetQNAPostWhenNotAuthenticated() throws Exception {
         User user = this.createDummyUser();
-        QNAPost post = qnaPostRepository.save(
-                QNAPost.builder()
+        QuestionPost post = questionPostRepository.save(
+                QuestionPost.builder()
                         .question("Does this post exist ?")
                         .author(user)
                         .build()
         );
 
         api.perform(
-            get("/api/v1/question-and-answer/" + post.getId())
+            get("/api/v1/questions/" + post.getId())
         )
             .andExpect(status().isForbidden())
             .andReturn()
@@ -113,15 +113,15 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Test
     public void itShouldAllowUserToDeleteHisOwnQNAPostWhenAuthenticated() throws Exception {
         User user = this.authenticateAsUser();
-        QNAPost post = qnaPostRepository.save(
-                QNAPost.builder()
+        QuestionPost post = questionPostRepository.save(
+                QuestionPost.builder()
                         .question("Does this post exist ?")
                         .author(user)
                         .build()
         );
 
         api.perform(
-                        delete("/api/v1/question-and-answer/" + post.getId())
+                        delete("/api/v1/questions/" + post.getId())
                 )
                 .andExpect(status().isOk())
                 .andReturn()
@@ -133,15 +133,15 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Test
     public void itShouldNotAllowUserToDeleteQNAPostWhenNotAuthenticated() throws Exception {
         User user = this.createDummyUser();
-        QNAPost post = qnaPostRepository.save(
-                QNAPost.builder()
+        QuestionPost post = questionPostRepository.save(
+                QuestionPost.builder()
                         .question("Does this post exist ?")
                         .author(user)
                         .build()
         );
 
         api.perform(
-                        delete("/api/v1/question-and-answer/" + post.getId())
+                        delete("/api/v1/questions/" + post.getId())
                 )
                 .andExpect(status().isForbidden())
                 .andReturn()
@@ -154,15 +154,15 @@ public class QNAPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     public void itShouldNotDeleteQNAPostMadeByOtherUsers() throws Exception {
         this.authenticateAsStudent();
         User user = this.createDummyUser();
-        QNAPost post = qnaPostRepository.save(
-                QNAPost.builder()
+        QuestionPost post = questionPostRepository.save(
+                QuestionPost.builder()
                         .question("Does this post exist ?")
                         .author(user)
                         .build()
         );
 
         String response = api.perform(
-                        delete("/api/v1/question-and-answer/" + post.getId())
+                        delete("/api/v1/questions/" + post.getId())
                 )
                 .andExpect(status().isForbidden())
                 .andReturn()

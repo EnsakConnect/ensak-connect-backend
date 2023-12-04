@@ -1,4 +1,4 @@
-package com.ensak.connect.qna_post;
+package com.ensak.connect.question_post.model;
 
 import com.ensak.connect.user.User;
 import jakarta.persistence.*;
@@ -13,8 +13,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "qna_posts")
-public class QNAPost {
+@Table(name = "question_posts")
+public class QuestionPost {
     @Id
     @GeneratedValue
     private Integer id;
