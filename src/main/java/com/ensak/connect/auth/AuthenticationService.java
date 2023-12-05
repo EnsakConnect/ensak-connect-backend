@@ -4,8 +4,8 @@ import com.ensak.connect.auth.dto.ActivateAccountRequest;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.auth.email_confirmation.EmailConfirmation;
-import com.ensak.connect.auth.email_confirmation.EmailConfirmationService;
+import com.ensak.connect.auth.model.EmailConfirmation;
+import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.JwtService;
 import com.ensak.connect.email.EmailService;
 import com.ensak.connect.email.dto.EmailDTO;
@@ -45,11 +45,15 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = userService.getUserByEmail(request.getEmail());
-        var jwtToken = jwtService.generateToken(user);
+        String jwtToken = this.generateTokenForEmail(request.getEmail());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public String generateTokenForEmail(String email) {
+        var user = userService.getUserByEmail(email);
+        return jwtService.generateToken(user);
     }
 
     public Boolean activate(ActivateAccountRequest request) {
