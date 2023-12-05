@@ -96,7 +96,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
                 .city("Kenitra")
                 .address("AVN des FAR")
                 .phone("0680668394")
-                .titre("Frontend React Dev")
+                .title("Frontend React Dev")
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
         //request
@@ -301,13 +301,13 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         profileService.addCertification(dummyUser.getId(),
                 CertificationRequestDTO.builder()
                         .name("React")
-                        .link("link")
+                        .link("http://link.com")
                         .build());
         List<Certification> expectedResponse = new ArrayList<>();
         expectedResponse.add(
                 Certification.builder()
                         .name("React")
-                        .link("link")
+                        .link("http://link.com")
                         .build());
 
         //request
@@ -333,13 +333,13 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         var dummyUser = this.authenticateAsUser();
         Certification expectedResponse = Certification.builder()
                 .name("React")
-                .link("link")
+                .link("http://link.com")
                 .build();
         //request
 
         CertificationRequestDTO payload = CertificationRequestDTO.builder()
                 .name("React")
-                .link("link")
+                .link("http://link.com")
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
 
@@ -368,7 +368,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         Certification certification = profileService.addCertification(dummyUser.getId(),
                 CertificationRequestDTO.builder()
                         .name("React")
-                        .link("link")
+                        .link("http://link.com")
                         .build());
 
         //request
@@ -594,14 +594,14 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         profileService.addProject(dummyUser.getId(),
                 ProjectRequestDTO.builder()
                         .name("React")
-                        .link("link")
+                        .link("http://link.com")
                         .description("big description")
                         .build());
         List<Project> expectedResponse = new ArrayList<>();
         expectedResponse.add(
                 Project.builder()
                         .name("React")
-                        .link("link")
+                        .link("http://link.com")
                         .description("big description")
                         .build());
 
@@ -629,14 +629,14 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         var dummyUser = this.authenticateAsUser();
         Project expectedResponse = Project.builder()
                 .name("React")
-                .link("link")
+                .link("http://link.com")
                 .description("big description")
                 .build();
         //request
 
         ProjectRequestDTO payload = ProjectRequestDTO.builder()
                 .name("React")
-                .link("link")
+                .link("http://link.com")
                 .description("big description")
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
@@ -666,7 +666,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         Project project = profileService.addProject(dummyUser.getId(),
                 ProjectRequestDTO.builder()
                         .name("React")
-                        .link("link")
+                        .link("http://link.com")
                         .description("big description")
                         .build());
 

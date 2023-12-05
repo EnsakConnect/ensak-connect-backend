@@ -31,8 +31,8 @@ public class ProfileService {
 
     public Profile updateProfile(Integer user_id,ProfileRequestDTO pDTO){
         Profile profile = getUserProfileById(user_id);
-        if(pDTO.getTitre() != null){
-            profile.setTitre(pDTO.getTitre());
+        if(pDTO.getTitle() != null){
+            profile.setTitre(pDTO.getTitle());
         }
         if(pDTO.getFullName() != null){
             profile.setFullName(pDTO.getFullName());
