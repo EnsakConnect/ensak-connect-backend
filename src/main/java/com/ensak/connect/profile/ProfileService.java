@@ -57,8 +57,10 @@ public class ProfileService {
 
     // update banner, profile pic, CV
 
-    public List<Certification> getCertifications(Integer user_id){
-        return getUserProfileById(user_id).getCertificationList();
+    public List<Certification> getCertifications(Integer userId) {
+        Integer profileId = getUserProfileById(userId).getId();
+        Optional<List<Certification>> certifications = certificationRepository.findAllByProfileId(profileId);
+        return certifications.orElse(null);
     }
 
     @Transactional
@@ -107,7 +109,9 @@ public class ProfileService {
 
     // Get languages for a user
     public List<Language> getLanguages(Integer userId) {
-        return getUserProfileById(userId).getLanguageList();
+        Integer profileId = getUserProfileById(userId).getId();
+        Optional<List<Language>> languages = languageRepository.findAllByProfileId(profileId);
+        return languages.orElse(null);
     }
 
     // Add a language
@@ -130,7 +134,9 @@ public class ProfileService {
 
     // Get education for a user
     public List<Education> getEducations(Integer userId) {
-        return getUserProfileById(userId).getEducationList();
+        Integer profileId = getUserProfileById(userId).getId();
+        Optional<List<Education>> educations = educationRepository.findAllByProfileId(profileId);
+        return educations.orElse(null);
     }
 
     // Add an education
@@ -153,7 +159,9 @@ public class ProfileService {
 
     // Get experiences for a user
     public List<Experience> getExperiences(Integer userId) {
-        return getUserProfileById(userId).getExperienceList();
+        Integer profileId = getUserProfileById(userId).getId();
+        Optional<List<Experience>> experiences = experienceRepository.findAllByProfileId(profileId);
+        return experiences.orElse(null);
     }
 
     // Add an experience
@@ -177,7 +185,9 @@ public class ProfileService {
 
     // Get projects for a user
     public List<Project> getProjects(Integer userId) {
-        return getUserProfileById(userId).getProjectList();
+        Integer profileId = getUserProfileById(userId).getId();
+        Optional<List<Project>> projects = projectRepository.findAllByProfileId(profileId);
+        return projects.orElse(null);
     }
 
     // Add a project

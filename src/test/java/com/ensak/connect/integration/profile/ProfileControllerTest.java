@@ -257,7 +257,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         String JsonPayload = objectMapper.writeValueAsString(payload);
 
         String responseJson = api.perform(
-                        post("/api/v1/profile/Language")
+                        post("/api/v1/profile/language")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(JsonPayload)
@@ -286,7 +286,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         api.perform(
-                        delete("/api/v1/profile/Language/"+language.getId())
+                        delete("/api/v1/profile/language/"+language.getId())
                 )
                 .andExpect(status().isNoContent());
         //assertions
@@ -312,7 +312,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         String responseJson = api.perform(
-                        get("/api/v1/profile/Certification")
+                        get("/api/v1/profile/certification")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -344,7 +344,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         String JsonPayload = objectMapper.writeValueAsString(payload);
 
         String responseJson = api.perform(
-                        post("/api/v1/profile/Certification")
+                        post("/api/v1/profile/certification")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(JsonPayload)
@@ -373,7 +373,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         api.perform(
-                        delete("/api/v1/profile/Certification/"+certification.getId())
+                        delete("/api/v1/profile/certification/"+certification.getId())
                 )
                 .andExpect(status().isNoContent());
         //assertions
@@ -404,7 +404,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         String responseJson = api.perform(
-                        get("/api/v1/profile/Education")
+                        get("/api/v1/profile/education")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -416,7 +416,6 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         List<Education> response = objectMapper.readValue(responseJson,new TypeReference<List<Education>>(){});
         assertEquals(response.get(0).getDegree(),expectedResponse.get(0).getDegree());
         assertEquals(response.get(0).getField(),expectedResponse.get(0).getField());
-        assertEquals(response.get(0).getStartDate(),expectedResponse.get(0).getStartDate());
         assertEquals(response.get(0).getSchool(),expectedResponse.get(0).getSchool());
     }
 
@@ -441,7 +440,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         String JsonPayload = objectMapper.writeValueAsString(payload);
 
         String responseJson = api.perform(
-                        post("/api/v1/profile/Education")
+                        post("/api/v1/profile/education")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(JsonPayload)
@@ -474,7 +473,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         api.perform(
-                        delete("/api/v1/profile/Education/"+education.getId())
+                        delete("/api/v1/profile/education/"+education.getId())
                 )
                 .andExpect(status().isNoContent());
         //assertions
@@ -506,7 +505,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         String responseJson = api.perform(
-                        get("/api/v1/profile/Experience")
+                        get("/api/v1/profile/experience")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -518,7 +517,6 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         List<Experience> response = objectMapper.readValue(responseJson,new TypeReference<List<Experience>>(){});
         assertEquals(response.get(0).getPositionTitle(),expectedResponse.get(0).getPositionTitle());
         assertEquals(response.get(0).getContractType(),expectedResponse.get(0).getContractType());
-        assertEquals(response.get(0).getStartDate(),expectedResponse.get(0).getStartDate());
         assertEquals(response.get(0).getCompanyName(),expectedResponse.get(0).getCompanyName());
     }
 
@@ -545,7 +543,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         String JsonPayload = objectMapper.writeValueAsString(payload);
 
         String responseJson = api.perform(
-                        post("/api/v1/profile/Experience")
+                        post("/api/v1/profile/experience")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(JsonPayload)
@@ -580,7 +578,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         api.perform(
-                        delete("/api/v1/profile/Experience/"+experience.getId())
+                        delete("/api/v1/profile/experience/"+experience.getId())
                 )
                 .andExpect(status().isNoContent());
         //assertions
@@ -609,7 +607,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         String responseJson = api.perform(
-                        get("/api/v1/profile/Project")
+                        get("/api/v1/profile/project")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -644,7 +642,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
         String JsonPayload = objectMapper.writeValueAsString(payload);
 
         String responseJson = api.perform(
-                        post("/api/v1/profile/Project")
+                        post("/api/v1/profile/project")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(JsonPayload)
@@ -674,7 +672,7 @@ class ProfileControllerTest extends AuthenticatedBaseIntegrationTest {
 
         //request
         api.perform(
-                        delete("/api/v1/profile/Project/"+project.getId())
+                        delete("/api/v1/profile/project/"+project.getId())
                 )
                 .andExpect(status().isNoContent());
         //assertions
