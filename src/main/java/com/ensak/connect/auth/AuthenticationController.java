@@ -42,4 +42,11 @@ public class AuthenticationController {
                         .build()
         , res ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("/change-password")
+    public void changePassword(
+            @RequestBody @Valid ChangePasswordRequest request
+    ) {
+        authenticationService.changePassword(request);
+    }
 }

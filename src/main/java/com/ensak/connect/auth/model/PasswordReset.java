@@ -1,4 +1,4 @@
-package com.ensak.connect.auth.email_confirmation;
+package com.ensak.connect.auth.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "email_confirmations")
-public class EmailConfirmation {
+@Table(name = "password_resets")
+public class PasswordReset {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private String email;
+    String email;
 
-    private String code;
+    String code;
 }
