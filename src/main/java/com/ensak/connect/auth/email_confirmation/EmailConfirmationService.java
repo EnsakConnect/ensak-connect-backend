@@ -1,5 +1,6 @@
 package com.ensak.connect.auth.email_confirmation;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,15 @@ public class EmailConfirmationService {
                         .code(generateSixDigitsCode())
                         .build()
         );
+    }
+
+    public Boolean verify(String email, String code) {
+        return emailConfirmationRepository.findByEmailAndCode(email, code).isPresent();
+    }
+
+    @Transactional
+    public void deleteEmailConfirmation(String email) {
+        emailConfirmationRepository.deleteByEmail(email);
     }
 
     private String generateSixDigitsCode() {

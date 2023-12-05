@@ -44,8 +44,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User activateUser(Integer id){
-        User user = getUserById(id);
+    public User activateUser(String email){
+        User user = getUserByEmail(email);
         user.setActivatedAt(new Date());
         return userRepository.save(user);
     }

@@ -1,5 +1,6 @@
 package com.ensak.connect.auth;
 
+import com.ensak.connect.auth.dto.ActivateAccountRequest;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;
@@ -49,6 +50,16 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public Boolean activate(ActivateAccountRequest request) {
+        Boolean res = emailConfirmationService.verify(request.getEmail(), request.getCode());
+        if(! res) {
+            return false;
+        }
+        emailConfirmationService.deleteEmailConfirmation(request.getEmail());
+        userService.activateUser(request.getEmail());
+        return true;
     }
 
     public User getAuthenticatedUser() {
