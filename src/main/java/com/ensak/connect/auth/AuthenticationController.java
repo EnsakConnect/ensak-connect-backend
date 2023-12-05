@@ -1,10 +1,9 @@
 package com.ensak.connect.auth;
 
-import com.ensak.connect.auth.dto.AuthenticationRequest;
-import com.ensak.connect.auth.dto.AuthenticationResponse;
-import com.ensak.connect.auth.dto.RegisterRequest;
+import com.ensak.connect.auth.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,5 +29,17 @@ public class AuthenticationController {
             @RequestBody @Valid AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authenticationService.login(request));
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<ActivateAccountResponse> activate(
+            @RequestBody @Valid ActivateAccountRequest request
+    ) {
+        Boolean res = authenticationService.activate(request);
+        return new ResponseEntity<>(
+                ActivateAccountResponse.builder()
+                        .activationStatus(res)
+                        .build()
+        , res ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST);
     }
 }

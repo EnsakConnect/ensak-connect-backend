@@ -4,6 +4,9 @@ import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;
+import com.ensak.connect.auth.email_confirmation.EmailConfirmation;
+import com.ensak.connect.auth.email_confirmation.EmailConfirmationRepository;
+import com.ensak.connect.auth.email_confirmation.EmailConfirmationService;
 import com.ensak.connect.config.JwtService;
 import com.ensak.connect.email.EmailService;
 import com.ensak.connect.enumeration.Role;
@@ -54,6 +57,10 @@ public class AuthenticationServiceTest {
 
     @Mock
     private EmailService emailService;
+    @Mock
+    private EmailConfirmationService emailConfirmationService;
+    @Mock
+    private EmailConfirmationRepository emailConfirmationRepository;
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -75,7 +82,13 @@ public class AuthenticationServiceTest {
                 .role(Role.ROLE_STUDENT)
                 .build();
 
+        EmailConfirmation confirmation = EmailConfirmation.builder()
+                .email("johndoe@example.com")
+                .code("XXXXXX")
+                .build();
+
         when(userService.createUser(request)).thenReturn(user);
+        when(emailConfirmationService.createEmailConfirmation(request.getEmail())).thenReturn(confirmation);
 
         authenticationService.register(request);
 
