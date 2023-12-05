@@ -4,34 +4,31 @@ import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.config.JwtService;
+import com.ensak.connect.email.EmailService;
+import com.ensak.connect.email.dto.EmailDTO;
 import com.ensak.connect.user.User;
-import com.ensak.connect.user.UserRepository;
+import com.ensak.connect.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final EmailService emailService;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .role(request.getRole())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .build();
-        userRepository.save(user);
+        var user = userService.createUser(request);
+        this.sendRegistrationRequest(request);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -45,8 +42,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = userService.getUserByEmail(request.getEmail());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -56,5 +52,18 @@ public class AuthenticationService {
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
+    }
+
+    private void sendRegistrationRequest(RegisterRequest request) {
+        var res = emailService.sendEmail(
+                EmailDTO.builder()
+                        .to(request.getEmail())
+                        .subject("Ensak Connect - Please confirm your email address")
+                        .content("Hello "+ request.getFullname() +", Please confirm your email address using the verification code: XXXX")
+                        .build()
+        );
+        if(!res) {
+            log.warn("Register: Could not send email verification.");
+        }
     }
 }
