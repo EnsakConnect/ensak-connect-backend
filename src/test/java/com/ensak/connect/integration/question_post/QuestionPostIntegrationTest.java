@@ -1,6 +1,6 @@
 package com.ensak.connect.integration.question_post;
 
-import com.ensak.connect.config.api.ApiError;
+import com.ensak.connect.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
@@ -168,7 +168,7 @@ public class QuestionPostIntegrationTest extends AuthenticatedBaseIntegrationTes
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        ApiError apiResponse = objectMapper.readValue(response, ApiError.class);
+        HttpResponse apiResponse = objectMapper.readValue(response, HttpResponse.class);
 
         Assertions.assertEquals("Cannot delete posts made by other users", apiResponse.getMessage());
     }
