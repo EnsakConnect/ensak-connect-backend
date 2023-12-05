@@ -44,7 +44,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/change-password")
-    public void changePassword() {
-
+    public void changePassword(
+            @RequestBody @Valid ChangePasswordRequest request
+    ) {
+        authenticationService.changePassword(request);
     }
 }

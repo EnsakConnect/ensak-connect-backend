@@ -1,9 +1,6 @@
 package com.ensak.connect.auth;
 
-import com.ensak.connect.auth.dto.ActivateAccountRequest;
-import com.ensak.connect.auth.dto.AuthenticationRequest;
-import com.ensak.connect.auth.dto.AuthenticationResponse;
-import com.ensak.connect.auth.dto.RegisterRequest;
+import com.ensak.connect.auth.dto.*;
 import com.ensak.connect.auth.model.EmailConfirmation;
 import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.JwtService;
@@ -64,6 +61,11 @@ public class AuthenticationService {
         emailConfirmationService.deleteEmailConfirmation(request.getEmail());
         userService.activateUser(request.getEmail());
         return true;
+    }
+
+    public void changePassword(ChangePasswordRequest request) {
+        User auth = getAuthenticatedUser();
+        userService.updatePassword(auth.getId(), request.getPassword());
     }
 
     public User getAuthenticatedUser() {

@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PasswordResetVerificationRequest {
+
     @Email(message = "Please enter a valid email")
     private String email;
 

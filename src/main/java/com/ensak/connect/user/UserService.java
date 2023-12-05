@@ -50,10 +50,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updatePassword(Integer id,String password){
+    public void updatePassword(Integer id, String password){
         User user = getUserById(id);
         user.setPassword(passwordEncoder.encode(password));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public User getUserById(Integer id){
