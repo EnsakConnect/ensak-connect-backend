@@ -5,6 +5,7 @@ import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.config.JwtService;
+import com.ensak.connect.email.EmailService;
 import com.ensak.connect.enumeration.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
@@ -50,6 +51,9 @@ public class AuthenticationServiceTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private EmailService emailService;
 
     @Mock
     private AuthenticationManager authenticationManager;
