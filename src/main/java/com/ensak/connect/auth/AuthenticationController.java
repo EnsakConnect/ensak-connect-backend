@@ -1,6 +1,8 @@
 package com.ensak.connect.auth;
 
 import com.ensak.connect.auth.dto.*;
+import com.ensak.connect.user.User;
+import com.ensak.connect.user.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,12 @@ public class AuthenticationController {
             @RequestBody @Valid AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authenticationService.login(request));
+    }
+
+    @PostMapping("/me")
+    public ResponseEntity<UserResponseDTO> me() {
+        User auth = authenticationService.getAuthenticatedUser();
+        return new ResponseEntity<>(UserResponseDTO.map(auth), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/activate")
