@@ -1,6 +1,7 @@
 package com.ensak.connect.util.storage;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
@@ -10,7 +11,8 @@ public class StorageProperties {
 	/**
 	 * Folder location for storing files
 	 */
-	private String location = "\"C:\\Users\\iopha\\Documents\\WorkSpace\\ensak-connect-backend\\storage\"";
+	@Value("${storage.location}")
+	private String location ;
 
 	public void setLocation(String location) {
 		this.location = location;

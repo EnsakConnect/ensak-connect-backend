@@ -2,7 +2,9 @@ package com.ensak.connect.util.storage;
 
 import com.ensak.connect.util.storage.exception.StorageException;
 import com.ensak.connect.util.storage.exception.StorageFileNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,11 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 @Service
+@RequiredArgsConstructor
 public class FileSystemStorageService implements StorageService {
 
 	private final Path rootLocation;
+
 
 	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
