@@ -39,7 +39,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("user.user@email.com")
                         .password("password")
                         .fullname("user fullname")
-                        .role(Role.ROLE_USER)
+                        .role("STUDENT")
                         .build()
         );
     }
@@ -50,7 +50,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("student.user@email.com")
                         .password("password")
                         .fullname("student fullname")
-                        .role(Role.ROLE_USER)
+                        .role("STUDENT")
                         .build()
         );
     }
@@ -61,7 +61,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("laureate.user@email.com")
                         .password("password")
                         .fullname("laureate fullname")
-                        .role(Role.ROLE_USER)
+                        .role("LAUREATE")
                         .build()
         );
     }
@@ -72,7 +72,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("professor.user@email.com")
                         .password("password")
                         .fullname("professor fullname")
-                        .role(Role.ROLE_USER)
+                        .role("PROFESSOR")
                         .build()
         );
     }

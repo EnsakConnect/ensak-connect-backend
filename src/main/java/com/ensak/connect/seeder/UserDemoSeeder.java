@@ -22,7 +22,7 @@ public class UserDemoSeeder implements CommandLineRunner {
         User demoUser = userService.createUser(
                 RegisterRequest.builder()
                         .email("demo@ensakconnect.com")
-                        .role(Role.ROLE_USER)
+                        .role("STUDENT")
                         .fullname("Demo User")
                         .password("password")
                         .build()

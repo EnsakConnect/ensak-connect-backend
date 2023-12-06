@@ -14,8 +14,8 @@ import static com.ensak.connect.user.Permission.*;
 @RequiredArgsConstructor
 public enum Role {
 
-  USER(Collections.emptySet()),
-  ADMIN(
+  ROLE_USER(Collections.emptySet()),
+  ROLE_ADMIN(
           Set.of(
                   ADMIN_READ,
                   ADMIN_UPDATE,
@@ -27,7 +27,7 @@ public enum Role {
                   MANAGER_CREATE
           )
   ),
-  MANAGER(
+  ROLE_MANAGER(
           Set.of(
                   MANAGER_READ,
                   MANAGER_UPDATE,

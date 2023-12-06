@@ -33,7 +33,7 @@ public class AuthenticationControllerTest {
         request.setFullname("John Doe");
         request.setEmail("johndoe@example.com");
         request.setPassword("password");
-        request.setRole(Role.ROLE_USER);
+        request.setRole("STUDENT");
 
         AuthenticationResponse response = new AuthenticationResponse();
         response.setToken("token");

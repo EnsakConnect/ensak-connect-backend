@@ -69,7 +69,7 @@ public class AuthenticationServiceTest {
         request.setFullname("John Dao");
         request.setEmail("johndoe@example.com");
         request.setPassword("password");
-        request.setRole(Role.ROLE_USER);
+        request.setRole("STUDENT");
 
         User user = User.builder()
                 .email("johndoe@example.com")
