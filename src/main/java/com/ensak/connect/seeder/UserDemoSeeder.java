@@ -14,7 +14,7 @@ public class UserDemoSeeder implements CommandLineRunner {
     UserService userService;
 
     @Override
-    public void run(String ...agrs) throws Exception {
+    public void run(String[] args) throws Exception {
         createDemoUser();
     }
 

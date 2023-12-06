@@ -1,10 +1,7 @@
 package com.ensak.connect.seeder;
 
-import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.enumeration.Role;
 import com.ensak.connect.job_post.JobPostRequest;
 import com.ensak.connect.job_post.JobPostService;
-import com.ensak.connect.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,10 +11,8 @@ public class JobPostSeeder implements CommandLineRunner {
     @Autowired
     JobPostService jobPostService;
 
-    @Autowired
-
     @Override
-    public void run(String ...agrs) throws Exception {
+    public void run(String... args) throws Exception {
         createJobPosts();
     }
 
