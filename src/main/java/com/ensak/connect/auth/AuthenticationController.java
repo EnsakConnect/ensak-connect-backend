@@ -1,6 +1,8 @@
 package com.ensak.connect.auth;
 
 import com.ensak.connect.auth.dto.*;
+import com.ensak.connect.user.User;
+import com.ensak.connect.user.dto.UserResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.login(request));
     }
 
+    @PostMapping("/me")
+    public ResponseEntity<UserResponseDTO> me() {
+        User auth = authenticationService.getAuthenticatedUser();
+        return new ResponseEntity<>(UserResponseDTO.map(auth), HttpStatus.ACCEPTED);
+    }
+
     @PostMapping("/activate")
     public ResponseEntity<ActivateAccountResponse> activate(
             @RequestBody @Valid ActivateAccountRequest request
@@ -41,5 +49,12 @@ public class AuthenticationController {
                         .activationStatus(res)
                         .build()
         , res ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/change-password")
+    public void changePassword(
+            @RequestBody @Valid ChangePasswordRequest request
+    ) {
+        authenticationService.changePassword(request);
     }
 }

@@ -1,5 +1,6 @@
-package com.ensak.connect.auth.email_confirmation;
+package com.ensak.connect.auth.repository;
 
+import com.ensak.connect.auth.model.EmailConfirmation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

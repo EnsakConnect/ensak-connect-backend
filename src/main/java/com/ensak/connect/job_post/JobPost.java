@@ -24,6 +24,6 @@ public class JobPost {
 
     private LocalDate createDate;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 }

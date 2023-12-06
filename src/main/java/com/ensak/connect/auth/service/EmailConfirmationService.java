@@ -1,7 +1,8 @@
-package com.ensak.connect.auth.email_confirmation;
+package com.ensak.connect.auth.service;
 
+import com.ensak.connect.auth.model.EmailConfirmation;
+import com.ensak.connect.auth.repository.EmailConfirmationRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
