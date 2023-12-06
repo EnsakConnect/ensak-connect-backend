@@ -9,7 +9,7 @@ import com.ensak.connect.auth.repository.EmailConfirmationRepository;
 import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.JwtService;
 import com.ensak.connect.email.EmailService;
-import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
 import com.ensak.connect.user.UserService;

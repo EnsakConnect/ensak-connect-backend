@@ -1,4 +1,4 @@
-package com.ensak.connect.enumeration;
+package com.ensak.connect.user;
 
 import lombok.Getter;
 

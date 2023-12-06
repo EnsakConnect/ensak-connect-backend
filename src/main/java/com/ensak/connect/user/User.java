@@ -1,7 +1,5 @@
 package com.ensak.connect.user;
 
-import com.ensak.connect.enumeration.Role;
-import com.ensak.connect.profile.models.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,7 +1,6 @@
 package com.ensak.connect.user;
 
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.enumeration.Role;
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import jakarta.transaction.Transactional;

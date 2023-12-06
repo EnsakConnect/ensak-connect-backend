@@ -1,7 +1,7 @@
 package com.ensak.connect.seeder;
 
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
