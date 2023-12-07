@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         },
         servers = {
                 @Server(url = "/", description = "Default Server URL"),
-                @Server(url= "https://ensak-connect-backend-develop.up.railway.app", description = "Dev server")
+                @Server(url= "https://ensak-connect-backend-develop.up.railway.app", description = "Dev server"),
                 @Server(url= "http://localhost:8081", description = "Local server server")
         }
 )
