@@ -31,6 +31,15 @@ public class QuestionPostController {
         return ResponseEntity.ok(QuestionPostResponseDTO.map(post));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<QuestionPostResponseDTO> update(
+            @PathVariable Integer id,
+            @RequestBody @Valid QuestionPostRequestDTO request
+    ) {
+        QuestionPost questionPost = qnaService.updateQuestionPostById(id, request);
+        return new ResponseEntity<>(QuestionPostResponseDTO.map(questionPost), HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
         qnaService.deleteQuestionPostById(id);
