@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -17,6 +18,11 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
                 @SecurityRequirement(
                         name = "bearerAuth"
                 )
+        },
+        servers = {
+                @Server(url = "/", description = "Default Server URL"),
+                @Server(url= "https://ensak-connect-backend-develop.up.railway.app", description = "Dev server"),
+                @Server(url= "http://localhost:8081", description = "Local server server")
         }
 )
 @SecurityScheme(
