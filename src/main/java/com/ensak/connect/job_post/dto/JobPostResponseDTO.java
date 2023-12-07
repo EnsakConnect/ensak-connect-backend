@@ -1,8 +1,7 @@
 package com.ensak.connect.job_post.dto;
 
-import com.ensak.connect.job_post.JobPost;
+import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.user.dto.UserResponseDTO;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

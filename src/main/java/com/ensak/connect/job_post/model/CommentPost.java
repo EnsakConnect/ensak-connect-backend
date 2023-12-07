@@ -1,7 +1,7 @@
-package com.ensak.connect.comment_post;
+package com.ensak.connect.job_post.model;
 
 
-import com.ensak.connect.job_post.JobPost;
+import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

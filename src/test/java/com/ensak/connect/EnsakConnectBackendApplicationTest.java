@@ -1,19 +1,9 @@
 package com.ensak.connect;
 
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.ensak.connect.job_post.JobPost;
-import com.ensak.connect.job_post.JobPostRepository;
-import com.ensak.connect.job_post.JobPostService;
-
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import com.ensak.connect.job_post.service.JobPostService;
 
 class EnsakConnectBackendApplicationTest {
     /**
@@ -44,7 +34,7 @@ class EnsakConnectBackendApplicationTest {
 //        //   Reason: R013 No inputs found that don't throw a trivial exception.
 //        //   Diffblue Cover tried to run the arrange/act section, but the method under
 //        //   test threw
-//        //   java.lang.NullPointerException: Cannot invoke "com.ensak.connect.job_post.JobPostService.save(com.ensak.connect.job_post.dto.JobPostRequest)" because "jobPostService" is null
+//        //   java.lang.NullPointerException: Cannot invoke "com.ensak.connect.job_post.service.JobPostService.save(com.ensak.connect.job_post.dto.JobPostRequest)" because "jobPostService" is null
 //        //       at com.ensak.connect.EnsakConnectBackendApplication.lambda$commandLineRunner$0(EnsakConnectBackendApplication.java:28)
 //        //   See https://diff.blue/R013 to resolve this issue.
 //

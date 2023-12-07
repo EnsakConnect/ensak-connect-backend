@@ -1,12 +1,13 @@
-package com.ensak.connect.comment_post;
+package com.ensak.connect.job_post.service;
 
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.comment_post.dto.CommentPostRequestDTO;
+import com.ensak.connect.job_post.model.CommentPost;
+import com.ensak.connect.job_post.repository.CommentPostRepository;
+import com.ensak.connect.job_post.dto.CommentPostRequestDTO;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.exception.NotFoundException;
-import com.ensak.connect.job_post.JobPost;
-import com.ensak.connect.job_post.JobPostService;
+import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

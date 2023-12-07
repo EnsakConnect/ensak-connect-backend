@@ -1,4 +1,4 @@
-package com.ensak.connect.comment_post.dto;
+package com.ensak.connect.job_post.dto;
 
 
 import jakarta.validation.constraints.NotBlank;

@@ -1,8 +1,10 @@
-package com.ensak.connect.job_post;
+package com.ensak.connect.job_post.controller;
 
 
+import com.ensak.connect.job_post.service.JobPostService;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.dto.JobPostResponseDTO;
+import com.ensak.connect.job_post.model.JobPost;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

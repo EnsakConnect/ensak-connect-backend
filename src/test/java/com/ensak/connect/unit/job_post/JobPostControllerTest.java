@@ -1,9 +1,9 @@
 package com.ensak.connect.unit.job_post;
 
-import com.ensak.connect.job_post.JobPost;
+import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
-import com.ensak.connect.job_post.JobPostService;
-import com.ensak.connect.job_post.JobPostController;
+import com.ensak.connect.job_post.service.JobPostService;
+import com.ensak.connect.job_post.controller.JobPostController;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

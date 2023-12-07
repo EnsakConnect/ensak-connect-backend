@@ -1,6 +1,5 @@
-package com.ensak.connect.job_post;
+package com.ensak.connect.job_post.model;
 
-import com.ensak.connect.comment_post.CommentPost;
 import com.ensak.connect.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,9 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedBy;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
