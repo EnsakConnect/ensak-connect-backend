@@ -5,12 +5,10 @@ import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.AuthenticationResponse;
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.Role;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +33,7 @@ public class AuthenticationControllerTest {
         request.setFullname("John Doe");
         request.setEmail("johndoe@example.com");
         request.setPassword("password");
-        request.setRole(Role.ROLE_STUDENT);
+        request.setRole("STUDENT");
 
         AuthenticationResponse response = new AuthenticationResponse();
         response.setToken("token");

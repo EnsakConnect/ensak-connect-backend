@@ -9,7 +9,7 @@ import com.ensak.connect.auth.repository.EmailConfirmationRepository;
 import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.JwtService;
 import com.ensak.connect.email.EmailService;
-import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
 import com.ensak.connect.user.UserService;
@@ -69,12 +69,12 @@ public class AuthenticationServiceTest {
         request.setFullname("John Dao");
         request.setEmail("johndoe@example.com");
         request.setPassword("password");
-        request.setRole(Role.ROLE_STUDENT);
+        request.setRole("STUDENT");
 
         User user = User.builder()
                 .email("johndoe@example.com")
                 .password("hashedPassword")
-                .role(Role.ROLE_STUDENT)
+                .role(Role.ROLE_USER)
                 .build();
 
         EmailConfirmation confirmation = EmailConfirmation.builder()
@@ -99,7 +99,7 @@ public class AuthenticationServiceTest {
         user.setEmail("jane.doe@example.org");
         user.setId(1);
         user.setPassword("password");
-        user.setRole(Role.ROLE_STUDENT);
+        user.setRole(Role.ROLE_USER);
         Optional<User> ofResult = Optional.of(user);
         //when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
         when(userService.getUserByEmail(Mockito.<String>any())).thenReturn(user);
