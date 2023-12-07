@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/job-post/")
+@RequestMapping("/api/v1/job-posts")
 @RequiredArgsConstructor
 public class JobPostController {
 
     private final JobPostService jobPostService;
 
-    @PostMapping("add")
+    @PostMapping
     public ResponseEntity<?> addJobPost (
             @RequestBody @Valid JobPostRequestDTO request
     ) {
