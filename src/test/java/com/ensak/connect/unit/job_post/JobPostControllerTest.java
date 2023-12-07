@@ -1,19 +1,17 @@
 package com.ensak.connect.unit.job_post;
 
 import com.ensak.connect.job_post.JobPost;
-import com.ensak.connect.job_post.JobPostRequest;
+import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.JobPostService;
 import com.ensak.connect.job_post.JobPostController;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class JobPostControllerTest {
 
     @Test
     public void testAddJobPost_validRequest_returnsAccepted() throws MethodArgumentNotValidException {
-        JobPostRequest request = new JobPostRequest();
+        JobPostRequestDTO request = new JobPostRequestDTO();
         request.setTitle("Software Engineer");
         request.setDescription("Develop and maintain software applications.");
 

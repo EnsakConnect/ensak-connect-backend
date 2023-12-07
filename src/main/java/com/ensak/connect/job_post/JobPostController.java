@@ -1,6 +1,7 @@
 package com.ensak.connect.job_post;
 
 
+import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class JobPostController {
 
     @PostMapping("add")
     public ResponseEntity<?> addJobPost (
-            @RequestBody @Valid JobPostRequest request
+            @RequestBody @Valid JobPostRequestDTO request
     ) {
         jobPostService.save(request);
         return ResponseEntity.accepted().build();

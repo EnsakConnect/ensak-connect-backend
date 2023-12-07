@@ -32,7 +32,7 @@ public class JobPost {
 
     private String location;
 
-    private String type;
+    private String companyType;
 
     @Column(columnDefinition = "TEXT")
     private String description;

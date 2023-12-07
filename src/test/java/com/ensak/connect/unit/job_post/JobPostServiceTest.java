@@ -1,14 +1,13 @@
 package com.ensak.connect.unit.job_post;
 
 import com.ensak.connect.job_post.JobPost;
-import com.ensak.connect.job_post.JobPostRequest;
+import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.JobPostService;
 import com.ensak.connect.job_post.JobPostRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
@@ -28,7 +27,7 @@ public class JobPostServiceTest {
 
     @Test
     public void testSave() {
-        JobPostRequest request = new JobPostRequest();
+        JobPostRequestDTO request = new JobPostRequestDTO();
         request.setTitle("Software Engineer");
         request.setDescription("Develop and maintain software applications.");
         jobPostService.save(request);

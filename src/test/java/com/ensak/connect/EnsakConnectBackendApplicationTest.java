@@ -44,7 +44,7 @@ class EnsakConnectBackendApplicationTest {
 //        //   Reason: R013 No inputs found that don't throw a trivial exception.
 //        //   Diffblue Cover tried to run the arrange/act section, but the method under
 //        //   test threw
-//        //   java.lang.NullPointerException: Cannot invoke "com.ensak.connect.job_post.JobPostService.save(com.ensak.connect.job_post.JobPostRequest)" because "jobPostService" is null
+//        //   java.lang.NullPointerException: Cannot invoke "com.ensak.connect.job_post.JobPostService.save(com.ensak.connect.job_post.dto.JobPostRequest)" because "jobPostService" is null
 //        //       at com.ensak.connect.EnsakConnectBackendApplication.lambda$commandLineRunner$0(EnsakConnectBackendApplication.java:28)
 //        //   See https://diff.blue/R013 to resolve this issue.
 //
