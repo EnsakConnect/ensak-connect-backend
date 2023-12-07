@@ -30,12 +30,11 @@ public class JobPostServiceTest {
         JobPostRequestDTO request = new JobPostRequestDTO();
         request.setTitle("Software Engineer");
         request.setDescription("Develop and maintain software applications.");
-        jobPostService.save(request);
+        jobPostService.createJobPost(request);
 
         JobPost expectedJobPost = new JobPost();
         expectedJobPost.setTitle("Software Engineer");
         expectedJobPost.setDescription("Develop and maintain software applications.");
-        expectedJobPost.setCreateDate(LocalDate.now());
 
         Mockito.verify(jobPostRepository, Mockito.times(1)).save(expectedJobPost);
     }
@@ -46,18 +45,16 @@ public class JobPostServiceTest {
         JobPost jobPost1 = new JobPost();
         jobPost1.setTitle("Software Engineer");
         jobPost1.setDescription("Develop and maintain software applications.");
-        jobPost1.setCreateDate(LocalDate.now());
         jobPosts.add(jobPost1);
 
         JobPost jobPost2 = new JobPost();
         jobPost2.setTitle("Product Manager");
         jobPost2.setDescription("Manage the product development lifecycle.");
-        jobPost2.setCreateDate(LocalDate.now());
         jobPosts.add(jobPost2);
 
         Mockito.when(jobPostRepository.findAll()).thenReturn(jobPosts);
 
-        List<JobPost> actualJobPosts = jobPostService.findAll();
+        List<JobPost> actualJobPosts = jobPostService.getJobPosts();
 
         assertThat(actualJobPosts).isEqualTo(jobPosts);
     }

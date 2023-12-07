@@ -35,10 +35,10 @@ public class JobPostControllerTest {
         request.setTitle("Software Engineer");
         request.setDescription("Develop and maintain software applications.");
 
-        ResponseEntity<?> responseEntity = jobPostController.addJobPost(request);
+        ResponseEntity<?> responseEntity = jobPostController.create(request);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
-        Mockito.verify(jobPostService, Mockito.times(1)).save(request);
+        Mockito.verify(jobPostService, Mockito.times(1)).createJobPost(request);
     }
 
 //    @Test
@@ -58,18 +58,16 @@ public class JobPostControllerTest {
         JobPost jobPost1 = new JobPost();
         jobPost1.setTitle("Software Engineer");
         jobPost1.setDescription("Develop and maintain software applications.");
-        jobPost1.setCreateDate(LocalDate.now());
         jobPosts.add(jobPost1);
 
         JobPost jobPost2 = new JobPost();
         jobPost2.setTitle("Product Manager");
         jobPost2.setDescription("Manage the product development lifecycle.");
-        jobPost2.setCreateDate(LocalDate.now());
         jobPosts.add(jobPost2);
 
-        Mockito.when(jobPostService.findAll()).thenReturn(jobPosts);
+        Mockito.when(jobPostService.getJobPosts()).thenReturn(jobPosts);
 
-        ResponseEntity<List<JobPost>> responseEntity = jobPostController.findAllJobPosts();
+        ResponseEntity<List<JobPost>> responseEntity = jobPostController.getAll();
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isEqualTo(jobPosts);

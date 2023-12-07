@@ -37,6 +37,7 @@ public class JobPostService {
                         .title(request.getTitle())
                         .companyName(request.getCompanyName())
                         .location(request.getLocation())
+                        .author(author)
                         .companyType(request.getCompanyType())
                         .category(request.getCategory())
                         .description(request.getDescription())

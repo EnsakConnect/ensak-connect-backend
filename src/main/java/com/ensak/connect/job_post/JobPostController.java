@@ -26,6 +26,11 @@ public class JobPostController {
         return new ResponseEntity<>(JobPostResponseDTO.map(jobPost), HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<JobPost>> getAll() {
+        return ResponseEntity.ok(jobPostService.getJobPosts());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<JobPostResponseDTO> show(@PathVariable Integer id) {
         JobPost jobPost = jobPostService.getJobPostById(id);
