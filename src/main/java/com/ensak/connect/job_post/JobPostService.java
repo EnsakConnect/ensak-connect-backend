@@ -26,6 +26,10 @@ public class JobPostService {
         );
     }
 
+    public List<JobPost> getJobPosts() {
+        return jobPostRepository.findAll();
+    }
+
     public JobPost createJobPost(JobPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
         return jobPostRepository.save(
