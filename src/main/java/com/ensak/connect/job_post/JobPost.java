@@ -39,7 +39,7 @@ public class JobPost {
 
     private List<String> tags;
 
-    private List<String> category;
+    private String category;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

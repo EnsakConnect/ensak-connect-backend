@@ -30,7 +30,7 @@ public class JobPostRequestDTO {
     private String companyType;
 
     @NotBlank(message = "Category should not be blank")
-    private List<String> category;
+    private String category;
 
     @NotBlank(message = "Tags should not be blank")
     private List<String> tags;
