@@ -5,15 +5,21 @@ import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.models.*;
+import com.ensak.connect.resource.model.Resource;
+import com.ensak.connect.resource.ResourceService;
+import com.ensak.connect.resource.ResourceType;
+import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -21,6 +27,7 @@ import java.util.List;
 public class ProfileController {
     private final ProfileService profileService;
     private final AuthenticationService authenticationService;
+    private final ResourceService resourceService;
 
     @GetMapping
     public ResponseEntity<ProfileResponseDTO> getProfile(){
@@ -197,6 +204,30 @@ public class ProfileController {
         }
         else throw new ForbiddenException("Can not modify other user's profile");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/profile-picture")
+    public ResponseEntity<?> uploadProfilePicture(@RequestParam("picture") MultipartFile file) {
+
+        User user = this.authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.getUserProfileById(user.getId());
+
+        List<Resource> resources = resourceService.getAllOwnerResource(profile,ResourceType.ProfilePicture);
+        Resource resource;
+        if(resources == null || resources.isEmpty()){
+            resource = resourceService.createResource(profile, ResourceType.ProfilePicture, file);
+        }
+        else {
+            resource = resources.get(0);
+            resource = resourceService.updateResource(resource,ResourceType.ProfilePicture,file);
+        }
+
+
+        Map<String, String> response = new HashMap<>();
+        response.put("profile-picture", resource.getFilename());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
     }
 
 }

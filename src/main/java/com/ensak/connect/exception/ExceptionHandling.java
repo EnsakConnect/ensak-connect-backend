@@ -2,6 +2,9 @@ package com.ensak.connect.exception;
 
 import com.ensak.connect.exception.dto.HttpResponse;
 import com.ensak.connect.exception.model.*;
+import com.ensak.connect.util.storage.exception.FileExtensionNotAllowedException;
+import com.ensak.connect.util.storage.exception.StorageException;
+import com.ensak.connect.util.storage.exception.StorageFileNotFoundException;
 import jakarta.persistence.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -113,6 +116,24 @@ public class ExceptionHandling implements ErrorController {
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
         return new ResponseEntity<>(new HttpResponse(new Date(), httpStatus.value(),
                 httpStatus, httpStatus.getReasonPhrase().toUpperCase(), message), httpStatus);
+    }
+
+    @ExceptionHandler(FileExtensionNotAllowedException.class)
+    private ResponseEntity<HttpResponse> extensionNotAllowedResponse(FileExtensionNotAllowedException exception) {
+        log.error(exception.getMessage());
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(StorageException.class)
+    private ResponseEntity<HttpResponse> storageExceptionResponse(StorageException exception) {
+        log.error(exception.getMessage());
+        return createHttpResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
+    @ExceptionHandler(StorageFileNotFoundException.class)
+    private ResponseEntity<HttpResponse> fileNotFoundResponse(StorageException exception) {
+        log.error(exception.getMessage());
+        return createHttpResponse(NOT_FOUND, exception.getMessage());
     }
 
 }

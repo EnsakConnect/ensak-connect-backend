@@ -1,4 +1,4 @@
-package com.ensak.connect.media;
+package com.ensak.connect.resource;
 
 public enum ResourceType {
 
