@@ -1,8 +1,8 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
+import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile {
+public class Profile extends ResourceOwner {
 
     @Id
     @GeneratedValue
@@ -28,7 +27,7 @@ public class Profile {
 
     private String fullName;
 
-    private String titre;
+    private String title;
 
     private String phone;
 
@@ -69,4 +68,13 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projectList;
 
+    @Override
+    public String getResourceOwnerType() {
+        return "Profile";
+    }
+
+    @Override
+    public String[] getAllowedExtensions() {
+        return new String[]{"png", "jpg"};
+    }
 }

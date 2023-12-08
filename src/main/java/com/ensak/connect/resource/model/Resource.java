@@ -1,5 +1,6 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.resource.model;
 
+import com.ensak.connect.resource.ResourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,27 +15,26 @@ import java.util.Date;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Project {
+@NoArgsConstructor
+public class Resource {
+
     @Id
     @GeneratedValue
     private Integer id;
+
+    private ResourceType type;
+
+    private String filename;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "owner_id")
+    private ResourceOwner owner;
 
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;
-
-    private String name;
-
-    private String link;
-
-    private String description;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "profile_id", nullable = false)
-    private Profile profile;
 }

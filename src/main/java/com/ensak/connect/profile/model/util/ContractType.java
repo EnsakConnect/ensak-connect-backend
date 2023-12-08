@@ -1,4 +1,4 @@
-package com.ensak.connect.profile.models.util;
+package com.ensak.connect.profile.model.util;
 
 public enum ContractType {
     Internship,

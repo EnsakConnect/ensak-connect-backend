@@ -1,11 +1,8 @@
-package com.ensak.connect.profile.repositories;
+package com.ensak.connect.profile.repository;
 
-import com.ensak.connect.profile.models.Profile;
-import com.ensak.connect.profile.models.Skill;
-import com.ensak.connect.user.User;
+import com.ensak.connect.profile.model.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProfileRepository extends JpaRepository<Profile, Integer> {

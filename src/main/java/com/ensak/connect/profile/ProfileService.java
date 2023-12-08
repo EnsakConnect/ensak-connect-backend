@@ -2,12 +2,17 @@ package com.ensak.connect.profile;
 
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.profile.dto.*;
-import com.ensak.connect.profile.models.*;
-import com.ensak.connect.profile.repositories.*;
+import com.ensak.connect.profile.model.*;
+import com.ensak.connect.profile.repository.*;
+import com.ensak.connect.resource.ResourceService;
+import com.ensak.connect.resource.ResourceType;
+import com.ensak.connect.resource.model.Resource;
+import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.user.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +28,7 @@ public class ProfileService {
     private final EducationRepository educationRepository;
     private final ExperienceRepository experienceRepository;
     private final ProjectRepository projectRepository;
+    private final ResourceService resourceService;
 
     public void createEmptyProfile(User user, String fullName){
         Profile profile = Profile.builder().fullName(fullName).user(user).build();
@@ -32,7 +38,7 @@ public class ProfileService {
     public Profile updateProfile(Integer user_id,ProfileRequestDTO pDTO){
         Profile profile = getUserProfileById(user_id);
         if(pDTO.getTitle() != null){
-            profile.setTitre(pDTO.getTitle());
+            profile.setTitle(pDTO.getTitle());
         }
         if(pDTO.getFullName() != null){
             profile.setFullName(pDTO.getFullName());
@@ -49,13 +55,73 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
-    public Profile getUserProfileById(Integer user_id){
-        return profileRepository.findProfileByUserId(user_id).orElseThrow(
+    public Resource handleProfileResourceUpload(User user, ResourceType resume, MultipartFile file) {
+        Profile profile = getUserProfileById(user.getId());
+
+        List<Resource> resources = resourceService.getAllOwnerResource(profile, resume);
+        Resource resource;
+        if (resources == null || resources.isEmpty()) {
+            resource = resourceService.createResource(profile, resume, file);
+        } else {
+            resource = resources.get(0);
+            resource = resourceService.updateResource(resource, resume, file);
+        }
+        return resource;
+    }
+
+    public Profile getUserProfileById(Integer userId){
+        return profileRepository.findProfileByUserId(userId).orElseThrow(
                 () -> new NotFoundException("Profile Not Found")
         );
     }
 
-    // update banner, profile pic, CV
+    public ProfileDetailResponseDTO getDetailedProfile(Integer userId){
+        Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
+                () -> new NotFoundException("Profile Not Found")
+        );
+
+        ProfileDetailResponseDTO responseDTO = ProfileDetailResponseDTO.mapToDTO(profile);
+        Resource profilePicture = getProfilePicture(profile);
+        if(profilePicture != null){
+            responseDTO.setProfilePicture(profilePicture.getFilename());
+        }
+        Resource banner = getBanner(profile);
+        if(profilePicture != null){
+            responseDTO.setBanner(banner.getFilename());
+        }
+        Resource resume = getResume(profile);
+        if(profilePicture != null){
+            responseDTO.setResume(resume.getFilename());
+        }
+
+        return responseDTO;
+    }
+
+    public Resource getProfilePicture(ResourceOwner owner) {
+        List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.ProfilePicture);
+        return resources.isEmpty() ? null : resources.get(0);
+    }
+    public Resource getBanner(ResourceOwner owner) {
+        List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.Banner);
+        return resources.isEmpty() ? null : resources.get(0);
+    }
+    public Resource getResume(ResourceOwner owner) {
+        List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.Resume);
+        return resources.isEmpty() ? null : resources.get(0);
+    }
+    public ProfileResponseDTO getSummaryProfile(Integer userId){
+        Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
+                () -> new NotFoundException("Profile Not Found")
+        );
+
+        ProfileResponseDTO responseDTO = ProfileResponseDTO.mapToDTO(profile);
+        Resource profilePicture = getProfilePicture(profile);
+        if(profilePicture != null){
+            responseDTO.setProfilePicture(profilePicture.getFilename());
+        }
+        return responseDTO;
+    }
+
 
     public List<Certification> getCertifications(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();

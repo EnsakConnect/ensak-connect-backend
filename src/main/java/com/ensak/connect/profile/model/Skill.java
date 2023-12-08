@@ -1,6 +1,6 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
-import com.ensak.connect.profile.models.util.Level;
+import com.ensak.connect.profile.model.util.Level;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

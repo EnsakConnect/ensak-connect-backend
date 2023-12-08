@@ -1,6 +1,5 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
-import com.ensak.connect.profile.models.util.ContractType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Education {
+public class Project {
     @Id
     @GeneratedValue
     private Integer id;
@@ -28,15 +27,9 @@ public class Education {
     @UpdateTimestamp
     private Date updatedAt;
 
-    private String field;
+    private String name;
 
-    private String degree;
-
-    private String school;
-
-    private Date startDate;
-
-    private Date endDate;
+    private String link;
 
     private String description;
 

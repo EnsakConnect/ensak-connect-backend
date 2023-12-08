@@ -1,8 +1,7 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.profile.models.Language;
-import com.ensak.connect.profile.models.Skill;
-import com.ensak.connect.profile.models.util.Level;
+import com.ensak.connect.profile.model.Language;
+import com.ensak.connect.profile.model.util.Level;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

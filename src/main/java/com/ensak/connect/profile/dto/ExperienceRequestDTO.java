@@ -1,7 +1,7 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.profile.models.Experience;
-import com.ensak.connect.profile.models.util.ContractType;
+import com.ensak.connect.profile.model.Experience;
+import com.ensak.connect.profile.model.util.ContractType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
