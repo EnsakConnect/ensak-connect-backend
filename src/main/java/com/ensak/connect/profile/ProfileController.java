@@ -27,19 +27,18 @@ import java.util.Map;
 public class ProfileController {
     private final ProfileService profileService;
     private final AuthenticationService authenticationService;
-    private final ResourceService resourceService;
 
     @GetMapping
     public ResponseEntity<ProfileResponseDTO> getProfile(){
         User user = authenticationService.getAuthenticatedUser();
-        Profile profile = profileService.getUserProfileById(user.getId());
-        return new ResponseEntity<>(ProfileResponseDTO.mapToDTO(profile), HttpStatus.OK);
+        ProfileResponseDTO profile = profileService.getSummaryProfile(user.getId());
+        return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
     @GetMapping("/detailed")
-    public ResponseEntity<Profile> getDetailedProfile(){
+    public ResponseEntity<ProfileDetailResponseDTO> getDetailedProfile(){
         User user = authenticationService.getAuthenticatedUser();
-        Profile profile = profileService.getUserProfileById(user.getId());
+        ProfileDetailResponseDTO profile = profileService.getDetailedProfile(user.getId());
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
@@ -210,24 +209,40 @@ public class ProfileController {
     public ResponseEntity<?> uploadProfilePicture(@RequestParam("picture") MultipartFile file) {
 
         User user = this.authenticationService.getAuthenticatedUser();
-        Profile profile = profileService.getUserProfileById(user.getId());
-
-        List<Resource> resources = resourceService.getAllOwnerResource(profile,ResourceType.ProfilePicture);
-        Resource resource;
-        if(resources == null || resources.isEmpty()){
-            resource = resourceService.createResource(profile, ResourceType.ProfilePicture, file);
-        }
-        else {
-            resource = resources.get(0);
-            resource = resourceService.updateResource(resource,ResourceType.ProfilePicture,file);
-        }
+        Resource resource = profileService.handleProfileResourceUpload(user, ResourceType.ProfilePicture, file);
 
 
         Map<String, String> response = new HashMap<>();
         response.put("profile-picture", resource.getFilename());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
+    @PutMapping("/banner")
+    public ResponseEntity<?> uploadBanner(@RequestParam("banner") MultipartFile file) {
+
+        User user = this.authenticationService.getAuthenticatedUser();
+        Resource resource = profileService.handleProfileResourceUpload(user, ResourceType.Banner, file);
+
+
+        Map<String, String> response = new HashMap<>();
+        response.put("banner", resource.getFilename());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/resume")
+    public ResponseEntity<?> uploadResume(@RequestParam("resume") MultipartFile file) {
+
+        User user = this.authenticationService.getAuthenticatedUser();
+
+        Resource resource = profileService.handleProfileResourceUpload(user, ResourceType.Resume, file);
+
+
+        Map<String, String> response = new HashMap<>();
+        response.put("resume", resource.getFilename());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }

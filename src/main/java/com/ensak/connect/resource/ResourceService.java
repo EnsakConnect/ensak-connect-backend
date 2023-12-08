@@ -52,4 +52,16 @@ public class ResourceService {
 
         return resource;
     }
+
+    public void deleteResource(Resource resource){
+        storageService.delete(resource.getFilename());
+        resourceRepository.delete(resource);
+    }
+
+    public void deleteAllResources(List<Resource> resources){
+        for(Resource resource : resources){
+            storageService.delete(resource.getFilename());
+            resourceRepository.delete(resource);
+        }
+    }
 }

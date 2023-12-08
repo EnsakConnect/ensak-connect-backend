@@ -83,16 +83,12 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
         this.authenticateAsUser();
         ProfileResponseDTO expectedResponse = ProfileResponseDTO.builder()
                 .fullName("user fullname")
-                .city("Kenitra")
-                .address("AVN des FAR")
-                .phone("0680668394")
-                .titre("Frontend React Dev")
+                
+                .title("Frontend React Dev")
                 .build();
         ProfileRequestDTO payload = ProfileRequestDTO.builder()
                 .fullName("user fullname")
-                .city("Kenitra")
-                .address("AVN des FAR")
-                .phone("0680668394")
+                
                 .title("Frontend React Dev")
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
@@ -113,7 +109,7 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
         ProfileResponseDTO response = objectMapper.readValue(responseJson,ProfileResponseDTO.class);
         assertEquals(response.getFullName(),expectedResponse.getFullName());
 
-        assertEquals(response.getCity(),expectedResponse.getCity());
+        assertEquals(response.getTitle(),expectedResponse.getTitle());
 
     }
 

@@ -27,7 +27,7 @@ public class Profile extends ResourceOwner {
 
     private String fullName;
 
-    private String titre;
+    private String title;
 
     private String phone;
 
