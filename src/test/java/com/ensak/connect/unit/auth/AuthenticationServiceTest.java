@@ -101,15 +101,15 @@ public class AuthenticationServiceTest {
         user.setPassword("password");
         user.setRole(Role.ROLE_USER);
         Optional<User> ofResult = Optional.of(user);
-        //when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
-        when(userService.getUserByEmail(Mockito.<String>any())).thenReturn(user);
-        when(jwtService.generateToken(Mockito.<UserDetails>any())).thenReturn("ABC123");
-        when(authenticationManager.authenticate(Mockito.<Authentication>any()))
-                .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
+        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
+        //when(userService.getUserByEmail(Mockito.<String>any())).thenReturn(user);
+        when(authenticationService.generateTokenForEmail(Mockito.<String>any())).thenReturn("ABC123");
+        when(jwtService.generateRefreshToken(Mockito.<UserDetails>any())).thenReturn("ABC123");
+        when(authenticationManager.authenticate(Mockito.<Authentication>any())).thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
         AuthenticationResponse actualLoginResult = authenticationService
                 .login(new AuthenticationRequest("jane.doe@example.org", "password"));
         verify(jwtService).generateToken(Mockito.<UserDetails>any());
-        verify(userService).getUserByEmail(Mockito.<String>any());
+        //verify(userService).getUserByEmail(Mockito.<String>any());
         verify(authenticationManager).authenticate(Mockito.<Authentication>any());
         assertEquals("ABC123", actualLoginResult.getToken());
 

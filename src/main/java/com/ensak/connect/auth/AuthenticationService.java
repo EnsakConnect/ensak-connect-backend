@@ -6,6 +6,7 @@ import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.JwtService;
 import com.ensak.connect.email.EmailService;
 import com.ensak.connect.email.dto.EmailDTO;
+import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.token.Token;
 import com.ensak.connect.token.TokenRepository;
 import com.ensak.connect.token.TokenType;
@@ -57,7 +58,9 @@ public class AuthenticationService {
                 )
         );
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(
+                        ()-> new NotFoundException("Email Not Found")
+                );
         String jwtToken = this.generateTokenForEmail(request.getEmail());
         var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
