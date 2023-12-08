@@ -1,7 +1,6 @@
 package com.ensak.connect.user;
 
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.enumeration.Role;
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import jakarta.transaction.Transactional;
@@ -23,9 +22,8 @@ public class UserService {
         User user = User.builder()
                 .email(registerRequest.getEmail())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))
-                .role(
-                        (registerRequest.getRole() == null)? Role.ROLE_USER : registerRequest.getRole()
-                )
+                .role(Role.ROLE_USER)
+                .profileType(registerRequest.getRole())
                 .build();
         // call the profile service to create an empty profile
 

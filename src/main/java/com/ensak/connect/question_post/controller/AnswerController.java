@@ -41,7 +41,7 @@ public class AnswerController {
         return new ResponseEntity<>(AnswerResponseDTO.map(answer), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{answer_id}")
+    @PutMapping("/{answer_id}")
     public ResponseEntity<AnswerResponseDTO> update(
             @PathVariable Integer question_id,
             @PathVariable Integer answer_id,
@@ -51,7 +51,7 @@ public class AnswerController {
         return new ResponseEntity<>(AnswerResponseDTO.map(answer), HttpStatus.OK);
     }
 
-    @DeleteMapping("/answer_id")
+    @DeleteMapping("/{answer_id}")
     public ResponseEntity<Object> delete(
             @PathVariable Integer question_id,
             @PathVariable Integer answer_id

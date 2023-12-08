@@ -1,6 +1,6 @@
 package com.ensak.connect.unit.user;
 
-import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +30,7 @@ class UserRepositoryTest {
 
     {
         User user = User.builder()
-                .role(Role.ROLE_STUDENT)
+                .role(Role.ROLE_USER)
                 .email("test@gmail.com")
                 .password("password")
                 .build();
@@ -47,7 +47,7 @@ class UserRepositoryTest {
         String email = "test@gmail.com";
 
         User user = User.builder()
-                .role(Role.ROLE_STUDENT)
+                .role(Role.ROLE_USER)
                 .email(email)
                 .password("password")
                 .build();

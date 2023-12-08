@@ -1,7 +1,6 @@
 package com.ensak.connect.user;
 
-import com.ensak.connect.enumeration.Role;
-import com.ensak.connect.profile.models.Profile;
+import com.ensak.connect.token.Token;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,8 +39,13 @@ public class User implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private String profileType;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
 
     @Override

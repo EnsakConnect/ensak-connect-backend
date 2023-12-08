@@ -1,11 +1,10 @@
 package com.ensak.connect.integration;
 
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.enumeration.Role;
+import com.ensak.connect.user.Role;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserRepository;
 import com.ensak.connect.user.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +39,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("user.user@email.com")
                         .password("password")
                         .fullname("user fullname")
-                        .role(Role.ROLE_USER)
+                        .role("STUDENT")
                         .build()
         );
     }
@@ -51,7 +50,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("student.user@email.com")
                         .password("password")
                         .fullname("student fullname")
-                        .role(Role.ROLE_STUDENT)
+                        .role("STUDENT")
                         .build()
         );
     }
@@ -62,7 +61,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("laureate.user@email.com")
                         .password("password")
                         .fullname("laureate fullname")
-                        .role(Role.ROLE_LAUREATE)
+                        .role("LAUREATE")
                         .build()
         );
     }
@@ -73,7 +72,7 @@ public abstract class AuthenticatedBaseIntegrationTest {
                         .email("professor.user@email.com")
                         .password("password")
                         .fullname("professor fullname")
-                        .role(Role.ROLE_PROFESSOR)
+                        .role("PROFESSOR")
                         .build()
         );
     }
