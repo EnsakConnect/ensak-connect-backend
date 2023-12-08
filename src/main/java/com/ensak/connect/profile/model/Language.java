@@ -1,5 +1,6 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
+import com.ensak.connect.profile.model.util.Level;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Certification {
+public class Language {
     @Id
     @GeneratedValue
     private Integer id;
@@ -29,7 +30,7 @@ public class Certification {
 
     private String name;
 
-    private String link;
+    private Level level;
 
     @JsonIgnore
     @ManyToOne

@@ -1,6 +1,6 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.profile.models.Education;
+import com.ensak.connect.profile.model.Education;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

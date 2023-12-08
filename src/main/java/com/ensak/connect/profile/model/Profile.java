@@ -1,4 +1,4 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
 import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.user.User;

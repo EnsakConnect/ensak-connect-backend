@@ -1,6 +1,6 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.profile.models.Certification;
+import com.ensak.connect.profile.model.Certification;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

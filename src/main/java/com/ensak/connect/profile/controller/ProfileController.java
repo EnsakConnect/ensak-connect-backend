@@ -6,7 +6,7 @@ import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.ProfileDetailResponseDTO;
 import com.ensak.connect.profile.dto.ProfileRequestDTO;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
-import com.ensak.connect.profile.models.Profile;
+import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.resource.ResourceType;
 import com.ensak.connect.resource.model.Resource;
 import com.ensak.connect.user.User;
@@ -34,12 +34,25 @@ public class ProfileController {
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<ProfileResponseDTO> getProfile(@PathVariable Integer userId){
+        ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
     @GetMapping("/detailed")
     public ResponseEntity<ProfileDetailResponseDTO> getDetailedProfile(){
         User user = authenticationService.getAuthenticatedUser();
         ProfileDetailResponseDTO profile = profileService.getDetailedProfile(user.getId());
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/detailed")
+    public ResponseEntity<ProfileDetailResponseDTO> getDetailedProfile(@PathVariable Integer userId){
+        ProfileDetailResponseDTO profile = profileService.getDetailedProfile(userId);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
 
     @PutMapping
     public ResponseEntity<ProfileResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){

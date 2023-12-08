@@ -1,4 +1,4 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project {
+public class Certification {
     @Id
     @GeneratedValue
     private Integer id;
@@ -30,8 +30,6 @@ public class Project {
     private String name;
 
     private String link;
-
-    private String description;
 
     @JsonIgnore
     @ManyToOne

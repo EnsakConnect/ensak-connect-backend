@@ -1,6 +1,5 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
-import com.ensak.connect.profile.models.util.ContractType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

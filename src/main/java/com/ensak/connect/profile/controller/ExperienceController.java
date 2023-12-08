@@ -4,12 +4,11 @@ import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.ExperienceRequestDTO;
-import com.ensak.connect.profile.models.Experience;
+import com.ensak.connect.profile.model.Experience;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

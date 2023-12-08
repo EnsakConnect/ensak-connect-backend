@@ -2,8 +2,8 @@ package com.ensak.connect.profile;
 
 import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.profile.dto.*;
-import com.ensak.connect.profile.models.*;
-import com.ensak.connect.profile.repositories.*;
+import com.ensak.connect.profile.model.*;
+import com.ensak.connect.profile.repository.*;
 import com.ensak.connect.resource.ResourceService;
 import com.ensak.connect.resource.ResourceType;
 import com.ensak.connect.resource.model.Resource;

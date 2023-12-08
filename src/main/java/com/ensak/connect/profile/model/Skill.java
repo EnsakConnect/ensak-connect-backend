@@ -1,6 +1,6 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
-import com.ensak.connect.profile.models.util.Level;
+import com.ensak.connect.profile.model.util.Level;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Language {
+public class Skill {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -36,4 +37,5 @@ public class Language {
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
+
 }

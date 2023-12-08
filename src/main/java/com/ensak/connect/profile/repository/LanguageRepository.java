@@ -1,6 +1,6 @@
-package com.ensak.connect.profile.repositories;
+package com.ensak.connect.profile.repository;
 
-import com.ensak.connect.profile.models.Language;
+import com.ensak.connect.profile.model.Language;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

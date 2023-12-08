@@ -1,6 +1,6 @@
-package com.ensak.connect.profile.models;
+package com.ensak.connect.profile.model;
 
-import com.ensak.connect.profile.models.util.Level;
+import com.ensak.connect.profile.model.util.ContractType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,8 +17,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Skill {
-
+public class Experience {
     @Id
     @GeneratedValue
     private Integer id;
@@ -29,9 +28,19 @@ public class Skill {
     @UpdateTimestamp
     private Date updatedAt;
 
-    private String name;
+    private String positionTitle;
 
-    private Level level;
+    private ContractType contractType;
+
+    private String companyName;
+
+    private String location;
+
+    private Date startDate;
+
+    private Date endDate;
+
+    private String description;
 
     @JsonIgnore
     @ManyToOne

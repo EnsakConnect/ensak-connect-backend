@@ -1,13 +1,11 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.profile.models.Profile;
-import com.ensak.connect.resource.model.Resource;
+import com.ensak.connect.profile.model.Profile;
 import lombok.Builder;
 import lombok.Data;
 
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder

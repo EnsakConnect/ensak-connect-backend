@@ -1,8 +1,6 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.profile.models.*;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import com.ensak.connect.profile.model.*;
 import lombok.Builder;
 import lombok.Data;
 
