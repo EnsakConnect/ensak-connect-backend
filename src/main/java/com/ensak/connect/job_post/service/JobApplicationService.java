@@ -8,6 +8,7 @@ import com.ensak.connect.job_post.repository.JobApplicationRepository;
 import com.ensak.connect.user.User;
 import com.ensak.connect.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -41,9 +42,10 @@ public class JobApplicationService {
         return jobApplicationRepository.save(application);
     }
 
-    public List<JobApplication> getApplications(Integer jobPostId) {
+    public List<JobApplication> getApplications(Integer jobPostId, Pageable pageable) {
         JobPost jobPost = jobPostService.getJobPostById(jobPostId);
-        return jobApplicationRepository.findJobApplicationByJobPostId(jobPost.getId()).orElse(Collections.emptyList());
+        List<JobApplication> applications =  jobApplicationRepository.findByJobPostId(jobPost.getId(),pageable).getContent();
+        return applications;
     }
 
     public void deleteApplication(Integer jappId){
