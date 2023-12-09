@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Integer> {
     public Optional<List<JobApplication>> findJobApplicationByJobPostId(Integer jobPostId);
+    public Optional<JobApplication> findJobApplicationByApplicantIdAndJobPostId(Integer applicantId, Integer jobPostId);
 }

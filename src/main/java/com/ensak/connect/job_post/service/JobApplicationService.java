@@ -1,6 +1,7 @@
 package com.ensak.connect.job_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.job_post.model.JobApplication;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobApplicationRepository;
@@ -31,8 +32,30 @@ public class JobApplicationService {
         return jobApplicationRepository.save(application);
     }
 
+    public JobApplication updateApplication(Integer userId, Integer jobPostId, String message){
+        var application =  jobApplicationRepository.findJobApplicationByApplicantIdAndJobPostId(userId,jobPostId).orElseThrow(
+                () -> new NotFoundException("Job Application Not Found")
+        );
+        application.setMessage(message);
+
+        return jobApplicationRepository.save(application);
+    }
+
     public List<JobApplication> getApplications(Integer jobPostId) {
         JobPost jobPost = jobPostService.getJobPostById(jobPostId);
         return jobApplicationRepository.findJobApplicationByJobPostId(jobPost.getId()).orElse(Collections.emptyList());
+    }
+
+    public void deleteApplication(Integer jappId){
+        jobApplicationRepository.findById(jappId).orElseThrow(
+                () -> new NotFoundException("Job Application Not Found")
+        );
+        jobApplicationRepository.deleteById(jappId);
+    }
+
+    public JobApplication getUserApplication(Integer userId, Integer jobPostId){
+        return jobApplicationRepository.findJobApplicationByApplicantIdAndJobPostId(userId,jobPostId).orElseThrow(
+                () -> new NotFoundException("Job Application Not Found")
+        );
     }
 }
