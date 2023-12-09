@@ -27,6 +27,10 @@ public class JobPostService {
         );
     }
 
+    public boolean existsJobPost(Integer authorId, Integer jobPostId){
+        return jobPostRepository.existsJobPostByIdAndAuthorId(authorId,jobPostId);
+    }
+
     public List<JobPost> getJobPosts() {
         return jobPostRepository.findAll();
     }
