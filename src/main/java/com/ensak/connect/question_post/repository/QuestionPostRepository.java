@@ -11,4 +11,7 @@ public interface QuestionPostRepository extends JpaRepository<QuestionPost, Inte
 
     @Query("SELECT q FROM QuestionPost q JOIN q.tags t WHERE t = Lower(:tag)")
     List<QuestionPost> retrieveByTag(@Param("tag") String tag);
+
+    @Query("SELECT q FROM QuestionPost q JOIN q.tags t WHERE t IN (:tags)")
+    List<QuestionPost> retrieveByTags(@Param("tags") List<String> tags);
 }

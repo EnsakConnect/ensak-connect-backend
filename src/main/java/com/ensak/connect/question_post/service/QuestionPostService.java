@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +58,9 @@ public class QuestionPostService {
             throw new ForbiddenException("Cannot delete posts made by other users");
         }
         qnaRepository.deleteById(id);
+    }
+
+    public List<QuestionPost> retrieveByTags(List<String> tags) {
+        return qnaRepository.retrieveByTags(tags);
     }
 }
