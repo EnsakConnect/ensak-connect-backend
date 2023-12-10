@@ -1,4 +1,4 @@
-package com.ensak.connect.email.dto;
+package com.ensak.connect.util.email.dto;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,8 +1,6 @@
-package com.ensak.connect.email;
+package com.ensak.connect.util.email;
 
-import com.ensak.connect.email.EmailService;
-import com.ensak.connect.email.dto.EmailDTO;
-import lombok.RequiredArgsConstructor;
+import com.ensak.connect.util.email.dto.EmailDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
