@@ -7,7 +7,7 @@ import com.ensak.connect.question_post.dto.answer.AnswerRequestDTO;
 import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.AnswerRepository;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;

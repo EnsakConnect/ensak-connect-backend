@@ -10,7 +10,7 @@ import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.security.JwtService;
 import com.ensak.connect.util.email.EmailService;
 import com.ensak.connect.auth.enums.Role;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.service.UserService;
 import org.junit.jupiter.api.Test;

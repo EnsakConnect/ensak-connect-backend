@@ -10,7 +10,7 @@ import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.auth.model.Token;
 import com.ensak.connect.auth.repository.TokenRepository;
 import com.ensak.connect.auth.enums.TokenType;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;

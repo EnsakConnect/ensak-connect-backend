@@ -1,7 +1,7 @@
 package com.ensak.connect.config.database.seeder;
 
 import com.ensak.connect.auth.dto.RegisterRequest;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

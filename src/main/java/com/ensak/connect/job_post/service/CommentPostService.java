@@ -8,7 +8,7 @@ import com.ensak.connect.job_post.dto.CommentPostRequestDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.model.JobPost;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;

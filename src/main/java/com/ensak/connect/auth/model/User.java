@@ -1,5 +1,6 @@
-package com.ensak.connect.auth.enums;
+package com.ensak.connect.auth.model;
 
+import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.Token;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

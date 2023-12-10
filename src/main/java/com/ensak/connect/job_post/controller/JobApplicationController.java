@@ -7,7 +7,7 @@ import com.ensak.connect.job_post.dto.JobApplicationResponseDTO;
 import com.ensak.connect.job_post.model.JobApplication;
 import com.ensak.connect.job_post.service.JobApplicationService;
 import com.ensak.connect.job_post.service.JobPostService;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

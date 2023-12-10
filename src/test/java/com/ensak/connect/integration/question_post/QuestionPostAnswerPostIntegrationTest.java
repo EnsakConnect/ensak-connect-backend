@@ -8,7 +8,7 @@ import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.AnswerRepository;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;

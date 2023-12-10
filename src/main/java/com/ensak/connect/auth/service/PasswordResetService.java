@@ -6,7 +6,7 @@ import com.ensak.connect.auth.model.PasswordReset;
 import com.ensak.connect.auth.repository.PasswordResetRepository;
 import com.ensak.connect.util.email.EmailService;
 import com.ensak.connect.util.email.dto.EmailDTO;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -6,7 +6,7 @@ import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
 import com.ensak.connect.question_post.dto.question.QuestionPostResponseDTO;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

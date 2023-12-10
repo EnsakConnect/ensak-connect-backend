@@ -5,7 +5,7 @@ import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.ProjectRequestDTO;
 import com.ensak.connect.profile.model.Project;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

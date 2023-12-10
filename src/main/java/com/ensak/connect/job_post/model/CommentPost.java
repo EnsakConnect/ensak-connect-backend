@@ -1,7 +1,7 @@
 package com.ensak.connect.job_post.model;
 
 
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

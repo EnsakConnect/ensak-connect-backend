@@ -1,7 +1,7 @@
 package com.ensak.connect.profile.model;
 
 import com.ensak.connect.resource.model.ResourceOwner;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

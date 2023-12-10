@@ -9,7 +9,7 @@ import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.resource.ResourceType;
 import com.ensak.connect.resource.model.Resource;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

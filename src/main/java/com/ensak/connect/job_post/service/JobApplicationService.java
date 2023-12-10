@@ -4,7 +4,7 @@ import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.model.JobApplication;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobApplicationRepository;
-import com.ensak.connect.auth.enums.User;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
