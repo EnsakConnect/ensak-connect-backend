@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,9 +127,26 @@ public class ProfileService {
     public List<Certification> getCertifications(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
         Optional<List<Certification>> certifications = certificationRepository.findAllByProfileId(profileId);
-        return certifications.orElse(null);
+        return certifications.orElse(Collections.emptyList());
+    }
+    
+    public Certification getCertification(Integer userId, Integer certifId){
+        Integer profileId = getUserProfileById(userId).getId();
+        return certificationRepository.findByProfileIdAndId(profileId,certifId).orElseThrow(
+                () -> new NotFoundException("Certification Not Found")
+        );
     }
 
+    @Transactional
+    public Certification updateCertification(Integer userId,Integer certifId, CertificationRequestDTO cDTO){
+        Certification certification=  getCertification(userId,certifId);
+        Certification update = CertificationRequestDTO.mapToCertification(cDTO);
+        update.setCreatedAt(certification.getCreatedAt());
+        update.setProfile(certification.getProfile());
+        update.setId(certification.getId());
+        return certificationRepository.save(update);
+    }
+    
     @Transactional
     public Certification addCertification(Integer user_id, CertificationRequestDTO cDTO){
         Profile profile = getUserProfileById(user_id);
@@ -151,7 +169,7 @@ public class ProfileService {
     public List<Skill> getSkills(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
         Optional<List<Skill>> skills = skillRepository.findAllByProfileId(profileId);
-        return skills.orElse(null);
+        return skills.orElse(Collections.emptyList());
     }
 
     // Add a skill
@@ -173,11 +191,28 @@ public class ProfileService {
         skillRepository.deleteById(skillId);
     }
 
+    public Skill getSkill(Integer userId, Integer skillId){
+        Integer profileId = getUserProfileById(userId).getId();
+        return skillRepository.findByProfileIdAndId(profileId,skillId).orElseThrow(
+                () -> new NotFoundException("Skill Not Found")
+        );
+    }
+
+    @Transactional
+    public Skill updateSkill(Integer userId,Integer skillId, SkillRequestDTO cDTO){
+        Skill certification=  getSkill(userId,skillId);
+        Skill update = SkillRequestDTO.mapToSkill(cDTO);
+        update.setCreatedAt(certification.getCreatedAt());
+        update.setProfile(certification.getProfile());
+        update.setId(certification.getId());
+        return skillRepository.save(update);
+    }
+
     // Get languages for a user
     public List<Language> getLanguages(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
         Optional<List<Language>> languages = languageRepository.findAllByProfileId(profileId);
-        return languages.orElse(null);
+        return languages.orElse(Collections.emptyList());
     }
 
     // Add a language
@@ -198,11 +233,28 @@ public class ProfileService {
         languageRepository.deleteById(languageId);
     }
 
+    public Language getLanguage(Integer userId, Integer languageId){
+        Integer profileId = getUserProfileById(userId).getId();
+        return languageRepository.findByProfileIdAndId(profileId,languageId).orElseThrow(
+                () -> new NotFoundException("Language Not Found")
+        );
+    }
+
+    @Transactional
+    public Language updateLanguage(Integer userId,Integer languageId, LanguageRequestDTO cDTO){
+        Language certification=  getLanguage(userId,languageId);
+        Language update = LanguageRequestDTO.mapToLanguage(cDTO);
+        update.setCreatedAt(certification.getCreatedAt());
+        update.setProfile(certification.getProfile());
+        update.setId(certification.getId());
+        return languageRepository.save(update);
+    }
+
     // Get education for a user
     public List<Education> getEducations(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
         Optional<List<Education>> educations = educationRepository.findAllByProfileId(profileId);
-        return educations.orElse(null);
+        return educations.orElse(Collections.emptyList());
     }
 
     // Add an education
@@ -223,11 +275,28 @@ public class ProfileService {
         educationRepository.deleteById(educationId);
     }
 
+    public Education getEducation(Integer userId, Integer educationId){
+        Integer profileId = getUserProfileById(userId).getId();
+        return educationRepository.findByProfileIdAndId(profileId,educationId).orElseThrow(
+                () -> new NotFoundException("Education Not Found")
+        );
+    }
+
+    @Transactional
+    public Education updateEducation(Integer userId,Integer educationId, EducationRequestDTO cDTO){
+        Education certification=  getEducation(userId,educationId);
+        Education update = EducationRequestDTO.mapToEducation(cDTO);
+        update.setCreatedAt(certification.getCreatedAt());
+        update.setProfile(certification.getProfile());
+        update.setId(certification.getId());
+        return educationRepository.save(update);
+    }
+
     // Get experiences for a user
     public List<Experience> getExperiences(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
         Optional<List<Experience>> experiences = experienceRepository.findAllByProfileId(profileId);
-        return experiences.orElse(null);
+        return experiences.orElse(Collections.emptyList());
     }
 
     // Add an experience
@@ -249,11 +318,28 @@ public class ProfileService {
         experienceRepository.deleteById(experienceId);
     }
 
+    public Experience getExperience(Integer userId, Integer experienceId){
+        Integer profileId = getUserProfileById(userId).getId();
+        return experienceRepository.findByProfileIdAndId(profileId,experienceId).orElseThrow(
+                () -> new NotFoundException("Experience Not Found")
+        );
+    }
+
+    @Transactional
+    public Experience updateExperience(Integer userId,Integer experienceId, ExperienceRequestDTO cDTO){
+        Experience certification=  getExperience(userId,experienceId);
+        Experience update = ExperienceRequestDTO.mapToExperience(cDTO);
+        update.setCreatedAt(certification.getCreatedAt());
+        update.setProfile(certification.getProfile());
+        update.setId(certification.getId());
+        return experienceRepository.save(update);
+    }
+    
     // Get projects for a user
     public List<Project> getProjects(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
         Optional<List<Project>> projects = projectRepository.findAllByProfileId(profileId);
-        return projects.orElse(null);
+        return projects.orElse(Collections.emptyList());
     }
 
     // Add a project
@@ -273,6 +359,23 @@ public class ProfileService {
                 () -> new NotFoundException("Project Not Found")
         );
         projectRepository.deleteById(projectId);
+    }
+
+    public Project getProject(Integer userId, Integer projectId){
+        Integer profileId = getUserProfileById(userId).getId();
+        return projectRepository.findByProfileIdAndId(profileId,projectId).orElseThrow(
+                () -> new NotFoundException("Project Not Found")
+        );
+    }
+
+    @Transactional
+    public Project updateProject(Integer userId,Integer projectId, ProjectRequestDTO cDTO){
+        Project certification=  getProject(userId,projectId);
+        Project update = ProjectRequestDTO.mapToProject(cDTO);
+        update.setCreatedAt(certification.getCreatedAt());
+        update.setProfile(certification.getProfile());
+        update.setId(certification.getId());
+        return projectRepository.save(update);
     }
 
 }
