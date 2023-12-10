@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class JobPost {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private List<String> tags;
+    @ElementCollection
+    private List<String> tags = new ArrayList<>();
 
     private String category;
 
