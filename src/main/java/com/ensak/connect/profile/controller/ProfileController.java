@@ -3,9 +3,11 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.profile.ProfileService;
+import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.dto.ProfileDetailResponseDTO;
 import com.ensak.connect.profile.dto.ProfileRequestDTO;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
+import com.ensak.connect.profile.model.Certification;
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.resource.ResourceType;
 import com.ensak.connect.resource.model.Resource;
@@ -39,6 +41,7 @@ public class ProfileController {
         ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
+
 
     @GetMapping("/detailed")
     public ResponseEntity<ProfileDetailResponseDTO> getDetailedProfile(){

@@ -3,8 +3,11 @@ package com.ensak.connect.profile.controller;
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
+import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.dto.EducationRequestDTO;
+import com.ensak.connect.profile.model.Certification;
 import com.ensak.connect.profile.model.Education;
+import com.ensak.connect.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,13 @@ public class EducationController {
         Education education = profileService.addEducation(id,educationRequestDTO);
         return new ResponseEntity<>(education,HttpStatus.CREATED);
     }
+    @PutMapping("/educations/{educationId}")
+    public ResponseEntity<Education> updateEducation(@PathVariable Integer educationId, @RequestBody @Valid EducationRequestDTO educationRequestDTO){
+        User user = authenticationService.getAuthenticatedUser();
+        Education response = profileService.updateEducation(user.getId(),educationId ,educationRequestDTO);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/educations/{educationId}")
     public ResponseEntity deleteEducation(@PathVariable Integer educationId) throws ForbiddenException {

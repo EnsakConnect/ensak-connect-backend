@@ -3,8 +3,11 @@ package com.ensak.connect.profile.controller;
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
+import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.dto.LanguageRequestDTO;
+import com.ensak.connect.profile.model.Certification;
 import com.ensak.connect.profile.model.Language;
+import com.ensak.connect.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,14 @@ public class LanguageController {
         Language language = profileService.addLanguage(id,languageRequestDTO);
         return new ResponseEntity<>(language,HttpStatus.CREATED);
     }
+
+    @PutMapping("/languages/{languageId}")
+    public ResponseEntity<Language> updateLanguage(@PathVariable Integer languageId, @RequestBody @Valid LanguageRequestDTO languageRequestDTO){
+        User user = authenticationService.getAuthenticatedUser();
+        Language response = profileService.updateLanguage(user.getId(),languageId ,languageRequestDTO);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/languages/{languageId}")
     public ResponseEntity deleteLanguage(@PathVariable Integer languageId) throws ForbiddenException {
