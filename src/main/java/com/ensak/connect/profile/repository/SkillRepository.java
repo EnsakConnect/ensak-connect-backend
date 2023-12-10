@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface SkillRepository extends JpaRepository<Skill, Integer> {
     public Optional<List<Skill>> findAllByProfileId(Integer profileId);
+
+    Optional<Skill> findByProfileIdAndId(Integer profileId, Integer skillId);
 }

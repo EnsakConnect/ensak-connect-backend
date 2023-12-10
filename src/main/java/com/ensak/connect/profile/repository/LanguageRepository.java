@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface LanguageRepository extends JpaRepository<Language, Integer> {
     Optional<List<Language>> findAllByProfileId(Integer profileId);
+
+    Optional<Language> findByProfileIdAndId(Integer profileId, Integer languageId);
 }
