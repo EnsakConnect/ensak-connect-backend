@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,6 +16,7 @@ import java.util.Date;
 public class QuestionPostResponseDTO {
     private Integer id;
     private String question;
+    private List<String> tags;
     private UserResponseDTO author;
     private Date createdAt;
     private Date updatedAt;
@@ -22,6 +25,7 @@ public class QuestionPostResponseDTO {
         return QuestionPostResponseDTO.builder()
                 .id(questionPost.getId())
                 .question(questionPost.getQuestion())
+                .tags(questionPost.getTags())
                 .author(UserResponseDTO.map(questionPost.getAuthor()))
                 .createdAt(questionPost.getCreatedAt())
                 .updatedAt(questionPost.getUpdatedAt())

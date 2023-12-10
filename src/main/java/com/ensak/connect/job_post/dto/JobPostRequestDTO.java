@@ -1,11 +1,13 @@
 package com.ensak.connect.job_post.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,6 +34,6 @@ public class JobPostRequestDTO {
     @NotBlank(message = "Category should not be blank")
     private String category;
 
-    //@NotBlank(message = "Tags should not be blank")
-    private List<String> tags;
+    @Size(max = 10, message = "You can have a maximum of 10 tags")
+    private List<String> tags = new ArrayList<>();
 }

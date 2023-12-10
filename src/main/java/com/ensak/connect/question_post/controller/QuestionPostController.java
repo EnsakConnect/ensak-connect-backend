@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/questions")
 @RequiredArgsConstructor
@@ -29,15 +31,6 @@ public class QuestionPostController {
     public ResponseEntity<QuestionPostResponseDTO> show(@PathVariable Integer id){
         QuestionPost post = qnaService.getQuestionPostById(id);
         return ResponseEntity.ok(QuestionPostResponseDTO.map(post));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<QuestionPostResponseDTO> update(
-            @PathVariable Integer id,
-            @RequestBody @Valid QuestionPostRequestDTO request
-    ) {
-        QuestionPost questionPost = qnaService.updateQuestionPostById(id, request);
-        return new ResponseEntity<>(QuestionPostResponseDTO.map(questionPost), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

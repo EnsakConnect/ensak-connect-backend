@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +29,14 @@ public class QuestionPostService {
 
     public QuestionPost createQuestionPost(QuestionPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
-        return qnaRepository.save(
-                QuestionPost.builder()
-                        .question(request.getQuestion())
-                        .author(author)
-                        .build()
-        );
+        QuestionPost post = QuestionPost.builder()
+                .question(request.getQuestion())
+                .author(author)
+                .build();
+        if(request.getTags() != null) {
+            post.setTags(request.getTags());
+        }
+        return qnaRepository.save(post);
     }
 
     @Transactional
@@ -54,5 +58,9 @@ public class QuestionPostService {
             throw new ForbiddenException("Cannot delete posts made by other users");
         }
         qnaRepository.deleteById(id);
+    }
+
+    public List<QuestionPost> retrieveByTags(List<String> tags) {
+        return qnaRepository.retrieveByTags(tags);
     }
 }
