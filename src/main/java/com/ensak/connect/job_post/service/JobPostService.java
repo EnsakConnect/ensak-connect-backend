@@ -7,6 +7,7 @@ import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobPostRepository;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.question_post.model.QuestionPost;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -82,5 +83,9 @@ public class JobPostService {
         }
 
         jobPostRepository.deleteById(id);
+    }
+
+    public List<QuestionPost> retrieveByTags(List<String> tags) {
+        return jobPostRepository.retrieveByTags(tags);
     }
 }
