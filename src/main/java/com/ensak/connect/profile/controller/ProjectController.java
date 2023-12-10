@@ -3,8 +3,11 @@ package com.ensak.connect.profile.controller;
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
+import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.dto.ProjectRequestDTO;
+import com.ensak.connect.profile.model.Certification;
 import com.ensak.connect.profile.model.Project;
+import com.ensak.connect.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,13 @@ public class ProjectController {
         Integer id = authenticationService.getAuthenticatedUser().getId();
         Project project = profileService.addProject(id,projectRequestDTO);
         return new ResponseEntity<>(project,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/projects/{projectId}")
+    public ResponseEntity<Project> updateProject(@PathVariable Integer projectId, @RequestBody @Valid ProjectRequestDTO projectRequestDTO){
+        User user = authenticationService.getAuthenticatedUser();
+        Project response = profileService.updateProject(user.getId(),projectId ,projectRequestDTO);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @DeleteMapping("/projects/{projectId}")

@@ -5,6 +5,7 @@ import com.ensak.connect.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.model.Certification;
+import com.ensak.connect.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,13 @@ public class CertifiactionController {
         Integer id = authenticationService.getAuthenticatedUser().getId();
         Certification certification = profileService.addCertification(id,certificationRequestDTO);
         return new ResponseEntity<>(certification,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/certifications/{certificationId}")
+    public ResponseEntity<Certification> updateCertification(@PathVariable Integer certificationId,@RequestBody @Valid CertificationRequestDTO certificationRequestDTO){
+        User user = authenticationService.getAuthenticatedUser();
+        Certification response = profileService.updateCertification(user.getId(),certificationId ,certificationRequestDTO);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @DeleteMapping("/certifications/{certificationId}")
