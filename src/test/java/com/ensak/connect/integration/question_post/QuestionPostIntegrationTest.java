@@ -16,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,6 +68,29 @@ public class QuestionPostIntegrationTest extends AuthenticatedBaseIntegrationTes
             .andReturn()
             .getResponse()
             .getContentAsString();
+    }
+
+    @Test
+    public void itShouldNotCreateQNAPostWhenTagsAreMoreThanAllowed() throws Exception {
+        this.authenticateAsUser();
+        List<String> tags = new ArrayList<>();
+        for(int i = 0; i < 20; i++){
+            tags.add("tag " + i);
+        }
+        QuestionPostRequestDTO request = QuestionPostRequestDTO.builder()
+                .question("Does this question exists?")
+                .tags(tags)
+                .build();
+        String requestJSON = objectMapper.writeValueAsString(request);
+        String response = api.perform(
+                        post("/api/v1/questions")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestJSON)
+                )
+                .andExpect(status().is4xxClientError())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
     }
 
     @Test
