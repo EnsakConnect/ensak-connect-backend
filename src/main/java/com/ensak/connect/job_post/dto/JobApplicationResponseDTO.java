@@ -1,17 +1,9 @@
 package com.ensak.connect.job_post.dto;
 
 import com.ensak.connect.job_post.model.JobApplication;
-import com.ensak.connect.job_post.model.JobPost;
-import com.ensak.connect.user.User;
-import com.ensak.connect.user.dto.UserResponseDTO;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.ensak.connect.auth.dto.UserResponseDTO;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 

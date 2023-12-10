@@ -1,4 +1,4 @@
-package com.ensak.connect.user;
+package com.ensak.connect.auth.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.ensak.connect.user.Permission.*;
+import static com.ensak.connect.auth.enums.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {

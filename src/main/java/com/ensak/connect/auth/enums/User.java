@@ -1,4 +1,4 @@
-package com.ensak.connect.user;
+package com.ensak.connect.auth.enums;
 
 import com.ensak.connect.token.Token;
 import com.fasterxml.jackson.annotation.JsonProperty;

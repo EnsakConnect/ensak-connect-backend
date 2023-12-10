@@ -8,7 +8,7 @@ import com.ensak.connect.resource.ResourceService;
 import com.ensak.connect.resource.ResourceType;
 import com.ensak.connect.resource.model.Resource;
 import com.ensak.connect.resource.model.ResourceOwner;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.enums.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

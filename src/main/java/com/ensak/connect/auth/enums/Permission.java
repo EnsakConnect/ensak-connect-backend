@@ -1,4 +1,4 @@
-package com.ensak.connect.user;
+package com.ensak.connect.auth.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

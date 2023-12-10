@@ -1,6 +1,6 @@
 package com.ensak.connect.config;
 
-import com.ensak.connect.user.UserRepository;
+import com.ensak.connect.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

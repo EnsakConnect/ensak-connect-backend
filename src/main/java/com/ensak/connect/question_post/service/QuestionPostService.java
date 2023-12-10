@@ -6,7 +6,7 @@ import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.enums.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

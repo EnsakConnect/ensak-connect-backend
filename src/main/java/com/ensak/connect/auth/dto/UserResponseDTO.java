@@ -1,6 +1,6 @@
-package com.ensak.connect.user.dto;
+package com.ensak.connect.auth.dto;
 
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.enums.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

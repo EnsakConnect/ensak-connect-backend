@@ -1,6 +1,6 @@
 package com.ensak.connect.listener;
 
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.enums.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;

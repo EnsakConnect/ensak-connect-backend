@@ -6,7 +6,7 @@ import com.ensak.connect.exception.NotFoundException;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobPostRepository;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.enums.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
