@@ -27,12 +27,14 @@ public class QuestionPostService {
 
     public QuestionPost createQuestionPost(QuestionPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
-        return qnaRepository.save(
-                QuestionPost.builder()
-                        .question(request.getQuestion())
-                        .author(author)
-                        .build()
-        );
+        QuestionPost post = QuestionPost.builder()
+                .question(request.getQuestion())
+                .author(author)
+                .build();
+        if(request.getTags() != null) {
+            post.setTags(request.getTags());
+        }
+        return qnaRepository.save(post);
     }
 
     @Transactional
