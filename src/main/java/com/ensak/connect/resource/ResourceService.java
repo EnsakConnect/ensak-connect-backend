@@ -21,6 +21,7 @@ public class ResourceService {
 
             Resource resource = Resource.builder()
                     .owner(rowner)
+                    .ownerType(rowner.getResourceOwnerType())
                     .type(rtype)
                     .filename(filename)
                     .build();
@@ -34,7 +35,7 @@ public class ResourceService {
     }
 
     public List<Resource> getAllOwnerResource(ResourceOwner rowner,ResourceType type){
-        return resourceRepository.findAllByOwnerAndType(rowner,type).orElse(null);
+        return resourceRepository.findAllByOwnerIdAndOwnerTypeAndType(rowner.getId(),rowner.getResourceOwnerType(),type).orElse(null);
     }
 
 
@@ -44,6 +45,7 @@ public class ResourceService {
         String oldFilename = resource.getFilename();
 
         resource.setFilename(filename);
+        resource.setOwnerType(resource.getOwnerType());
         resource.setType(resourceType);
 
         resourceRepository.save(resource);
