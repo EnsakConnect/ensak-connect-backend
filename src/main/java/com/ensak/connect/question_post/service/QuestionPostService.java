@@ -1,12 +1,12 @@
 package com.ensak.connect.question_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.ForbiddenException;
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.model.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

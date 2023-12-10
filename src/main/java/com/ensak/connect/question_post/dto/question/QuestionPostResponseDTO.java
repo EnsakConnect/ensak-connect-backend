@@ -1,7 +1,7 @@
 package com.ensak.connect.question_post.dto.question;
 
 import com.ensak.connect.question_post.model.QuestionPost;
-import com.ensak.connect.user.dto.UserResponseDTO;
+import com.ensak.connect.auth.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

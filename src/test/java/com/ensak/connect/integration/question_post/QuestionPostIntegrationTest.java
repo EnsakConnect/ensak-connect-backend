@@ -1,12 +1,12 @@
 package com.ensak.connect.integration.question_post;
 
-import com.ensak.connect.exception.dto.HttpResponse;
+import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
 import com.ensak.connect.question_post.dto.question.QuestionPostResponseDTO;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

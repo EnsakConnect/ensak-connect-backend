@@ -1,8 +1,8 @@
 package com.ensak.connect.auth;
 
 import com.ensak.connect.auth.dto.*;
-import com.ensak.connect.user.User;
-import com.ensak.connect.user.dto.UserResponseDTO;
+import com.ensak.connect.auth.model.User;
+import com.ensak.connect.auth.dto.UserResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

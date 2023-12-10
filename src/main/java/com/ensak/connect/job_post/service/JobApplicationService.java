@@ -1,17 +1,15 @@
 package com.ensak.connect.job_post.service;
 
-import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.model.JobApplication;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobApplicationRepository;
-import com.ensak.connect.user.User;
-import com.ensak.connect.user.UserService;
+import com.ensak.connect.auth.model.User;
+import com.ensak.connect.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service

@@ -1,13 +1,13 @@
 package com.ensak.connect.job_post.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.ForbiddenException;
+import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.job_post.dto.JobApplicationRequestDTO;
 import com.ensak.connect.job_post.dto.JobApplicationResponseDTO;
 import com.ensak.connect.job_post.model.JobApplication;
 import com.ensak.connect.job_post.service.JobApplicationService;
 import com.ensak.connect.job_post.service.JobPostService;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

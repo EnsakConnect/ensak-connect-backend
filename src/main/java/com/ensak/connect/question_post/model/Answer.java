@@ -1,6 +1,6 @@
 package com.ensak.connect.question_post.model;
 
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

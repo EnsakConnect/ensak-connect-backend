@@ -3,15 +3,13 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.profile.ProfileService;
-import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.dto.ProfileDetailResponseDTO;
 import com.ensak.connect.profile.dto.ProfileRequestDTO;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
-import com.ensak.connect.profile.model.Certification;
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.resource.ResourceType;
 import com.ensak.connect.resource.model.Resource;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.model.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

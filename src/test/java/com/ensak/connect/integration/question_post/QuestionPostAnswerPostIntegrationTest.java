@@ -1,6 +1,6 @@
 package com.ensak.connect.integration.question_post;
 
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.question_post.dto.answer.AnswerRequestDTO;
 import com.ensak.connect.question_post.dto.answer.AnswerResponseDTO;
@@ -8,7 +8,7 @@ import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.AnswerRepository;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
-import com.ensak.connect.user.User;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
