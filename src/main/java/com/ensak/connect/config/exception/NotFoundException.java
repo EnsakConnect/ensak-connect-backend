@@ -1,4 +1,4 @@
-package com.ensak.connect.exception;
+package com.ensak.connect.config.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

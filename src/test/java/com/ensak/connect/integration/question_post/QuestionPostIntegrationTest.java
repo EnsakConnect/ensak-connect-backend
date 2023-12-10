@@ -1,6 +1,6 @@
 package com.ensak.connect.integration.question_post;
 
-import com.ensak.connect.exception.dto.HttpResponse;
+import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;

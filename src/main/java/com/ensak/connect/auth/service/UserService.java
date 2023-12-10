@@ -4,7 +4,7 @@ import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.enums.User;
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

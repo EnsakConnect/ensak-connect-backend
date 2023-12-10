@@ -1,7 +1,7 @@
 package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.ForbiddenException;
+import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.SkillRequestDTO;
 import com.ensak.connect.profile.model.Skill;

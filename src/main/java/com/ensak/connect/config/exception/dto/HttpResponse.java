@@ -1,4 +1,4 @@
-package com.ensak.connect.exception.dto;
+package com.ensak.connect.config.exception.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

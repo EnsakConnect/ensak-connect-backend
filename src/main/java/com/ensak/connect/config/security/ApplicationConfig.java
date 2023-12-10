@@ -1,4 +1,4 @@
-package com.ensak.connect.config;
+package com.ensak.connect.config.security;
 
 import com.ensak.connect.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,5 @@
-package com.ensak.connect.seeder;
-
+package com.ensak.connect.config.database.seeder;
+//
 //@Component
 //public class JobPostSeeder implements CommandLineRunner {
 //    @Autowired

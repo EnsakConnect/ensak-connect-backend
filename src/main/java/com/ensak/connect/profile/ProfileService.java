@@ -1,6 +1,6 @@
 package com.ensak.connect.profile;
 
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
 import com.ensak.connect.profile.repository.*;

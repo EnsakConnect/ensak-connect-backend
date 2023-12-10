@@ -1,4 +1,4 @@
-package com.ensak.connect.config;
+package com.ensak.connect.config.security;
 
 import com.ensak.connect.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

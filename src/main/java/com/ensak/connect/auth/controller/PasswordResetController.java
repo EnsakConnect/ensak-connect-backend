@@ -1,19 +1,16 @@
 package com.ensak.connect.auth.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.auth.dto.ActivateAccountResponse;
 import com.ensak.connect.auth.dto.PasswordResetRequest;
 import com.ensak.connect.auth.dto.PasswordResetVerificationRequest;
 import com.ensak.connect.auth.dto.PasswordResetVerificationResponse;
 import com.ensak.connect.auth.service.PasswordResetService;
-import com.ensak.connect.config.JwtService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j

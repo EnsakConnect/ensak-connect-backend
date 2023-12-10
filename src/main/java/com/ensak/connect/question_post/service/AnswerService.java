@@ -1,8 +1,8 @@
 package com.ensak.connect.question_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.ForbiddenException;
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.question_post.dto.answer.AnswerRequestDTO;
 import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;

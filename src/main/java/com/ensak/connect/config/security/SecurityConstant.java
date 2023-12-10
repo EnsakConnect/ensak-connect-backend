@@ -1,4 +1,4 @@
-package com.ensak.connect.constant;
+package com.ensak.connect.config.security;
 
 public class SecurityConstant {
     public static final long EXPIRATION_TIME = 86400000; // 5 days expressed in milliseconds

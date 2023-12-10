@@ -1,6 +1,6 @@
-package com.ensak.connect.filter;
+package com.ensak.connect.config.security.filter;
 
-import com.ensak.connect.config.JwtService;
+import com.ensak.connect.config.security.JwtService;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.ensak.connect.constant.SecurityConstant.TOKEN_PREFIX;
+import static com.ensak.connect.config.security.SecurityConstant.TOKEN_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component

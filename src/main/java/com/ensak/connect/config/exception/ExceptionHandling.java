@@ -1,7 +1,10 @@
-package com.ensak.connect.exception;
+package com.ensak.connect.config.exception;
 
-import com.ensak.connect.exception.dto.HttpResponse;
-import com.ensak.connect.exception.model.*;
+import com.ensak.connect.config.exception.dto.HttpResponse;
+import com.ensak.connect.config.exception.model.EmailExistException;
+import com.ensak.connect.config.exception.model.EmailNotFoundException;
+import com.ensak.connect.config.exception.model.NotAnImageFileException;
+import com.ensak.connect.config.exception.model.UserNotFoundException;
 import com.ensak.connect.util.storage.exception.FileExtensionNotAllowedException;
 import com.ensak.connect.util.storage.exception.StorageException;
 import com.ensak.connect.util.storage.exception.StorageFileNotFoundException;

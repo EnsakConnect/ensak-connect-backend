@@ -1,6 +1,6 @@
-package com.ensak.connect.filter;
+package com.ensak.connect.config.security.filter;
 
-import com.ensak.connect.exception.dto.HttpResponse;
+import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
-import static com.ensak.connect.constant.SecurityConstant.ACCESS_DENIED_MESSAGE;
+import static com.ensak.connect.config.security.SecurityConstant.ACCESS_DENIED_MESSAGE;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

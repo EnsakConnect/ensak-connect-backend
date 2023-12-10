@@ -1,4 +1,4 @@
-package com.ensak.connect.config;
+package com.ensak.connect.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.ensak.connect.constant.SecurityConstant.EXPIRATION_TIME;
-import static com.ensak.connect.constant.SecurityConstant.REFRESH_EXPIRATION;
+import static com.ensak.connect.config.security.SecurityConstant.EXPIRATION_TIME;
+import static com.ensak.connect.config.security.SecurityConstant.REFRESH_EXPIRATION;
 
 @Service
 public class JwtService {

@@ -1,7 +1,7 @@
 package com.ensak.connect.job_post.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.ForbiddenException;
+import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.job_post.dto.JobApplicationRequestDTO;
 import com.ensak.connect.job_post.dto.JobApplicationResponseDTO;
 import com.ensak.connect.job_post.model.JobApplication;

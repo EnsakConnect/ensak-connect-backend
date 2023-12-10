@@ -1,6 +1,6 @@
 package com.ensak.connect.integration.question_post;
 
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.question_post.dto.answer.AnswerRequestDTO;
 import com.ensak.connect.question_post.dto.answer.AnswerResponseDTO;

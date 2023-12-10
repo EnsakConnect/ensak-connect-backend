@@ -1,8 +1,8 @@
 package com.ensak.connect.job_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.exception.ForbiddenException;
-import com.ensak.connect.exception.NotFoundException;
+import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobPostRepository;
