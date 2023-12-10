@@ -1,6 +1,6 @@
 package com.ensak.connect.config.security;
 
-import com.ensak.connect.token.TokenRepository;
+import com.ensak.connect.auth.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

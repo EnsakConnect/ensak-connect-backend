@@ -1,5 +1,6 @@
-package com.ensak.connect.token;
+package com.ensak.connect.auth.model;
 
+import com.ensak.connect.auth.enums.TokenType;
 import com.ensak.connect.auth.enums.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
