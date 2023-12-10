@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface JobPostRepository extends JpaRepository<JobPost, Integer> {
-
+    public boolean existsJobPostByIdAndAuthorId(Integer Id, Integer authorId);
 }

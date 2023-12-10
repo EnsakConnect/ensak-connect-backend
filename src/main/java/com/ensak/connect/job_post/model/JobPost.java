@@ -45,6 +45,9 @@ public class JobPost {
     @OneToMany(mappedBy = "jobPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentPost> comments;
 
+    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JobApplication> jobApplications;
+
     @CreationTimestamp
     private Date createdAt;
 
