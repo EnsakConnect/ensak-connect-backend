@@ -2,6 +2,7 @@ package com.ensak.connect.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -11,9 +12,11 @@ import lombok.*;
 @AllArgsConstructor
 public class PasswordResetVerificationRequest {
 
+    @NotEmpty
     @Email(message = "Please enter a valid email")
     private String email;
 
+    @NotEmpty
     @NotBlank(message = "Please provide the code sent by email.")
     @Size(min = 6, max = 6, message = "Activation code must be 6 characters")
     private String code;
