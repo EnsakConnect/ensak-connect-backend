@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -24,7 +25,7 @@ public class PasswordResetController {
 
     @PostMapping
     public ResponseEntity<Void> createPasswordReset(
-            @RequestBody @Valid PasswordResetRequest request
+            @RequestBody @Validated PasswordResetRequest request
     ) {
         passwordResetService.createPasswordReset(request);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
@@ -33,7 +34,7 @@ public class PasswordResetController {
     @PostMapping("/verify")
     @Transactional
     public ResponseEntity<PasswordResetVerificationResponse> verify(
-            @RequestBody @Valid PasswordResetVerificationRequest request
+            @RequestBody @Validated PasswordResetVerificationRequest request
     ) {
         Boolean res = passwordResetService.verifyPasswordReset(request);
         if(!res) {
