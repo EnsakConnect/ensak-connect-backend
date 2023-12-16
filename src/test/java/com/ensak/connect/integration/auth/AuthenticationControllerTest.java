@@ -43,10 +43,10 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                 .profileType("STUDENT")
                 .build();
         userRepository.save(user);*/
-        this.createDummyStudent();
-
+        var user =this.createDummyStudent();
+        System.out.println(user);
         AuthenticationRequest validRequest = new AuthenticationRequest();
-        validRequest.setEmail("user.user@email.com");
+        validRequest.setEmail("student.user@email.com");
         validRequest.setPassword("password");
 
         String requestJson = objectMapper.writeValueAsString(validRequest);
@@ -56,7 +56,7 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestJson)
                 )
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -64,15 +64,22 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
 
     @Test
     public void loginWithInvalidCredentials() throws Exception {
+        var user =this.createDummyStudent();
+        System.out.println(user);
         AuthenticationRequest invalidRequest = new AuthenticationRequest();
-        invalidRequest.setEmail("invalid@example.com");
-        invalidRequest.setPassword("invalidPassword");
+        invalidRequest.setEmail("student.user@email.com");
+        invalidRequest.setPassword("password123");
 
         String requestJson = objectMapper.writeValueAsString(invalidRequest);
 
-        api.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
-                .andExpect(status().isUnauthorized());
+        String response = api.perform(
+                        post("/api/v1/auth/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestJson)
+                )
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
     }
 }
