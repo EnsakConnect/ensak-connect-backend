@@ -1,10 +1,10 @@
-package com.ensak.connect.notifications.controller;
+package com.ensak.connect.notification.controller;
 
 
-import com.ensak.connect.notifications.service.NotificationService;
-import com.ensak.connect.notifications.dto.NotificationRequestDTO;
-import com.ensak.connect.notifications.dto.NotificationResponseDTO;
-import com.ensak.connect.notifications.model.Notification;
+import com.ensak.connect.notification.service.NotificationService;
+import com.ensak.connect.notification.dto.NotificationRequestDTO;
+import com.ensak.connect.notification.dto.NotificationResponseDTO;
+import com.ensak.connect.notification.model.Notification;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

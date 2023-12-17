@@ -1,6 +1,6 @@
-package com.ensak.connect.notifications.repository;
+package com.ensak.connect.notification.repository;
 
-import com.ensak.connect.notifications.model.Notification;
+import com.ensak.connect.notification.model.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

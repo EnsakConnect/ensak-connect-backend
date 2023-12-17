@@ -1,4 +1,4 @@
-package com.ensak.connect.notifications.dto;
+package com.ensak.connect.notification.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

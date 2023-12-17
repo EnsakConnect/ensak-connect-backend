@@ -3,10 +3,10 @@ package com.ensak.connect.integration.notification;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
-import com.ensak.connect.notifications.dto.NotificationRequestDTO;
-import com.ensak.connect.notifications.dto.NotificationResponseDTO;
-import com.ensak.connect.notifications.model.Notification;
-import com.ensak.connect.notifications.repository.NotificationRepository;
+import com.ensak.connect.notification.dto.NotificationRequestDTO;
+import com.ensak.connect.notification.dto.NotificationResponseDTO;
+import com.ensak.connect.notification.model.Notification;
+import com.ensak.connect.notification.repository.NotificationRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTest {
 
 
-    public static final String API_NOTIFICATIONS = "/api/v1/notifications";
+    public static final String API_NOTIFICATIONS = "/api/v1/notification";
     @Autowired
     private MockMvc api;
 
@@ -373,6 +373,6 @@ public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTes
                 .getContentAsString();
         HttpResponse apiResponse = objectMapper.readValue(response, HttpResponse.class);
 
-        Assertions.assertEquals("Cannot delete notifications made by other users", apiResponse.getMessage());
+        Assertions.assertEquals("Cannot delete notification made by other users", apiResponse.getMessage());
     }
 }

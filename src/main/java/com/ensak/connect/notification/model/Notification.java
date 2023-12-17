@@ -1,4 +1,4 @@
-package com.ensak.connect.notifications.model;
+package com.ensak.connect.notification.model;
 
 import com.ensak.connect.auth.model.User;
 import jakarta.persistence.*;

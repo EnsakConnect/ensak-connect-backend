@@ -1,9 +1,9 @@
 package com.ensak.connect.unit.notification;
 
-import com.ensak.connect.notifications.dto.NotificationRequestDTO;
-import com.ensak.connect.notifications.model.Notification;
-import com.ensak.connect.notifications.repository.NotificationRepository;
-import com.ensak.connect.notifications.service.NotificationService;
+import com.ensak.connect.notification.dto.NotificationRequestDTO;
+import com.ensak.connect.notification.model.Notification;
+import com.ensak.connect.notification.repository.NotificationRepository;
+import com.ensak.connect.notification.service.NotificationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

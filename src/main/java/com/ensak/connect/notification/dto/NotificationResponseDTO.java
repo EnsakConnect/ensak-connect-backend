@@ -1,7 +1,7 @@
-package com.ensak.connect.notifications.dto;
+package com.ensak.connect.notification.dto;
 
 import com.ensak.connect.auth.dto.UserResponseDTO;
-import com.ensak.connect.notifications.model.Notification;
+import com.ensak.connect.notification.model.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
