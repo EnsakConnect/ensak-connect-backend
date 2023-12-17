@@ -38,3 +38,4 @@ public class Resource {
     @UpdateTimestamp
     private Date updatedAt;
 }
+
