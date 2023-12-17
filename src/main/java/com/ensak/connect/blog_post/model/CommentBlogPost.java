@@ -1,6 +1,6 @@
-package com.ensak.connect.resource.model;
+package com.ensak.connect.blog_post.model;
 
-import com.ensak.connect.resource.ResourceType;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,31 +11,36 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
-
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Resource {
+
+public class CommentBlogPost {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private ResourceType type;
-
-    private String filename;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
     @ManyToOne
+    @JoinColumn(name = "user_id",nullable = false )
+    private  User author;
+
     @JsonIgnore
-    @JoinColumn(name = "owner_id")
-    private ResourceOwner owner;
+    @ManyToOne
+    @JoinColumn(name = "blog_post_id" , nullable = false)
+    private BlogPost blogPost;
 
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;
-}
 
+
+
+}

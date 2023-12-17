@@ -1,7 +1,6 @@
-package com.ensak.connect.resource.model;
+package com.ensak.connect.blog_post.model;
 
-import com.ensak.connect.resource.ResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ensak.connect.auth.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,25 +16,31 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Resource {
+
+public class BlogPostApplication {
 
     @Id
     @GeneratedValue
-    private Integer id;
-
-    private ResourceType type;
-
-    private String filename;
+    private  Integer Id;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "owner_id")
-    private ResourceOwner owner;
+    @JoinColumn(name = "blog_post_id")
+    private  BlogPost blogPost;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private  User applicant;
+
+    private String message;
 
     @CreationTimestamp
-    private Date createdAt;
+    private  Date createdAt;
 
     @UpdateTimestamp
-    private Date updatedAt;
-}
+    private  Date updatedAt;
 
+
+
+
+
+}

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class JobPostResponseDTO {
         return JobPostResponseDTO.builder()
                 .id(jobPost.getId())
                 .title(jobPost.getTitle())
-                .description(jobPost.getTitle())
+                .description(jobPost.getDescription())
                 .companyName(jobPost.getCompanyName())
                 .location(jobPost.getLocation())
                 .companyType(jobPost.getCompanyType())
@@ -42,5 +43,18 @@ public class JobPostResponseDTO {
                 .createdAt(jobPost.getCreatedAt())
                 .updatedAt(jobPost.getUpdatedAt())
                 .build();
+    }
+
+    public static List<JobPostResponseDTO> map(List<JobPost> jobPosts) {
+        if (jobPosts == null) {
+            return null;
+        }
+
+        List<JobPostResponseDTO> list = new ArrayList<JobPostResponseDTO>(jobPosts.size());
+        for (JobPost jobPost : jobPosts) {
+            list.add( map(jobPost));
+        }
+
+        return list;
     }
 }
