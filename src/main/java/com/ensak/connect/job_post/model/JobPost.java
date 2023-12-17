@@ -1,6 +1,7 @@
 package com.ensak.connect.job_post.model;
 
 import com.ensak.connect.auth.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,7 @@ public class JobPost {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "jobPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentPost> comments;
 
