@@ -1,12 +1,12 @@
-package com.ensak.connect.notifications.service;
+package com.ensak.connect.notification.service;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
-import com.ensak.connect.notifications.dto.NotificationRequestDTO;
-import com.ensak.connect.notifications.model.Notification;
+import com.ensak.connect.notification.dto.NotificationRequestDTO;
+import com.ensak.connect.notification.model.Notification;
 import com.ensak.connect.auth.model.User;
-import com.ensak.connect.notifications.repository.NotificationRepository;
+import com.ensak.connect.notification.repository.NotificationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
