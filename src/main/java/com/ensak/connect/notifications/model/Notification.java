@@ -1,8 +1,6 @@
-package com.ensak.connect.job_post.model;
-
+package com.ensak.connect.notifications.model;
 
 import com.ensak.connect.auth.model.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,33 +11,32 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
+@Entity
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class CommentPost {
+@AllArgsConstructor
+public class Notification {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    @Column(columnDefinition = "TEXT")
-    private String content;
+    private String title;
+
+    private String category;
+
+    private String message;
+
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "job_post_id", nullable = false)
-    private JobPost jobPost;
 
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;
-
 }
