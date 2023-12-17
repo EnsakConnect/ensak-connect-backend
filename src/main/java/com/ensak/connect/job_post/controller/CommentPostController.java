@@ -51,7 +51,7 @@ public class CommentPostController {
         return new ResponseEntity<>(CommentPostResponseDTO.map(commentPost), HttpStatus.OK);
     }
 
-    @DeleteMapping("/comment_post_id")
+    @DeleteMapping("/{comment_post_id}")
     public ResponseEntity<Object> delete(
             @PathVariable Integer job_post_id,
             @PathVariable Integer comment_post_id

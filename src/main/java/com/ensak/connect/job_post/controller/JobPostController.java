@@ -29,8 +29,9 @@ public class JobPostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JobPost>> getAll() {
-        return ResponseEntity.ok(jobPostService.getJobPosts());
+    public ResponseEntity<List<JobPostResponseDTO>> getAll() {
+        List<JobPost> jobPosts = jobPostService.getJobPosts();
+        return ResponseEntity.ok(JobPostResponseDTO.map(jobPosts));
     }
 
     @GetMapping("/{id}")
