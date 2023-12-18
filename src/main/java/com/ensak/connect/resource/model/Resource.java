@@ -25,6 +25,10 @@ public class Resource {
 
     private ResourceType type;
 
+    @JsonIgnore
+    @Column(nullable = false)
+    private String ownerType;
+
     private String filename;
 
     @ManyToOne

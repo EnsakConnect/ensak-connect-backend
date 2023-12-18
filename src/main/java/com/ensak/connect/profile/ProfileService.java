@@ -102,13 +102,25 @@ public class ProfileService {
         List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.ProfilePicture);
         return resources.isEmpty() ? null : resources.get(0);
     }
+    public void deleteProfilePicture(ResourceOwner owner){
+        Resource resource = getProfilePicture(owner);
+        resourceService.deleteResource(resource);
+    }
     public Resource getBanner(ResourceOwner owner) {
         List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.Banner);
         return resources.isEmpty() ? null : resources.get(0);
     }
+    public void deleteBanner(ResourceOwner owner){
+        Resource resource = getBanner(owner);
+        resourceService.deleteResource(resource);
+    }
     public Resource getResume(ResourceOwner owner) {
         List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.Resume);
         return resources.isEmpty() ? null : resources.get(0);
+    }
+    public void deleteResume(ResourceOwner owner){
+        Resource resource = getResume(owner);
+        resourceService.deleteResource(resource);
     }
     public ProfileResponseDTO getSummaryProfile(Integer userId){
         Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
