@@ -41,7 +41,7 @@ public class CommentPostController {
         return new ResponseEntity<>(CommentPostResponseDTO.map(commentPost), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{comment_post_id}")
+    @PutMapping ("/{comment_post_id}")
     public ResponseEntity<CommentPostResponseDTO> update(
             @PathVariable Integer job_post_id,
             @PathVariable Integer comment_post_id,
