@@ -88,6 +88,10 @@ public abstract class AuthenticatedBaseIntegrationTest {
         return this.authenticateAs(user);
     }
 
+    protected void logoutUser() {
+        SecurityContextHolder.clearContext();
+    }
+
     protected User authenticateAsStudent() {
         User user = createDummyStudent();
         return this.authenticateAs(user);

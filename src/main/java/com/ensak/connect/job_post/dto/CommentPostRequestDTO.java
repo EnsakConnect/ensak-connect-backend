@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentPostRequestDTO {
-    @NotBlank(message = "Answer should not be blank")
+    @NotBlank(message = "Comment should not be blank")
     private String content;
 }
