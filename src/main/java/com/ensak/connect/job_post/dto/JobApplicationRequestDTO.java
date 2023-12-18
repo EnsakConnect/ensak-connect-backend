@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JobApplicationRequestDTO {
 
+    @NotBlank(message = "Message cannot be blank")
     private String message;
 
 }

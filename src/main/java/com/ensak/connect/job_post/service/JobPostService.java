@@ -29,7 +29,7 @@ public class JobPostService {
     }
 
     public boolean existsJobPost(Integer authorId, Integer jobPostId){
-        return jobPostRepository.existsJobPostByIdAndAuthorId(authorId,jobPostId);
+        return jobPostRepository.existsJobPostByIdAndAuthorId(jobPostId, authorId);
     }
 
     public List<JobPost> getJobPosts() {

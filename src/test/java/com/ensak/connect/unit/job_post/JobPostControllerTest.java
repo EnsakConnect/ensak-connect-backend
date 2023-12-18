@@ -99,7 +99,7 @@ public class JobPostControllerTest {
 
         when(jobPostService.getJobPosts()).thenReturn(jobPosts);
 
-        ResponseEntity<List<JobPost>> responseEntity = jobPostController.getAll();
+        ResponseEntity<List<JobPostResponseDTO>> responseEntity = jobPostController.getAll();
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isEqualTo(jobPosts);
