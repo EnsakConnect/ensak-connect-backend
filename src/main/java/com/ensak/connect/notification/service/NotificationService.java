@@ -68,7 +68,7 @@ public class NotificationService {
         );
 
         if (!author.getId().equals(notification.getAuthor().getId())) {
-            throw new ForbiddenException("Cannot delete posts made by other users");
+            throw new ForbiddenException("Cannot delete notification made by other users");
         }
 
         notificationRepository.deleteById(id);
