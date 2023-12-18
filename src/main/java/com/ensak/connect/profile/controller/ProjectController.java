@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.ProjectRequestDTO;
 import com.ensak.connect.profile.model.Project;
@@ -42,7 +43,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/projects/{projectId}")
-    public ResponseEntity deleteProject(@PathVariable Integer projectId) throws ForbiddenException {
+    public ResponseEntity deleteProject(@PathVariable Integer projectId) throws NotFoundException {
         Integer userId = authenticationService.getAuthenticatedUser().getId();
         boolean found =  profileService.getProjects(userId).stream().anyMatch(project ->
                 project.getId().equals(projectId)
@@ -50,7 +51,7 @@ public class ProjectController {
         if(found){
             profileService.deleteProject(projectId);
         }
-        else throw new ForbiddenException("Can not modify other user's profile");
+        else throw new NotFoundException("Project not found");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
     }
 }
