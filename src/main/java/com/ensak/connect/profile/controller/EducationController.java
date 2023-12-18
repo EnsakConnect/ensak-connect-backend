@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.EducationRequestDTO;
 import com.ensak.connect.profile.model.Education;
@@ -41,7 +42,7 @@ public class EducationController {
 
 
     @DeleteMapping("/educations/{educationId}")
-    public ResponseEntity deleteEducation(@PathVariable Integer educationId) throws ForbiddenException {
+    public ResponseEntity deleteEducation(@PathVariable Integer educationId) throws NotFoundException {
         Integer userId = authenticationService.getAuthenticatedUser().getId();
         boolean found =  profileService.getEducations(userId).stream().anyMatch(education ->
                 education.getId().equals(educationId)
@@ -49,7 +50,7 @@ public class EducationController {
         if(found){
             profileService.deleteEducation(educationId);
         }
-        else throw new ForbiddenException("Can not modify other user's profile");
+        else throw new NotFoundException("Education not found");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
     }
 }
