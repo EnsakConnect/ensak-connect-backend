@@ -9,6 +9,7 @@ import com.ensak.connect.notification.model.Notification;
 import com.ensak.connect.notification.repository.NotificationRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTest {
 
 
-    public static final String API_NOTIFICATIONS = "/api/v1/notification";
+    public static final String API_NOTIFICATIONS = "/api/v1/notifications";
     @Autowired
     private MockMvc api;
 
@@ -52,6 +53,7 @@ public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTes
 
 
     @Test
+    @Transactional
     public void itShouldCreateNotificationWhenAuthenticated() throws Exception {
         this.authenticateAsUser();
         String requestJSON = objectMapper.writeValueAsString(notificationTest);
