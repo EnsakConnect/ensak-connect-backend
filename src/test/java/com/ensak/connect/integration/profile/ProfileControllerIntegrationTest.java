@@ -1,5 +1,6 @@
 package com.ensak.connect.integration.profile;
 
+import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.*;
@@ -42,7 +43,7 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
                 .fullName("user fullname")
                 .user(dummyUser)
                 .build();
-        String responseJson = api.perform(get("/api/v1/profile")
+        String responseJson = api.perform(get("/api/v1/profile/"+dummyUser.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -52,6 +53,21 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
         ProfileResponseDTO profileResponseDTO = objectMapper.readValue(responseJson,ProfileResponseDTO.class);
 
         assertEquals(profileResponseDTO.getFullName(),ExpectedProfile.getFullName());
+    }
+    @Test
+    public void itShouldNotFindTheProfile() throws Exception {
+        var dummyUser = this.authenticateAsUser();
+        Profile ExpectedProfile = Profile.builder()
+                .fullName("user fullname")
+                .user(dummyUser)
+                .build();
+        String responseJson = api.perform(get("/api/v1/profile/777")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
     }
 
     @Test
@@ -63,7 +79,7 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
                 .certificationList(new ArrayList<>())
                 .build();
         String responseJson = api.perform(
-                get("/api/v1/profile/detailed")
+                get("/api/v1/profile/"+dummyUser.getId()+"/detailed")
                         .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -78,17 +94,30 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
     }
 
     @Test
+    public void itShouldNotFindTheDetailedProfile() throws Exception {
+        var dummyUser = this.authenticateAsUser();
+        Profile ExpectedProfile = Profile.builder()
+                .fullName("user fullname")
+                .user(dummyUser)
+                .build();
+        String responseJson = api.perform(get("/api/v1/profile/777/detailed")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+    }
+    @Test
     public void itShouldUpdateProfile() throws Exception{
         //setup
         this.authenticateAsUser();
-        ProfileResponseDTO expectedResponse = ProfileResponseDTO.builder()
-                .fullName("user fullname")
-                
-                .title("Frontend React Dev")
-                .build();
+
         ProfileRequestDTO payload = ProfileRequestDTO.builder()
-                .fullName("user fullname")
-                
+                .fullName("user fullname update")
+                .phone("0555555555")
+                .city("Kenitra")
+                .address("adress")
                 .title("Frontend React Dev")
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
@@ -107,10 +136,32 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
         //assertions
 
         ProfileResponseDTO response = objectMapper.readValue(responseJson,ProfileResponseDTO.class);
-        assertEquals(response.getFullName(),expectedResponse.getFullName());
+        assertEquals(response.getFullName(),payload.getFullName());
+        assertEquals(response.getTitle(),payload.getTitle());
 
-        assertEquals(response.getTitle(),expectedResponse.getTitle());
+    }
 
+    @Test
+    public void itShouldNotUpdateProfile() throws Exception{
+        //setup
+        this.authenticateAsUser();
+
+        ProfileRequestDTO payload = ProfileRequestDTO.builder()
+                .build();
+        String JsonPayload = objectMapper.writeValueAsString(payload);
+        //request
+        String responseJson = api.perform(
+                        put("/api/v1/profile")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(JsonPayload)
+                )
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        //HttpResponse response = objectMapper.readValue(responseJson, HttpResponse.class);
+        //assertEquals(response.getMessage(),"{address=address is required, phone=phone is required, city=city is required, fullName=fullname is required, title=title is required}");
     }
 
     @Test
@@ -181,6 +232,30 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
     }
 
     @Test
+    public void itShouldNotAddSkill() throws Exception{
+        //setup
+        var dummyUser = this.authenticateAsUser();
+        //request
+
+        SkillRequestDTO payload = SkillRequestDTO.builder()
+                .level(Level.EXPERT)
+                .build();
+        String JsonPayload = objectMapper.writeValueAsString(payload);
+
+        String responseJson = api.perform(
+                        post("/api/v1/profile/skills")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(JsonPayload)
+                )
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+    }
+
+    @Test
     public void itShouldDeleteUserSkill() throws Exception{
         //setup
         var dummyUser = this.authenticateAsUser();
@@ -198,6 +273,23 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
         //assertions
         //System.out.println("->>>>"+profileService.getSkills(dummyUser.getId()));
         assertTrue(profileService.getSkills(dummyUser.getId()).isEmpty());
+    }
+
+    @Test
+    public void itShouldNotFindUserSkillToDelete() throws Exception{
+        //setup
+        var dummyUser = this.authenticateAsUser();
+        Skill skill = profileService.addSkill(dummyUser.getId(),
+                SkillRequestDTO.builder()
+                        .name("React")
+                        .level(Level.EXPERT)
+                        .build());
+
+        //request
+        api.perform(
+                        delete("/api/v1/profile/skills/777")
+                )
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -268,6 +360,27 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
     }
 
     @Test
+    public void itShouldNotAddLanguage() throws Exception{
+        //setup
+        var dummyUser = this.authenticateAsUser();
+
+        LanguageRequestDTO payload = LanguageRequestDTO.builder()
+                .build();
+        String JsonPayload = objectMapper.writeValueAsString(payload);
+
+        String responseJson = api.perform(
+                        post("/api/v1/profile/languages")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(JsonPayload)
+                )
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+    }
+
+    @Test
     public void itShouldDeleteUserLanguage() throws Exception{
         //setup
         var dummyUser = this.authenticateAsUser();
@@ -288,92 +401,21 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
     }
 
     @Test
-    public void itShouldGetCertificationList() throws Exception{
+    public void itShouldNotDeleteUserLanguage() throws Exception{
         //setup
         var dummyUser = this.authenticateAsUser();
-        profileService.addCertification(dummyUser.getId(),
-                CertificationRequestDTO.builder()
+        Language language = profileService.addLanguage(dummyUser.getId(),
+                LanguageRequestDTO.builder()
                         .name("React")
-                        .link("http://link.com")
-                        .build());
-        List<Certification> expectedResponse = new ArrayList<>();
-        expectedResponse.add(
-                Certification.builder()
-                        .name("React")
-                        .link("http://link.com")
-                        .build());
-
-        //request
-        String responseJson = api.perform(
-                        get("/api/v1/profile/certifications")
-                                .accept(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        //assertions
-        List<Certification> response = objectMapper.readValue(responseJson,new TypeReference<List<Certification>>(){});
-        assertEquals(response.get(0).getLink(),expectedResponse.get(0).getLink());
-        assertEquals(response.get(0).getName(),expectedResponse.get(0).getName());
-
-    }
-
-    @Test
-    public void itShouldAddCertification() throws Exception{
-        //setup
-        var dummyUser = this.authenticateAsUser();
-        Certification expectedResponse = Certification.builder()
-                .name("React")
-                .link("http://link.com")
-                .build();
-        //request
-
-        CertificationRequestDTO payload = CertificationRequestDTO.builder()
-                .name("React")
-                .link("http://link.com")
-                .build();
-        String JsonPayload = objectMapper.writeValueAsString(payload);
-
-        String responseJson = api.perform(
-                        post("/api/v1/profile/certifications")
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(JsonPayload)
-                )
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        //assertions
-        Certification response = objectMapper.readValue(responseJson,Certification.class);
-        assertEquals(response.getLink(),expectedResponse.getLink());
-        assertEquals(response.getName(),expectedResponse.getName());
-
-    }
-
-    @Test
-    public void itShouldDeleteUserCertification() throws Exception{
-        //setup
-        var dummyUser = this.authenticateAsUser();
-        Certification certification = profileService.addCertification(dummyUser.getId(),
-                CertificationRequestDTO.builder()
-                        .name("React")
-                        .link("http://link.com")
+                        .level(Level.EXPERT)
                         .build());
 
         //request
         api.perform(
-                        delete("/api/v1/profile/certifications/"+certification.getId())
+                        delete("/api/v1/profile/languages/777")
                 )
-                .andExpect(status().isNoContent());
-        //assertions
-        //System.out.println("->>>>"+profileService.getCertifications(dummyUser.getId()));
-        assertTrue(profileService.getCertifications(dummyUser.getId()).isEmpty());
+                .andExpect(status().isForbidden());
     }
-
 
     @Test
     public void itShouldGetEducationList() throws Exception{
