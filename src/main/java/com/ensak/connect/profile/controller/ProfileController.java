@@ -27,23 +27,6 @@ public class ProfileController {
     private final ProfileService profileService;
     private final AuthenticationService authenticationService;
 
-    /*
-    @GetMapping
-    public ResponseEntity<ProfileResponseDTO> getProfile(){
-        User user = authenticationService.getAuthenticatedUser();
-        ProfileResponseDTO profile = profileService.getSummaryProfile(user.getId());
-        return new ResponseEntity<>(profile, HttpStatus.OK);
-    }
-
-    @GetMapping("/detailed")
-    public ResponseEntity<ProfileDetailResponseDTO> getDetailedProfile(){
-        User user = authenticationService.getAuthenticatedUser();
-        ProfileDetailResponseDTO profile = profileService.getDetailedProfile(user.getId());
-        return new ResponseEntity<>(profile, HttpStatus.OK);
-    }
-
-     */
-
     @GetMapping("/{userId}")
     public ResponseEntity<ProfileResponseDTO> getProfile(@PathVariable Integer userId){
         ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
@@ -55,7 +38,6 @@ public class ProfileController {
         ProfileDetailResponseDTO profile = profileService.getDetailedProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
-
 
     @PutMapping
     public ResponseEntity<ProfileResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){

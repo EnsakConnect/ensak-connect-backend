@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.SkillRequestDTO;
 import com.ensak.connect.profile.model.Skill;
@@ -41,7 +42,7 @@ public class SkillController {
     }
 
     @DeleteMapping("/skills/{skillId}")
-    public ResponseEntity deleteSkill(@PathVariable Integer skillId) throws ForbiddenException {
+    public ResponseEntity deleteSkill(@PathVariable Integer skillId) throws NotFoundException {
         Integer userId = authenticationService.getAuthenticatedUser().getId();
         boolean found =  profileService.getSkills(userId).stream().anyMatch(skill ->
                 skill.getId().equals(skillId)
@@ -49,7 +50,7 @@ public class SkillController {
         if(found){
             profileService.deleteSkill(skillId);
         }
-        else throw new ForbiddenException("Can not modify other user's profile");
+        else throw new NotFoundException("Skill not found");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
     }
 
