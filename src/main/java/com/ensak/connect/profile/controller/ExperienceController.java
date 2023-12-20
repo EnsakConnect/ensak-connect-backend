@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.ExperienceRequestDTO;
 import com.ensak.connect.profile.model.Experience;
@@ -41,7 +42,7 @@ public class ExperienceController {
     }
 
     @DeleteMapping("/experiences/{experienceId}")
-    public ResponseEntity deleteExperience(@PathVariable Integer experienceId) throws ForbiddenException {
+    public ResponseEntity deleteExperience(@PathVariable Integer experienceId) throws NotFoundException {
         Integer userId = authenticationService.getAuthenticatedUser().getId();
         boolean found =  profileService.getExperiences(userId).stream().anyMatch(experience ->
                 experience.getId().equals(experienceId)
@@ -49,7 +50,7 @@ public class ExperienceController {
         if(found){
             profileService.deleteExperience(experienceId);
         }
-        else throw new ForbiddenException("Can not modify other user's profile");
+        else throw new NotFoundException("Experience not found");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
     }
 }

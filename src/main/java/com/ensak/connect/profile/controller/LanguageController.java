@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.LanguageRequestDTO;
 import com.ensak.connect.profile.model.Language;
@@ -42,7 +43,7 @@ public class LanguageController {
 
 
     @DeleteMapping("/languages/{languageId}")
-    public ResponseEntity deleteLanguage(@PathVariable Integer languageId) throws ForbiddenException {
+    public ResponseEntity deleteLanguage(@PathVariable Integer languageId) throws NotFoundException {
         Integer userId = authenticationService.getAuthenticatedUser().getId();
         boolean found =  profileService.getLanguages(userId).stream().anyMatch(language ->
                 language.getId().equals(languageId)
@@ -50,7 +51,7 @@ public class LanguageController {
         if(found){
             profileService.deleteLanguage(languageId);
         }
-        else throw new ForbiddenException("Can not modify other user's profile");
+        else throw new NotFoundException("Language not Found");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
     }
 }

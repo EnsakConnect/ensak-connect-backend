@@ -8,6 +8,7 @@ import com.ensak.connect.job_post.model.JobApplication;
 import com.ensak.connect.job_post.service.JobApplicationService;
 import com.ensak.connect.job_post.service.JobPostService;
 import com.ensak.connect.auth.model.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class JobApplicationController {
     private final JobPostService jobPostService;
 
     @PostMapping("/applications")
-    public ResponseEntity<JobApplicationResponseDTO> apply(@PathVariable Integer jobPostId, @RequestBody JobApplicationRequestDTO requestDTO) {
+    public ResponseEntity<JobApplicationResponseDTO> apply(@PathVariable Integer jobPostId, @RequestBody @Valid JobApplicationRequestDTO requestDTO) {
         User user = authenticationService.getAuthenticatedUser();
         JobApplication application = jobApplicationService
                 .createJobApplication(user.getId(), jobPostId, requestDTO.getMessage());
@@ -33,7 +34,7 @@ public class JobApplicationController {
     }
 
     @PutMapping("/applications")
-    public ResponseEntity<JobApplicationResponseDTO> updateApplication(@PathVariable Integer jobPostId, @RequestBody JobApplicationRequestDTO requestDTO) {
+    public ResponseEntity<JobApplicationResponseDTO> updateApplication(@PathVariable Integer jobPostId, @RequestBody @Valid JobApplicationRequestDTO requestDTO) {
         User user = authenticationService.getAuthenticatedUser();
         JobApplication application = jobApplicationService.updateApplication(user.getId(), jobPostId, requestDTO.getMessage());
         return ResponseEntity.ok(JobApplicationResponseDTO.mapToDTO(application));

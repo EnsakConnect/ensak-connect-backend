@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
+import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.CertificationRequestDTO;
 import com.ensak.connect.profile.model.Certification;
@@ -41,7 +42,7 @@ public class CertifiactionController {
     }
 
     @DeleteMapping("/certifications/{certificationId}")
-    public ResponseEntity deleteCertification(@PathVariable Integer certificationId) throws ForbiddenException {
+    public ResponseEntity deleteCertification(@PathVariable Integer certificationId) throws NotFoundException {
         Integer userId = authenticationService.getAuthenticatedUser().getId();
         boolean found =  profileService.getCertifications(userId).stream().anyMatch(certification ->
                 certification.getId().equals(certificationId)
@@ -49,7 +50,7 @@ public class CertifiactionController {
         if(found){
             profileService.deleteCertification(certificationId);
         }
-        else throw new ForbiddenException("Can not modify other user's profile");
+        else throw new NotFoundException("Certification not found");
         return new ResponseEntity(null,HttpStatus.NO_CONTENT);
     }
 }

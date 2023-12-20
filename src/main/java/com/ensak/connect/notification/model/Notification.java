@@ -1,7 +1,6 @@
-package com.ensak.connect.resource.model;
+package com.ensak.connect.notification.model;
 
-import com.ensak.connect.resource.ResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ensak.connect.auth.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,26 +14,25 @@ import java.util.Date;
 @Entity
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Resource {
+@AllArgsConstructor
+public class Notification {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private ResourceType type;
+    private String title;
 
-    @JsonIgnore
-    @Column(nullable = false)
-    private String ownerType;
+    private String category;
 
-    private String filename;
+    private String message;
+
+    private String status;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "owner_id")
-    private ResourceOwner owner;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User author;
 
     @CreationTimestamp
     private Date createdAt;
@@ -42,4 +40,3 @@ public class Resource {
     @UpdateTimestamp
     private Date updatedAt;
 }
-

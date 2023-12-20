@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface ResourceRepository extends JpaRepository<Resource, Integer> {
     public Optional<List<Resource>> findAllByOwner(ResourceOwner owner);
-    public Optional<List<Resource>> findAllByOwnerAndType(ResourceOwner owner, ResourceType type);
+    public Optional<List<Resource>> findAllByOwnerIdAndOwnerTypeAndType(Integer ownerId,String ownerType, ResourceType type);
 
 }

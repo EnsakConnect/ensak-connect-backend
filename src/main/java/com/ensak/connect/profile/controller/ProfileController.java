@@ -27,24 +27,9 @@ public class ProfileController {
     private final ProfileService profileService;
     private final AuthenticationService authenticationService;
 
-    @GetMapping
-    public ResponseEntity<ProfileResponseDTO> getProfile(){
-        User user = authenticationService.getAuthenticatedUser();
-        ProfileResponseDTO profile = profileService.getSummaryProfile(user.getId());
-        return new ResponseEntity<>(profile, HttpStatus.OK);
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<ProfileResponseDTO> getProfile(@PathVariable Integer userId){
         ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
-        return new ResponseEntity<>(profile, HttpStatus.OK);
-    }
-
-
-    @GetMapping("/detailed")
-    public ResponseEntity<ProfileDetailResponseDTO> getDetailedProfile(){
-        User user = authenticationService.getAuthenticatedUser();
-        ProfileDetailResponseDTO profile = profileService.getDetailedProfile(user.getId());
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
@@ -53,7 +38,6 @@ public class ProfileController {
         ProfileDetailResponseDTO profile = profileService.getDetailedProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
-
 
     @PutMapping
     public ResponseEntity<ProfileResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){
@@ -75,6 +59,15 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @DeleteMapping("/profile-picture")
+    public ResponseEntity<?> deleteProfilePicture(){
+        User user = this.authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.getUserProfileById(user.getId());
+        profileService.deleteProfilePicture(profile);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/banner")
     public ResponseEntity<?> uploadBanner(@RequestParam("banner") MultipartFile file) {
 
@@ -86,6 +79,15 @@ public class ProfileController {
         response.put("banner", resource.getFilename());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/banner")
+    public ResponseEntity<?> deleteBanner(){
+        User user = this.authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.getUserProfileById(user.getId());
+        profileService.deleteBanner(profile);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/resume")
@@ -100,6 +102,15 @@ public class ProfileController {
         response.put("resume", resource.getFilename());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/resume")
+    public ResponseEntity<?> deleteResume(){
+        User user = this.authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.getUserProfileById(user.getId());
+        profileService.deleteResume(profile);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

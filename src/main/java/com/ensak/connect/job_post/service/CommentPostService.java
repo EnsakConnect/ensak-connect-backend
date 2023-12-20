@@ -51,7 +51,7 @@ public class CommentPostService {
             throw new ForbiddenException("Cannot updated the requested comment.");
         }
         if(!commentPost.getAuthor().getId().equals(auth.getId())){
-            throw new ForbiddenException("Cannot updated the requested comment.");
+            throw new ForbiddenException("User does not have access to this comment.");
         }
         commentPost.setContent(request.getContent());
         return commentPostRepository.save(commentPost);
@@ -59,12 +59,16 @@ public class CommentPostService {
 
     @SneakyThrows
     public void deleteCommentPostById(Integer jobPostId, Integer commentPostId) {
+        User auth = authService.getAuthenticatedUser();
         JobPost jobPost = jobPostService.getJobPostById(jobPostId);
         CommentPost commentPost = commentPostRepository.findById(commentPostId).orElseThrow(
                 () -> new NotFoundException("Cannot find comment with the requested id.")
         );
         if(!jobPost.getId().equals(commentPost.getJobPost().getId())) {
-            throw new ForbiddenException("Cannot updated the requested answer.");
+            throw new ForbiddenException("Cannot delete the requested comment.");
+        }
+        if(!commentPost.getAuthor().getId().equals(auth.getId())){
+            throw new ForbiddenException("User does not have access to this comment.");
         }
         commentPostRepository.delete(commentPost);
     }

@@ -21,7 +21,9 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -139,4 +141,9 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    private ResponseEntity<HttpResponse> ResourceNotFound(NoResourceFoundException exception) {
+        log.error(exception.getMessage());
+        return createHttpResponse(NOT_FOUND, exception.getMessage());
+    }
 }

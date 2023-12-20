@@ -2,6 +2,7 @@ package com.ensak.connect.job_post.model;
 
 
 import com.ensak.connect.auth.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class CommentPost {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "job_post_id", nullable = false)
     private JobPost jobPost;
