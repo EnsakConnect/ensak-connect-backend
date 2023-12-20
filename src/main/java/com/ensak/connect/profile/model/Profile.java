@@ -38,6 +38,7 @@ public class Profile extends ResourceOwner {
     //PATH TO CV
     //PATH TO banner
     //PATH to profile pic
+    private String profilePicture;
 
     @CreationTimestamp
     private Date createdAt;

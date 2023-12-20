@@ -2,6 +2,7 @@ package com.ensak.connect.auth.model;
 
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.Token;
+import com.ensak.connect.profile.model.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,6 +42,9 @@ public class User implements UserDetails {
     private String password;
 
     private String profileType;
+
+    @OneToOne
+    private Profile profile;
 
     @Enumerated(EnumType.STRING)
     private Role role;
