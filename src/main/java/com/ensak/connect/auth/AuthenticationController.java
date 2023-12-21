@@ -64,9 +64,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/change-password")
-    public void changePassword(
+    public ResponseEntity<?> changePassword(
             @RequestBody @Valid ChangePasswordRequest request
     ) {
         authenticationService.changePassword(request);
+        return ResponseEntity.ok(null);
     }
 }

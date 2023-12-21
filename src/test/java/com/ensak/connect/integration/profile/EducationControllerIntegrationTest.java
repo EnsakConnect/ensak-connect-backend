@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class EducationControllerIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
@@ -161,7 +163,7 @@ public class EducationControllerIntegrationTest extends AuthenticatedBaseIntegra
     @Test
     public void itShouldNotDeleteUserEducation() throws Exception{
         //setup
-        var dummyUser = this.authenticateAsUser();
+        var dummyUser = this.authenticateAsStudent();
         var user = this.createDummyUser();
         Education education = profileService.addEducation(user.getId(),
                 EducationRequestDTO.builder()
