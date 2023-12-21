@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -39,13 +40,15 @@ public class FeedResponceDTO {
 
     private List<String> tags;
 
+    private Date updatedAt;
+
     private String timePassed;
 
     public static FeedResponceDTO map(JobPost jobPost){
         PrettyTime prettyTime = new PrettyTime();
         return FeedResponceDTO.builder()
                 .id(jobPost.getId())
-                .postType(jobPost.getCategory())
+                .postType(jobPost.getCategory().toUpperCase())
                 .title(jobPost.getTitle())
                 .description(jobPost.getDescription())
                 .resources(new ArrayList<>())
@@ -53,6 +56,7 @@ public class FeedResponceDTO {
                 .commentsCount(jobPost.getComments().size())
                 .interactions(IntercationResponseDTO.mapComments(jobPost.getComments()))
                 .likesCount(0)
+                .updatedAt(jobPost.getUpdatedAt())
                 .tags(jobPost.getTags())
                 .timePassed(prettyTime.format(jobPost.getUpdatedAt()))
                 .build();
@@ -81,6 +85,7 @@ public class FeedResponceDTO {
                 .commentsCount(questionPost.getAnswers().size())
                 .interactions(IntercationResponseDTO.mapAnswers(questionPost.getAnswers()))
                 .likesCount(0)
+                .updatedAt(questionPost.getUpdatedAt())
                 .tags(questionPost.getTags())
                 .timePassed(prettyTime.format(questionPost.getUpdatedAt()))
                 .build();

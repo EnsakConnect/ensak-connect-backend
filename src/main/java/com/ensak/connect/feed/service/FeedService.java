@@ -35,7 +35,7 @@ public class FeedService {
         List<QuestionPost> questionPosts = questionPostRepository.findAllByIds(feedPageResponse.getListIds().getQuestionPostIds());
         List<FeedResponceDTO> questionPostList = FeedResponceDTO.mapQuestionPosts(questionPosts);
         List<FeedResponceDTO> feedResponse = Stream.concat(jobPostList.stream(), questionPostList.stream())
-                .sorted(Comparator.comparing(FeedResponceDTO::getTimePassed).reversed())
+                .sorted(Comparator.comparing(FeedResponceDTO::getUpdatedAt).reversed())
                 .toList();
         return new PageImpl<>(feedResponse, feedPageResponse.getPage(), feedPageResponse.getTotals());
     }

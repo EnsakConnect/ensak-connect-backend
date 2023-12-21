@@ -14,18 +14,18 @@ public class UserDemoSeeder implements CommandLineRunner {
 
     @Override
     public void run(String[] args) throws Exception {
-        createDemoUser();
+        //createDemoUser();
     }
 
     private void createDemoUser() {
-        User demoUser = userService.createUser(
-                RegisterRequest.builder()
-                        .email("demo@ensakconnect.com")
-                        .role("STUDENT")
-                        .fullname("Demo User")
-                        .password("password")
-                        .build()
-        );
-        userService.activateUser(demoUser.getEmail());
+//        User demoUser = userService.createUser(
+//                RegisterRequest.builder()
+//                        .email("demo@ensakconnect.com")
+//                        .role("STUDENT")
+//                        .fullname("Demo User")
+//                        .password("password")
+//                        .build()
+//        );
+//        userService.activateUser(demoUser.getEmail());
     }
 }
