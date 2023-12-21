@@ -74,4 +74,6 @@ public class FeedResponceDTO {
                 .timePassed(prettyTime.format(questionPost.getUpdatedAt()))
                 .build();
     }
+
+
 }
