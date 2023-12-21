@@ -33,47 +33,51 @@ public abstract class AuthenticatedBaseIntegrationTest {
 //    }
 
     protected User createDummyUser() {
-        return userService.createUser(
+        var user = userRepository.findByEmail("user.user@email.com");
+        return user.orElseGet(() -> userService.createUser(
                 RegisterRequest.builder()
                         .email("user.user@email.com")
                         .password("password")
                         .fullname("user fullname")
                         .role("STUDENT")
                         .build()
-        );
+        ));
     }
 
     protected User createDummyStudent() {
-        return userService.createUser(
+        var user = userRepository.findByEmail("student.user@email.com");
+        return user.orElseGet(() -> userService.createUser(
                 RegisterRequest.builder()
                         .email("student.user@email.com")
                         .password("password")
                         .fullname("student fullname")
                         .role("STUDENT")
                         .build()
-        );
+        ));
     }
 
     protected User createDummyLaureate() {
-        return userService.createUser(
+        var user = userRepository.findByEmail("laureate.user@email.com");
+        return user.orElseGet(() -> userService.createUser(
                 RegisterRequest.builder()
                         .email("laureate.user@email.com")
                         .password("password")
                         .fullname("laureate fullname")
                         .role("LAUREATE")
                         .build()
-        );
+        ));
     }
 
     protected User createDummyProfessor() {
-        return userService.createUser(
+        var user = userRepository.findByEmail("professor.user@email.com");
+        return user.orElseGet(() -> userService.createUser(
                 RegisterRequest.builder()
                         .email("professor.user@email.com")
                         .password("password")
                         .fullname("professor fullname")
                         .role("PROFESSOR")
                         .build()
-        );
+        ));
     }
 
     protected User authenticateAs(User user) {

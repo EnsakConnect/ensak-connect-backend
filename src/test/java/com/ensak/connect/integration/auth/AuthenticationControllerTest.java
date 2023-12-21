@@ -1,5 +1,6 @@
 package com.ensak.connect.integration.auth;
 
+import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
 import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.auth.enums.Role;
@@ -30,9 +31,12 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @Test
     @Transactional
     public void loginWithValidCredentials() throws Exception {
@@ -63,6 +67,7 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void loginWithInvalidCredentials() throws Exception {
         var user =this.createDummyStudent();
         System.out.println(user);
@@ -81,5 +86,54 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
+    }
+
+    @Test
+    @Transactional
+    public void isShouldEnableUserToRegister() throws Exception {
+        RegisterRequest request = RegisterRequest.builder()
+                .email("test.register@ensakconnect.com")
+                .fullname("Test Register")
+                .role(String.valueOf(Role.ROLE_USER))
+                .password("password")
+                .build();
+        String requestJSON = objectMapper.writeValueAsString(request);
+
+        api.perform(
+                post("/api/v1/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJSON)
+        ).andExpect(status().isOk());
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow();
+        assertEquals(request.getEmail(), user.getEmail());
+        assertNull(user.getActivatedAt());
+    }
+
+    @Test
+    @Transactional
+    public void isShouldNotEnableUserToRegisterIfEmailExists() throws Exception {
+        authenticationService.register(
+                RegisterRequest.builder()
+                        .fullname("test email exists")
+                        .email("test.email.exits@ensakconnect.com")
+                        .password("password")
+                        .role(String.valueOf(Role.ROLE_USER))
+                        .build()
+        );
+        RegisterRequest request = RegisterRequest.builder()
+                .email("test.email.exits@ensakconnect.com")
+                .fullname("Test Register")
+                .role(String.valueOf(Role.ROLE_USER))
+                .password("password")
+                .build();
+        String requestJSON = objectMapper.writeValueAsString(request);
+
+        api.perform(
+                post("/api/v1/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJSON)
+        ).andExpect(status().isBadRequest());
     }
 }

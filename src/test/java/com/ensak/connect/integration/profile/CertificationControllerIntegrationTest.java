@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class CertificationControllerIntegrationTest extends AuthenticatedBaseIntegrationTest {
 
     @Autowired
@@ -146,7 +148,7 @@ public class CertificationControllerIntegrationTest extends AuthenticatedBaseInt
     @Test
     public void itShouldNotDeleteUserCertification() throws Exception{
         //setup
-        var dummyUser = this.authenticateAsUser();
+        this.authenticateAsStudent();
         var user = this.createDummyUser();
         Certification certification = profileService.addCertification(user.getId(),
                 CertificationRequestDTO.builder()

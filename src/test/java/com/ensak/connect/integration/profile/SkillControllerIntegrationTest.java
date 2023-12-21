@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class SkillControllerIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
@@ -150,7 +152,7 @@ public class SkillControllerIntegrationTest extends AuthenticatedBaseIntegration
     @Test
     public void itShouldNotDeleteUserSkill() throws Exception{
         //setup
-        var dummyUser = this.authenticateAsUser();
+        var dummyUser = this.authenticateAsStudent();
         var user = this.createDummyUser();
         Skill skill = profileService.addSkill(user.getId(),
                 SkillRequestDTO.builder()
