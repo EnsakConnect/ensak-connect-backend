@@ -2,12 +2,14 @@ package com.ensak.connect.integration.auth;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.dto.AuthenticationRequest;
+import com.ensak.connect.auth.dto.ChangePasswordRequest;
 import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -135,5 +137,34 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJSON)
         ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void isShouldChangePassword() throws Exception {
+        User user = this.authenticateAsUser();
+        String request = objectMapper.writeValueAsString(
+                ChangePasswordRequest.builder()
+                        .password("newpassword")
+                        .build()
+        );
+
+        api.perform(
+                post("/api/v1/auth/change-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request)
+        ).andExpect(status().isOk());
+
+        String loginRequest = objectMapper.writeValueAsString(
+                AuthenticationRequest.builder()
+                        .email(user.getEmail())
+                        .password("newpassword")
+                        .build()
+        );
+        api.perform(
+                post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginRequest)
+        ).andExpect(status().isOk());
     }
 }
