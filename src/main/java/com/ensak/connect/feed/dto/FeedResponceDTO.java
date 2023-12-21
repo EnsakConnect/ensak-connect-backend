@@ -58,6 +58,17 @@ public class FeedResponceDTO {
                 .build();
     }
 
+    public static List<FeedResponceDTO> mapJobPosts(List<JobPost> jobPosts) {
+        if (jobPosts == null) {
+            return null;
+        }
+        List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(jobPosts.size());
+        for (JobPost jobPost: jobPosts){
+            result.add(map(jobPost));
+        }
+        return result;
+    }
+
     public static FeedResponceDTO map(QuestionPost questionPost){
         PrettyTime prettyTime = new PrettyTime();
         return FeedResponceDTO.builder()
@@ -75,5 +86,14 @@ public class FeedResponceDTO {
                 .build();
     }
 
-
+    public static List<FeedResponceDTO> mapQuestionPosts(List<QuestionPost> questionPosts) {
+        if (questionPosts == null) {
+            return null;
+        }
+        List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(questionPosts.size());
+        for (QuestionPost questionPost: questionPosts){
+            result.add(map(questionPost));
+        }
+        return result;
+    }
 }
