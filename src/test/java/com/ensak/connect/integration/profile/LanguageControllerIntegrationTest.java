@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class LanguageControllerIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
@@ -145,7 +147,7 @@ public class LanguageControllerIntegrationTest extends AuthenticatedBaseIntegrat
     @Test
     public void itShouldNotDeleteUserLanguage() throws Exception{
         //setup
-        var dummyUser = this.authenticateAsUser();
+        var dummyUser = this.authenticateAsStudent();
         var user = this.createDummyUser();
         Language language = profileService.addLanguage(user.getId(),
                 LanguageRequestDTO.builder()

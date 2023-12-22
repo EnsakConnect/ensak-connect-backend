@@ -5,15 +5,18 @@ import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.config.exception.NotFoundException;
+import com.ensak.connect.config.exception.model.EmailExistException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.profile.repository.ProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +24,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @SneakyThrows
     @Transactional
     public User createUser(RegisterRequest registerRequest){
-        Profile profile = Profile.builder().fullName(registerRequest.getFullname()).build();
 
+        Optional<User> existing = userRepository.findByEmail(registerRequest.getEmail());
+        if(existing.isPresent()){
+            throw new EmailExistException("Email account already exists");
+        }
+      Profile profile = Profile.builder().fullName(registerRequest.getFullname()).build();
         User user = User.builder()
                 .email(registerRequest.getEmail())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))

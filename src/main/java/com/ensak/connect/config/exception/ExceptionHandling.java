@@ -9,11 +9,12 @@ import com.ensak.connect.util.storage.exception.FileExtensionNotAllowedException
 import com.ensak.connect.util.storage.exception.StorageException;
 import com.ensak.connect.util.storage.exception.StorageFileNotFoundException;
 import jakarta.persistence.NoResultException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Date;
@@ -32,31 +35,38 @@ import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.*;
 
-@RestControllerAdvice
 @Slf4j
-public class ExceptionHandling implements ErrorController {
+@RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class ExceptionHandling extends ResponseEntityExceptionHandler {
     private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please send a '%s' request";
     private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request";
     private static final String INCORRECT_CREDENTIALS = "Email / password incorrect. Please try again";
     private static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
 
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleUnknownException(
+//            final Exception exception, final HttpServletRequest request
+//    ) {
+//        return createHttpResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
+//    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<HttpResponse> badCredentialsException() {
         return createHttpResponse(BAD_REQUEST, INCORRECT_CREDENTIALS);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<HttpResponse> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return createHttpResponse(BAD_REQUEST, errors.toString());
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<HttpResponse> handleValidationExceptions(
+//            MethodArgumentNotValidException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+//        return createHttpResponse(BAD_REQUEST, errors.toString());
+//    }
 
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<HttpResponse> handleNotFoundExceptions(NotFoundException ex) {
@@ -89,22 +99,16 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<HttpResponse> noHandlerFoundException(NoHandlerFoundException e) {
-        return createHttpResponse(BAD_REQUEST, "There is no mapping for this URL");
-    }
+//    @ExceptionHandler(NoHandlerFoundException.class)
+//    public ResponseEntity<HttpResponse> noHandlerFoundException(NoHandlerFoundException e) {
+//        return createHttpResponse(BAD_REQUEST, "There is no mapping for this URL");
+//    }
 
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<HttpResponse> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-        HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods()).iterator().next();
-        return createHttpResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod));
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<HttpResponse> internalServerErrorException(Exception exception) {
-        log.error(exception.getMessage());
-        return createHttpResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG);
-    }
+//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+//    public ResponseEntity<HttpResponse> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+//        HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods()).iterator().next();
+//        return createHttpResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod));
+//    }
 
     @ExceptionHandler(NotAnImageFileException.class)
     public ResponseEntity<HttpResponse> notAnImageFileException(NotAnImageFileException exception) {
@@ -113,7 +117,7 @@ public class ExceptionHandling implements ErrorController {
     }
 
     @ExceptionHandler(NoResultException.class)
-    public ResponseEntity<HttpResponse> notFoundException(NoResultException exception) {
+    public ResponseEntity<HttpResponse> handleNoResultException(NoResultException exception) {
         log.error(exception.getMessage());
         return createHttpResponse(NOT_FOUND, exception.getMessage());
     }
@@ -141,9 +145,10 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(NOT_FOUND, exception.getMessage());
     }
 
-    @ExceptionHandler(NoResourceFoundException.class)
-    private ResponseEntity<HttpResponse> ResourceNotFound(NoResourceFoundException exception) {
-        log.error(exception.getMessage());
-        return createHttpResponse(NOT_FOUND, exception.getMessage());
-    }
+//    @Override
+//    @ExceptionHandler(NoResourceFoundException.class)
+//    protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+//        log.error(ex.getMessage());
+//        return this.createResponseEntity(null, headers, NOT_FOUND, request);
+//    }
 }

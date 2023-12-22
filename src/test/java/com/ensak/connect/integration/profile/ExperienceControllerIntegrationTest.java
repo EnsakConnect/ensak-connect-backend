@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class ExperienceControllerIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
@@ -166,7 +168,7 @@ public class ExperienceControllerIntegrationTest extends AuthenticatedBaseIntegr
     @Test
     public void itShouldNotDeleteUserExperience() throws Exception{
         //setup
-        var dummyUser = this.authenticateAsUser();
+        var dummyUser = this.authenticateAsStudent();
         var user = this.createDummyUser();
         Experience experience = profileService.addExperience(user.getId(),
                 ExperienceRequestDTO.builder()
