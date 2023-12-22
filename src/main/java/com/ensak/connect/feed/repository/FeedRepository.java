@@ -46,11 +46,13 @@ public class FeedRepository {
         List<Integer> jobPostIds = new ArrayList<>();
         List<Integer> questionPostIds = new ArrayList<>();
 
-        for (Object[] row : queryResult) {
-            if ("JOB_POST".equals(row[2])) {
-                jobPostIds.add((Integer) row[0]);
-            } else {
-                questionPostIds.add((Integer) row[0]);
+        if (!queryResult.isEmpty()) {
+            for (Object[] row : queryResult) {
+                if ("JOB_POST".equals(row[2])) {
+                    jobPostIds.add((Integer) row[0]);
+                } else {
+                    questionPostIds.add((Integer) row[0]);
+                }
             }
         }
 
@@ -76,10 +78,10 @@ public class FeedRepository {
 
         Query query = entityManager.createQuery(
                 "SELECT j.id, j.updatedAt, 'JOB_POST' as type FROM JobPost j " +
-                        "WHERE LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search) " +  // Case-insensitive search
+                        "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +  // Case-insensitive search
                         "UNION ALL " +
                         "SELECT q.id, q.updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
-                        "WHERE LOWER(q.question) LIKE LOWER(:search) " +
+                        "WHERE (LOWER(q.question) LIKE LOWER(:search)) " +
                         "ORDER BY updatedAt DESC "
         );
         query.setParameter("search", "%" + search + "%");
@@ -93,22 +95,29 @@ public class FeedRepository {
         List<Integer> jobPostIds = new ArrayList<>();
         List<Integer> questionPostIds = new ArrayList<>();
 
-        for (Object[] row : queryResult) {
-            if ("JOB_POST".equals(row[2])) {
-                jobPostIds.add((Integer) row[0]);
-            } else {
-                questionPostIds.add((Integer) row[0]);
+        if (!queryResult.isEmpty()) {
+            for (Object[] row : queryResult) {
+                if ("JOB_POST".equals(row[2])) {
+                    jobPostIds.add((Integer) row[0]);
+                } else {
+                    questionPostIds.add((Integer) row[0]);
+                }
             }
         }
+
 
         FeedListIdResponseDTO feedIds = FeedListIdResponseDTO.builder()
                 .jobPostIds(jobPostIds)
                 .questionPostIds(questionPostIds)
                 .build();
 
-        long totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
+        long totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j " +
+                        "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) ")
+                .setParameter("search", "%" + search + "%")
                 .getSingleResult() +
-                (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
+                (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q " +
+                                "WHERE (LOWER(q.question) LIKE LOWER(:search))")
+                        .setParameter("search", "%" + search + "%")
                         .getSingleResult();
 
         return new FeedPageResponseDTO(feedIds, pageRequest, totals);
@@ -124,21 +133,25 @@ public class FeedRepository {
         Query query;
         long totals;
 
-        if (Objects.equals(filter, "Q&A")) {
+        if (filter.equals("Q&A")) {
             query = entityManager.createQuery(
                     "SELECT q, 'QUESTION_POST' as type FROM QuestionPost q " +
                             "WHERE LOWER(q.question) LIKE LOWER(:search)  " +
                             "ORDER BY updatedAt DESC "
             );
-            totals = (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
-                            .getSingleResult();
+            totals = (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q " +
+                            "WHERE LOWER(q.question) LIKE LOWER(:search) ")
+                    .setParameter("search", "%" + search + "%")
+                    .getSingleResult();
         }else {
             query = entityManager.createQuery(
                     "SELECT j, 'JOB_POST' as type FROM JobPost j " +
                             "WHERE LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search) " +
                             "ORDER BY updatedAt DESC "
             );
-            totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
+            totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j " +
+                            "WHERE LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)")
+                    .setParameter("search", "%" + search + "%")
                     .getSingleResult();
         }
 
@@ -151,17 +164,20 @@ public class FeedRepository {
         List<Object[]> queryResult = query.getResultList();
         List<FeedResponceDTO> feedResponceDTOList = new ArrayList<>();
 
-        if ("JOB_POST".equals(queryResult.get(0)[1])){
-            log.info("On est dans job post");
-            for (Object[] row : queryResult) {
-                feedResponceDTOList.add(FeedResponceDTO.map((JobPost) row[0]));
-            }
-        }else {
-            log.info("On est dans question post");
-            for (Object[] row : queryResult) {
-                feedResponceDTOList.add(FeedResponceDTO.map((QuestionPost) row[0]));
+        if (!queryResult.isEmpty()) {
+            if ("JOB_POST".equals(queryResult.get(0)[1])){
+                log.info("On est dans job post");
+                for (Object[] row : queryResult) {
+                    feedResponceDTOList.add(FeedResponceDTO.map((JobPost) row[0]));
+                }
+            }else {
+                log.info("On est dans question post");
+                for (Object[] row : queryResult) {
+                    feedResponceDTOList.add(FeedResponceDTO.map((QuestionPost) row[0]));
+                }
             }
         }
+
 
         return new PageImpl<>(feedResponceDTOList, pageRequest, totals);
     }

@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/feeds")
 @RestController
@@ -20,13 +17,24 @@ public class FeedController {
 
     private final FeedService feedService;
 
-    @GetMapping
+    @GetMapping("?page={page}&size={size}")
     public ResponseEntity<Page<FeedResponceDTO>> getFeedPage(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @PathVariable int page,
+            @RequestParam int size
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return new ResponseEntity<>(feedService.getPageOfFeed(pageRequest), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<FeedResponceDTO>> getFeedPageWithSearchAndFilter(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "ALL") String filter
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return new ResponseEntity<>(feedService.getPageOfFeedWithSearchAndFilter(pageRequest, search, filter), HttpStatus.OK);
     }
 
 }

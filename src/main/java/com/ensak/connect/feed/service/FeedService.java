@@ -30,13 +30,27 @@ public class FeedService {
 
     public Page<FeedResponceDTO> getPageOfFeed(PageRequest pageRequest) {
         FeedPageResponseDTO feedPageResponse = feedRepository.findAll(pageRequest);
-        List<JobPost> jobPosts = jobPostRepository.findAllByIds(feedPageResponse.getListIds().getJobPostIds());
+        List<FeedResponceDTO> feedResponse = getPageFromIds(feedPageResponse);
+        return new PageImpl<>(feedResponse, feedPageResponse.getPage(), feedPageResponse.getTotals());
+    }
+
+    public Page<FeedResponceDTO> getPageOfFeedWithSearchAndFilter(PageRequest pageRequest, String search, String filter) {
+        if (filter.equals("ALL")) {
+            FeedPageResponseDTO feedPageResponse = feedRepository.findAllWithSearch(pageRequest, search);
+            List<FeedResponceDTO> feedResponse = getPageFromIds(feedPageResponse);
+            return new PageImpl<>(feedResponse, feedPageResponse.getPage(), feedPageResponse.getTotals());
+        }else {
+            return feedRepository.findAllWithSearchAndFilter(pageRequest, search, filter);
+        }
+    }
+
+    public List<FeedResponceDTO> getPageFromIds(FeedPageResponseDTO pageRequest) {
+        List<JobPost> jobPosts = jobPostRepository.findAllByIds(pageRequest.getListIds().getJobPostIds());
         List<FeedResponceDTO> jobPostList = FeedResponceDTO.mapJobPosts(jobPosts);
-        List<QuestionPost> questionPosts = questionPostRepository.findAllByIds(feedPageResponse.getListIds().getQuestionPostIds());
+        List<QuestionPost> questionPosts = questionPostRepository.findAllByIds(pageRequest.getListIds().getQuestionPostIds());
         List<FeedResponceDTO> questionPostList = FeedResponceDTO.mapQuestionPosts(questionPosts);
-        List<FeedResponceDTO> feedResponse = Stream.concat(jobPostList.stream(), questionPostList.stream())
+        return Stream.concat(jobPostList.stream(), questionPostList.stream())
                 .sorted(Comparator.comparing(FeedResponceDTO::getUpdatedAt).reversed())
                 .toList();
-        return new PageImpl<>(feedResponse, feedPageResponse.getPage(), feedPageResponse.getTotals());
     }
 }
