@@ -146,11 +146,13 @@ public class FeedRepository {
         }else {
             query = entityManager.createQuery(
                     "SELECT j, 'JOB_POST' as type FROM JobPost j " +
-                            "WHERE LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search) " +
+                            "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +
+                            "AND (LOWER(j.category) = LOWER(:filter) ) " +
                             "ORDER BY updatedAt DESC "
-            );
+            ).setParameter("filter", filter);
             totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j " +
                             "WHERE LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)")
+
                     .setParameter("search", "%" + search + "%")
                     .getSingleResult();
         }
