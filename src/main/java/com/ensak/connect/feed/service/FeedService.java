@@ -36,6 +36,9 @@ public class FeedService {
 
     public Page<FeedResponceDTO> getPageOfFeedWithSearchAndFilter(PageRequest pageRequest, String search, String filter) {
         if (filter.equals("ALL")) {
+            if (search.isEmpty()){
+                return getPageOfFeed(pageRequest);
+            }
             FeedPageResponseDTO feedPageResponse = feedRepository.findAllWithSearch(pageRequest, search);
             List<FeedResponceDTO> feedResponse = getPageFromIds(feedPageResponse);
             return new PageImpl<>(feedResponse, feedPageResponse.getPage(), feedPageResponse.getTotals());

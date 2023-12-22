@@ -33,13 +33,17 @@ public class FeedRepository {
         int offset = pageNumber * pageSize;
 
         Query query = entityManager.createQuery(
-                "SELECT j.id, j.updatedAt, 'JOB_POST' as type FROM JobPost j " +
-                        "UNION ALL " +
-                        "SELECT q.id, q.updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
-                        "ORDER BY updatedAt DESC "
-        );
-        query.setFirstResult(offset);
-        query.setMaxResults(pageSize);
+                        "SELECT result.id, result.updatedAt, result.type FROM ( " +
+                                "SELECT j.id as id, j.updatedAt as updatedAt, 'JOB_POST' as type FROM JobPost j " +
+                                "UNION ALL " +
+                                "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q) result " +
+                                "ORDER BY result.updatedAt DESC "
+                )
+                .setFirstResult(offset)
+                .setMaxResults(pageSize);
+
+
+
 
         List<Object[]> queryResult = query.getResultList();
 
@@ -60,6 +64,7 @@ public class FeedRepository {
                 .jobPostIds(jobPostIds)
                 .questionPostIds(questionPostIds)
                 .build();
+        log.warn("ids {}", feedIds);
 
         long totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
                 .getSingleResult() +
@@ -77,12 +82,14 @@ public class FeedRepository {
 
 
         Query query = entityManager.createQuery(
-                "SELECT j.id, j.updatedAt, 'JOB_POST' as type FROM JobPost j " +
-                        "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +  // Case-insensitive search
+                "SELECT result.id, result.updatedAt, result.type FROM (" +
+                        "SELECT j.id as id, j.updatedAt as updatedAt, 'JOB_POST' as type FROM JobPost j " +
+                        "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +
                         "UNION ALL " +
-                        "SELECT q.id, q.updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
-                        "WHERE (LOWER(q.question) LIKE LOWER(:search)) " +
-                        "ORDER BY updatedAt DESC "
+                        "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
+                        "WHERE (LOWER(q.question) LIKE LOWER(:search))" +
+                        ") result " +
+                        "ORDER BY result.updatedAt DESC"
         );
         query.setParameter("search", "%" + search + "%");
 
@@ -136,8 +143,8 @@ public class FeedRepository {
         if (filter.equals("Q&A")) {
             query = entityManager.createQuery(
                     "SELECT q, 'QUESTION_POST' as type FROM QuestionPost q " +
-                            "WHERE LOWER(q.question) LIKE LOWER(:search)  " +
-                            "ORDER BY updatedAt DESC "
+                            "WHERE LOWER(q.question) LIKE LOWER(:search) " +
+                            "ORDER BY q.updatedAt DESC "
             );
             totals = (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q " +
                             "WHERE LOWER(q.question) LIKE LOWER(:search) ")
@@ -148,10 +155,11 @@ public class FeedRepository {
                     "SELECT j, 'JOB_POST' as type FROM JobPost j " +
                             "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +
                             "AND (LOWER(j.category) = LOWER(:filter) ) " +
-                            "ORDER BY updatedAt DESC "
+                            "ORDER BY j.updatedAt DESC "
             ).setParameter("filter", filter);
             totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j " +
-                            "WHERE LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)")
+                            "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +
+                            "AND (LOWER(j.category) = LOWER(:filter) )")
 
                     .setParameter("search", "%" + search + "%")
                     .getSingleResult();
