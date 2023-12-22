@@ -4,12 +4,12 @@ import com.ensak.connect.profile.model.Profile;
 import lombok.Builder;
 import lombok.Data;
 
-
 import java.util.Date;
 
 @Data
 @Builder
-public class ProfileResponseDTO {
+public class ProfileFeedResponseDTO {
+
     private Integer id;
 
     private String fullName;
@@ -22,12 +22,15 @@ public class ProfileResponseDTO {
 
     private String profilePicture;
 
-    public static ProfileResponseDTO mapToDTO(Profile profile){
-        return ProfileResponseDTO.builder()
+    private String profileType; //student or professor or laureate
+
+    public static ProfileFeedResponseDTO map(Profile profile, String profileType){
+        return ProfileFeedResponseDTO.builder()
                 .id(profile.getId())
                 .title(profile.getTitle())
                 .fullName(profile.getFullName())
                 .profilePicture(profile.getProfilePicture())
+                .profileType(profileType)
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())
                 .build();

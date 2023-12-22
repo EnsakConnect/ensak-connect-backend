@@ -4,6 +4,7 @@ import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.service.UserService;
+import com.ensak.connect.config.exception.model.UserNotFoundException;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobPostRepository;
@@ -22,21 +23,26 @@ public class JobPostSeeder implements CommandLineRunner {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public void run(String... args) throws Exception {
         createJobPosts();
     }
 
-    private void createJobPosts() {
-        User author = userService.createUser(
-                RegisterRequest.builder()
-                        .email("author@ensakconnect.com")
-                        .role("STUDENT")
-                        .fullname("Author User")
-                        .password("password")
-                        .build()
-        );
-        userService.activateUser(author.getEmail());
+    private void createJobPosts() throws UserNotFoundException {
+//        User author = userService.createUser(
+//                RegisterRequest.builder()
+//                        .email("author@ensakconnect.com")
+//                        .role("STUDENT")
+//                        .fullname("Author User")
+//                        .password("password")
+//                        .build()
+//        );
+        //userService.activateUser(author.getEmail());
+        User author = userRepository.findByEmail("author@ensakconnect.com")
+                .orElseThrow(()-> new UserNotFoundException("User not found"));
 
         jobPostRepository.save(
                 JobPost.builder()

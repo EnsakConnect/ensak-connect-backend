@@ -38,6 +38,7 @@ public class Profile extends ResourceOwner {
     //PATH TO CV
     //PATH TO banner
     //PATH to profile pic
+    private String profilePicture;
 
     @CreationTimestamp
     private Date createdAt;
@@ -45,9 +46,9 @@ public class Profile extends ResourceOwner {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
+    //@JsonIgnore
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
