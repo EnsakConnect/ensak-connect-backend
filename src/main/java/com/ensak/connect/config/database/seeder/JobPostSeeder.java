@@ -28,21 +28,25 @@ public class JobPostSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(userRepository.findByEmail("author.jobpost@ensakconnect.com").isEmpty())
-            createJobPosts();
+        createJobPosts();
     }
 
     private void createJobPosts() throws UserNotFoundException {
 
-        User author = userService.createUser(
-               RegisterRequest.builder()
-                       .email("author.jobpost@ensakconnect.com")
-                        .role("STUDENT")
-                        .fullname("Author User")
-                        .password("password")
-                        .build()
-        );
-        userService.activateUser(author.getEmail());
+        User author;
+        if (userRepository.findByEmail("author.jobpost@ensakconnect.com").isPresent()) {
+            author = userRepository.findByEmail("author.jobpost@ensakconnect.com").get();
+        } else {
+            author = userService.createUser(
+                    RegisterRequest.builder()
+                            .email("author.jobpost@ensakconnect.com")
+                            .role("STUDENT")
+                            .fullname("Demo User")
+                            .password("password")
+                            .build()
+            );
+            userService.activateUser(author.getEmail());
+        }
 
         jobPostRepository.save(
                 JobPost.builder()

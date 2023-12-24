@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class QuestionPostSeeder implements CommandLineRunner {
@@ -27,20 +28,25 @@ public class QuestionPostSeeder implements CommandLineRunner {
 
     @Override
     public void run(String[] args) throws Exception {
-        if(userRepository.findByEmail("author.question@ensakconnect.com").isEmpty())
-            createQuestionPosts();
+        createQuestionPosts();
     }
 
     private void createQuestionPosts() throws UserNotFoundException {
-        User author = userService.createUser(
-                RegisterRequest.builder()
-                        .email("author.question@ensakconnect.com")
-                        .role("STUDENT")
-                        .fullname("Demo User")
-                        .password("password")
-                        .build()
-        );
-        userService.activateUser(author.getEmail());
+        User author;
+        if (userRepository.findByEmail("author.question@ensakconnect.com").isPresent()) {
+            author = userRepository.findByEmail("author.question@ensakconnect.com").get();
+        } else {
+            author = userService.createUser(
+                    RegisterRequest.builder()
+                            .email("author.question@ensakconnect.com")
+                            .role("STUDENT")
+                            .fullname("Demo User")
+                            .password("password")
+                            .build()
+            );
+            userService.activateUser(author.getEmail());
+        }
+
 
         questionPostRepository.save(
                 QuestionPost.builder()

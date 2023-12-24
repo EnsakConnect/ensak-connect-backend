@@ -17,7 +17,7 @@ public class UserDemoSeeder implements CommandLineRunner {
 
     @Override
     public void run(String[] args) throws Exception {
-        if(userRepository.findByEmail("demo@ensakconnect.com").isEmpty())
+        if (userRepository.findByEmail("demo@ensakconnect.com").isEmpty())
             createDemoUser();
     }
 
