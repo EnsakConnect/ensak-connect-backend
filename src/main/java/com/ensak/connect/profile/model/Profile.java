@@ -21,10 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Profile extends ResourceOwner {
 
-    @Id
-    @GeneratedValue
-    private Integer id;
-
     private String fullName;
 
     private String title;
@@ -35,9 +31,6 @@ public class Profile extends ResourceOwner {
 
     private String address;
 
-    //PATH TO CV
-    //PATH TO banner
-    //PATH to profile pic
     private String profilePicture;
 
     @CreationTimestamp
