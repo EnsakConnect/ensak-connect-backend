@@ -46,6 +46,7 @@ public class Profile extends ResourceOwner {
     @UpdateTimestamp
     private Date updatedAt;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
