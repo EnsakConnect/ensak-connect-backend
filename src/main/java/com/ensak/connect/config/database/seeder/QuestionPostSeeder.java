@@ -27,18 +27,19 @@ public class QuestionPostSeeder implements CommandLineRunner {
 
     @Override
     public void run(String[] args) throws Exception {
-        if(userRepository.findByEmail("author.question@ensakconnect.com").isEmpty())
-            createQuestionPosts();
+        createQuestionPosts();
     }
 
     private void createQuestionPosts() throws UserNotFoundException {
-        User author = userService.createUser(
-                RegisterRequest.builder()
-                        .email("author.question@ensakconnect.com")
-                        .role("STUDENT")
-                        .fullname("Demo User")
-                        .password("password")
-                        .build()
+        User author = userRepository.findByEmail("author.question@ensakconnect.com").orElseGet(
+                () -> userService.createUser(
+                        RegisterRequest.builder()
+                                .email("author.question@ensakconnect.com")
+                                .role("STUDENT")
+                                .fullname("Demo User")
+                                .password("password")
+                                .build()
+                )
         );
         userService.activateUser(author.getEmail());
 
