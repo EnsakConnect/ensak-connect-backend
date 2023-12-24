@@ -20,4 +20,4 @@ jobs:
           distribution: 'adopt'
 
       - name: Run Tests with Maven
-        run: mvn test
+        run: mvn verify
