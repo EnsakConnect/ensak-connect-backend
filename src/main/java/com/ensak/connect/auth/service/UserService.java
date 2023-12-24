@@ -23,6 +23,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileService profileService;
 
     @SneakyThrows
     @Transactional
@@ -32,18 +33,15 @@ public class UserService {
         if(existing.isPresent()){
             throw new EmailExistException("Email account already exists");
         }
-      Profile profile = Profile.builder().fullName(registerRequest.getFullname()).build();
         User user = User.builder()
                 .email(registerRequest.getEmail())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.ROLE_USER)
-                .profile(profile)
                 .profileType(registerRequest.getRole())
                 .build();
-        // call the profile service to create an empty profile
 
         user = userRepository.save(user);
-        //profileService.createEmptyProfile(user, registerRequest.getFullname());
+        profileService.createEmptyProfile(user, registerRequest.getFullname());
 
 
         return user;

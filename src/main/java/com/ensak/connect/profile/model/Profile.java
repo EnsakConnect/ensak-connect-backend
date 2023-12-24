@@ -46,9 +46,8 @@ public class Profile extends ResourceOwner {
     @UpdateTimestamp
     private Date updatedAt;
 
-    //@JsonIgnore
-    @OneToOne(mappedBy = "profile", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
