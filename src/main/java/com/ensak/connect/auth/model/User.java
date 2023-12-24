@@ -43,8 +43,7 @@ public class User implements UserDetails {
 
     private String profileType;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", nullable = false)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Profile profile;
 
     @Enumerated(EnumType.STRING)

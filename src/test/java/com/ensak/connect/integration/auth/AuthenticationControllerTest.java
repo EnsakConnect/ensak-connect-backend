@@ -50,7 +50,6 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                 .build();
         userRepository.save(user);*/
         var user =this.createDummyStudent();
-        System.out.println(user);
         AuthenticationRequest validRequest = new AuthenticationRequest();
         validRequest.setEmail("student.user@email.com");
         validRequest.setPassword("password");
@@ -72,7 +71,6 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
     @Transactional
     public void loginWithInvalidCredentials() throws Exception {
         var user =this.createDummyStudent();
-        System.out.println(user);
         AuthenticationRequest invalidRequest = new AuthenticationRequest();
         invalidRequest.setEmail("student.user@email.com");
         invalidRequest.setPassword("password123");
