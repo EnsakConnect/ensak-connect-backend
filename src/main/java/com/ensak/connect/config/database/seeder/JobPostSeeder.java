@@ -34,16 +34,17 @@ public class JobPostSeeder implements CommandLineRunner {
 
     private void createJobPosts() throws UserNotFoundException {
 
-        User author = userService.createUser(
-               RegisterRequest.builder()
-                       .email("author.jobpost@ensakconnect.com")
-                        .role("STUDENT")
-                        .fullname("Author User")
-                        .password("password")
-                        .build()
+        User author = userRepository.findByEmail("author.jobpost@ensakconnect.com").orElseGet(
+                () -> userService.createUser(
+                        RegisterRequest.builder()
+                                .email("author.jobpost@ensakconnect.com")
+                                .role("STUDENT")
+                                .fullname("Author JobPost")
+                                .password("password")
+                                .build()
+                )
         );
         userService.activateUser(author.getEmail());
-
         jobPostRepository.save(
                 JobPost.builder()
                         .title("Jop Post TiTle 1")
