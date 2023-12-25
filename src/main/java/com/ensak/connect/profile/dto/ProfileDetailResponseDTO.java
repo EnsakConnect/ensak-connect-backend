@@ -1,6 +1,7 @@
 package com.ensak.connect.profile.dto;
 
 import com.ensak.connect.profile.model.*;
+import com.ensak.connect.profile.model.util.ProfileType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,6 +27,10 @@ public class ProfileDetailResponseDTO {
 
     private String resume;
 
+    private ProfileType profileType;
+
+    private String description;
+
     private List<Skill> skillList;
 
     private List<Language> languageList;
@@ -43,6 +48,8 @@ public class ProfileDetailResponseDTO {
                 .id(profile.getId())
                 .fullName(profile.getFullName())
                 .title(profile.getTitle())
+                .profileType(profile.getProfileType())
+                .description(profile.getDescription())
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())
                 .skillList(profile.getSkillList())

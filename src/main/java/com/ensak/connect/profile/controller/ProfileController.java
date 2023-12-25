@@ -40,10 +40,10 @@ public class ProfileController {
     }
 
     @PutMapping
-    public ResponseEntity<ProfileResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){
+    public ResponseEntity<ProfileDetailResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){
         Integer id = authenticationService.getAuthenticatedUser().getId();
         Profile profile = profileService.updateProfile(id,profileRequestDTO);
-        return new ResponseEntity<>(ProfileResponseDTO.mapToDTO(profile),HttpStatus.OK);
+        return new ResponseEntity<>(ProfileDetailResponseDTO.mapToDTO(profile),HttpStatus.OK);
     }
 
     @PutMapping("/profile-picture")

@@ -2,7 +2,7 @@ package com.ensak.connect.feed.dto;
 
 
 import com.ensak.connect.job_post.model.JobPost;
-import com.ensak.connect.profile.dto.ProfileFeedResponseDTO;
+import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +30,7 @@ public class FeedResponceDTO {
 
     private List<String> resources;
 
-    private ProfileFeedResponseDTO author;
+    private ProfileResponseDTO author;
 
     private Integer commentsCount;
 
@@ -52,7 +52,7 @@ public class FeedResponceDTO {
                 .title(jobPost.getTitle())
                 .description(jobPost.getDescription())
                 .resources(new ArrayList<>())
-                .author(ProfileFeedResponseDTO.map(jobPost.getAuthor().getProfile(), jobPost.getAuthor().getProfileType()))
+                .author(ProfileResponseDTO.mapToDTO(jobPost.getAuthor().getProfile()))
                 .commentsCount(jobPost.getComments().size())
                 .interactions(IntercationResponseDTO.mapComments(jobPost.getComments()))
                 .likesCount(0)
@@ -81,7 +81,7 @@ public class FeedResponceDTO {
                 .title(questionPost.getQuestion())
                 .description(null)
                 .resources(new ArrayList<>())
-                .author(ProfileFeedResponseDTO.map(questionPost.getAuthor().getProfile(), questionPost.getAuthor().getProfileType()))
+                .author(ProfileResponseDTO.mapToDTO(questionPost.getAuthor().getProfile()))
                 .commentsCount(questionPost.getAnswers().size())
                 .interactions(IntercationResponseDTO.mapAnswers(questionPost.getAnswers()))
                 .likesCount(0)

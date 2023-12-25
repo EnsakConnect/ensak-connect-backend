@@ -1,5 +1,6 @@
 package com.ensak.connect.profile.model;
 
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,6 +33,10 @@ public class Profile extends ResourceOwner {
     private String address;
 
     private String profilePicture;
+
+    private String description;
+
+    private ProfileType profileType;
 
     @CreationTimestamp
     private Date createdAt;
@@ -69,6 +74,6 @@ public class Profile extends ResourceOwner {
 
     @Override
     public String[] getAllowedExtensions() {
-        return new String[]{"png", "jpg"};
+        return new String[]{"png", "jpg","pdf"};
     }
 }

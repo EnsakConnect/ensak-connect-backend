@@ -13,6 +13,7 @@ import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.config.exception.model.UserNotFoundException;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.integration.FakeRequest;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,7 @@ public class AccountActivationIntegrationTest extends AuthenticatedBaseIntegrati
                         .fullname("test activation")
                         .email("test.activation@ensakconnect.com")
                         .password("password")
-                        .role(String.valueOf(Role.ROLE_USER))
+                        .role(ProfileType.LAUREATE.toString())
                         .build()
         );
 
