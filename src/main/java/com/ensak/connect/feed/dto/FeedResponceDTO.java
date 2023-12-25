@@ -28,15 +28,17 @@ public class FeedResponceDTO {
 
     private String description;
 
+    private CompanyFeedDTO company;
+
     private List<String> resources;
 
     private ProfileResponseDTO author;
 
     private Integer commentsCount;
 
-    private List<IntercationResponseDTO> interactions;
-
     private Integer likesCount;
+
+    private Boolean isLiked;
 
     private List<String> tags;
 
@@ -54,8 +56,14 @@ public class FeedResponceDTO {
                 .resources(new ArrayList<>())
                 .author(ProfileResponseDTO.mapToDTO(jobPost.getAuthor().getProfile()))
                 .commentsCount(jobPost.getComments().size())
-                .interactions(IntercationResponseDTO.mapComments(jobPost.getComments()))
+                .company(CompanyFeedDTO.builder()
+                        .logo(null)
+                        .companyName(jobPost.getCompanyName())
+                        .location(jobPost.getLocation())
+                        .build()
+                )
                 .likesCount(0)
+                .isLiked(false)
                 .updatedAt(jobPost.getUpdatedAt())
                 .tags(jobPost.getTags())
                 .timePassed(prettyTime.format(jobPost.getUpdatedAt()))
@@ -80,11 +88,12 @@ public class FeedResponceDTO {
                 .postType("Q&A")
                 .title(questionPost.getQuestion())
                 .description(null)
+                .company(null)
                 .resources(new ArrayList<>())
                 .author(ProfileResponseDTO.mapToDTO(questionPost.getAuthor().getProfile()))
                 .commentsCount(questionPost.getAnswers().size())
-                .interactions(IntercationResponseDTO.mapAnswers(questionPost.getAnswers()))
                 .likesCount(0)
+                .isLiked(false)
                 .updatedAt(questionPost.getUpdatedAt())
                 .tags(questionPost.getTags())
                 .timePassed(prettyTime.format(questionPost.getUpdatedAt()))
