@@ -14,12 +14,15 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class TestFileSystemStorageService implements StorageService{
     @Override
-    public void init() {
-
-    }
+    public void init() {}
 
     @Override
     public String store(MultipartFile file, String[] extensions) {
+        return null;
+    }
+
+    @Override
+    public String store(MultipartFile file) {
         return null;
     }
 
@@ -39,12 +42,8 @@ public class TestFileSystemStorageService implements StorageService{
     }
 
     @Override
-    public void deleteAll() {
-
-    }
+    public void deleteAll() {}
 
     @Override
-    public void delete(String filename) {
-
-    }
+    public void delete(String filename) {}
 }
