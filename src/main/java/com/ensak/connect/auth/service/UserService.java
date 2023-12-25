@@ -8,6 +8,7 @@ import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.config.exception.model.EmailExistException;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.model.Profile;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.profile.repository.ProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +38,10 @@ public class UserService {
                 .email(registerRequest.getEmail())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.ROLE_USER)
-                .profileType(registerRequest.getRole())
                 .build();
 
         user = userRepository.save(user);
-        profileService.createEmptyProfile(user, registerRequest.getFullname());
-
+        profileService.createEmptyProfile(user, registerRequest.getFullname(), ProfileType.valueOf(registerRequest.getRole()));
 
         return user;
     }
