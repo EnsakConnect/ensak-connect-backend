@@ -6,14 +6,10 @@ import com.ensak.connect.profile.model.*;
 import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.profile.repository.*;
 import com.ensak.connect.resource.ResourceService;
-import com.ensak.connect.resource.ResourceType;
-import com.ensak.connect.resource.model.Resource;
-import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.auth.model.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +50,23 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
+    public Profile getUserProfileById(Integer userId){
+        return profileRepository.findProfileByUserId(userId).orElseThrow(
+                () -> new NotFoundException("Profile Not Found")
+        );
+    }
+
+    public ProfileDetailResponseDTO getDetailedProfile(Integer userId){
+        Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
+                () -> new NotFoundException("Profile Not Found")
+        );
+
+        ProfileDetailResponseDTO responseDTO = ProfileDetailResponseDTO.mapToDTO(profile);
+        //TODO check if pp banner resume is sent
+
+        return responseDTO;
+    }
+    /*
     public Resource handleProfileResourceUpload(User user, ResourceType resume, MultipartFile file) {
         Profile profile = getUserProfileById(user.getId());
 
@@ -67,35 +80,6 @@ public class ProfileService {
         }
         return resource;
     }
-
-    public Profile getUserProfileById(Integer userId){
-        return profileRepository.findProfileByUserId(userId).orElseThrow(
-                () -> new NotFoundException("Profile Not Found")
-        );
-    }
-
-    public ProfileDetailResponseDTO getDetailedProfile(Integer userId){
-        Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
-                () -> new NotFoundException("Profile Not Found")
-        );
-
-        ProfileDetailResponseDTO responseDTO = ProfileDetailResponseDTO.mapToDTO(profile);
-        Resource profilePicture = getProfilePicture(profile);
-        if(profilePicture != null){
-            responseDTO.setProfilePicture(profilePicture.getFilename());
-        }
-        Resource banner = getBanner(profile);
-        if(profilePicture != null){
-            responseDTO.setBanner(banner.getFilename());
-        }
-        Resource resume = getResume(profile);
-        if(profilePicture != null){
-            responseDTO.setResume(resume.getFilename());
-        }
-
-        return responseDTO;
-    }
-
     public Resource getProfilePicture(ResourceOwner owner) {
         List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.ProfilePicture);
         return resources.isEmpty() ? null : resources.get(0);
@@ -120,16 +104,15 @@ public class ProfileService {
         Resource resource = getResume(owner);
         resourceService.deleteResource(resource);
     }
+
+     */
     public ProfileResponseDTO getSummaryProfile(Integer userId){
         Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
                 () -> new NotFoundException("Profile Not Found")
         );
-
+        //TODO check if profile pic is sent
         ProfileResponseDTO responseDTO = ProfileResponseDTO.mapToDTO(profile);
-        Resource profilePicture = getProfilePicture(profile);
-        if(profilePicture != null){
-            responseDTO.setProfilePicture(profilePicture.getFilename());
-        }
+
         return responseDTO;
     }
 
