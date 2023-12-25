@@ -7,6 +7,7 @@ import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
 import com.ensak.connect.profile.model.util.ContractType;
 import com.ensak.connect.profile.model.util.Level;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -121,6 +122,7 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
                 .city("Kenitra")
                 .address("adress")
                 .title("Frontend React Dev")
+                .profileType(ProfileType.STUDENT.toString())
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
         //request

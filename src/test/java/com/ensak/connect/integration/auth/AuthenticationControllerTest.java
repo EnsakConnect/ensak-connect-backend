@@ -8,6 +8,7 @@ import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -94,7 +95,7 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
         RegisterRequest request = RegisterRequest.builder()
                 .email("test.register@ensakconnect.com")
                 .fullname("Test Register")
-                .role(String.valueOf(Role.ROLE_USER))
+                .role(ProfileType.LAUREATE.toString())
                 .password("password")
                 .build();
         String requestJSON = objectMapper.writeValueAsString(request);
@@ -119,13 +120,13 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                         .fullname("test email exists")
                         .email("test.email.exits@ensakconnect.com")
                         .password("password")
-                        .role(String.valueOf(Role.ROLE_USER))
+                        .role(ProfileType.LAUREATE.toString())
                         .build()
         );
         RegisterRequest request = RegisterRequest.builder()
                 .email("test.email.exits@ensakconnect.com")
                 .fullname("Test Register")
-                .role(String.valueOf(Role.ROLE_USER))
+                .role(ProfileType.LAUREATE.toString())
                 .password("password")
                 .build();
         String requestJSON = objectMapper.writeValueAsString(request);

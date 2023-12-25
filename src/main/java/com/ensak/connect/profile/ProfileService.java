@@ -3,6 +3,7 @@ package com.ensak.connect.profile;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.profile.repository.*;
 import com.ensak.connect.resource.ResourceService;
 import com.ensak.connect.resource.ResourceType;
@@ -31,28 +32,25 @@ public class ProfileService {
     private final ProjectRepository projectRepository;
     private final ResourceService resourceService;
 
-    public void createEmptyProfile(User user, String fullName){
-        Profile profile = Profile.builder().fullName(fullName).user(user).build();
+    public void createEmptyProfile(User user, String fullName, ProfileType type){
+        Profile profile = Profile.builder()
+                .fullName(fullName)
+                .user(user)
+                .profileType(type)
+                .build();
         profileRepository.save(profile);
     }
 
     public Profile updateProfile(Integer user_id,ProfileRequestDTO pDTO){
         Profile profile = getUserProfileById(user_id);
-        if(pDTO.getTitle() != null){
-            profile.setTitle(pDTO.getTitle());
-        }
-        if(pDTO.getFullName() != null){
-            profile.setFullName(pDTO.getFullName());
-        }
-        if(pDTO.getPhone() != null){
-            profile.setPhone(pDTO.getPhone());
-        }
-        if(pDTO.getCity() != null){
-            profile.setCity(pDTO.getCity());
-        }
-        if(pDTO.getAddress() != null){
-            profile.setAddress(pDTO.getAddress());
-        }
+        profile.setTitle(pDTO.getTitle());
+        profile.setFullName(pDTO.getFullName());
+        profile.setPhone(pDTO.getPhone());
+        profile.setCity(pDTO.getCity());
+        profile.setAddress(pDTO.getAddress());
+        profile.setProfileType(ProfileType.valueOf(pDTO.getProfileType()));
+        profile.setDescription(pDTO.getDescription());
+
         return profileRepository.save(profile);
     }
 
