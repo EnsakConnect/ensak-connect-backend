@@ -46,6 +46,7 @@ public class ProfileController {
         return new ResponseEntity<>(ProfileDetailResponseDTO.mapToDTO(profile),HttpStatus.OK);
     }
 
+    /*
     @PutMapping("/profile-picture")
     public ResponseEntity<?> uploadProfilePicture(@RequestParam("picture") MultipartFile file) {
 
@@ -112,5 +113,5 @@ public class ProfileController {
 
         return ResponseEntity.noContent().build();
     }
-
+    */
 }
