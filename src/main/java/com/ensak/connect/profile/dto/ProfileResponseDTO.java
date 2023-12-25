@@ -2,6 +2,7 @@ package com.ensak.connect.profile.dto;
 
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.profile.model.util.ProfileType;
+import com.ensak.connect.resource.model.Resource;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +22,7 @@ public class ProfileResponseDTO {
 
     private Date updatedAt;
 
-    private String profilePicture;
+    private Resource profilePicture;
 
     private ProfileType profileType;
 
