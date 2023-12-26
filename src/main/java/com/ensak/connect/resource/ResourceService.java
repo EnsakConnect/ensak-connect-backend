@@ -1,6 +1,5 @@
 package com.ensak.connect.resource;
 
-import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
@@ -12,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,6 @@ public class ResourceService {
 
     private final StorageService storageService;
     private final ResourceRepository resourceRepository;
-    private final AuthenticationService authenticationService;
     public Resource createResource(User user, MultipartFile file){
 
             String filename = storageService.store(file);
@@ -38,18 +37,29 @@ public class ResourceService {
         return resourceRepository.findAllByUser(user).orElse(Collections.emptyList());
     }
 
-    public void useResource(Integer resource_id) throws ForbiddenException {
+    public Resource useResource(Integer resource_id, User user ) throws ForbiddenException {
         Resource resource = resourceRepository.findById(resource_id).orElseThrow(
                 () -> new NotFoundException("Resource with ID: " + resource_id + " not found.")
         );
-        User user = authenticationService.getAuthenticatedUser();
-        if(resource.getUser().getId() == user.getId()){
+        if(Objects.equals(resource.getUser().getId(), user.getId())){
             resource.setUsed(true);
             resourceRepository.save(resource);
         }
         else
             throw new ForbiddenException("User " + user.getId() + " is not allowed to use resource " + resource_id);
+        return resource;
+    }
+    public void unuseResource(Integer resource_id, User user) throws ForbiddenException {
+        Resource resource = resourceRepository.findById(resource_id).orElseThrow(
+                () -> new NotFoundException("Resource with ID: " + resource_id + " not found.")
+        );
 
+        if(Objects.equals(resource.getUser().getId(), user.getId())) {
+            resource.setUsed(false);
+            resourceRepository.save(resource);
+        } else {
+            throw new ForbiddenException("User " + user.getId() + " is not allowed to unuse resource " + resource_id);
+        }
     }
 
     public void deleteResource(Resource resource){
