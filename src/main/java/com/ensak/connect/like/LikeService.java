@@ -27,11 +27,17 @@ public class LikeService {
         User author = authenticationService.getAuthenticatedUser();
         JobPost jobPost = jobPostRepository.findById(jobPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + jobPostId + "."));
-        Set<Like> likes = jobPost.getLikes();
-        if (isLikedBySameAuthor(likes, author) == null){
-            likes.add(Like.builder()
-                    .author(author)
-                    .build());
+//        Set<Like> likes = jobPost.getLikes();
+//        if (isLikedBySameAuthor(likes, author) == null){
+//            likes.add(Like.builder()
+//                    .author(author)
+//                    .build());
+//            jobPost.setLikes(likes);
+//            jobPostRepository.save(jobPost);
+//        }
+        List<Integer> likes = jobPost.getLikes();
+        if (isLikedBySameAuthor(likes, author.getId()) == null) {
+            likes.add(author.getId());
             jobPost.setLikes(likes);
             jobPostRepository.save(jobPost);
         }
@@ -41,10 +47,17 @@ public class LikeService {
         User author = authenticationService.getAuthenticatedUser();
         JobPost jobPost = jobPostRepository.findById(jobPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + jobPostId + "."));
-        Set<Like> likes = jobPost.getLikes();
-        Like like = isLikedBySameAuthor(likes, author);
-        if (like != null){
-            likes.remove(like);
+//        Set<Like> likes = jobPost.getLikes();
+//        Like like = isLikedBySameAuthor(likes, author);
+//        if (like != null){
+//            likes.remove(like);
+//            jobPost.setLikes(likes);
+//            jobPostRepository.save(jobPost);
+//        }
+        List<Integer> likes = jobPost.getLikes();
+        Integer authorId = isLikedBySameAuthor(likes, author.getId());
+        if (authorId != null) {
+            likes.remove(authorId);
             jobPost.setLikes(likes);
             jobPostRepository.save(jobPost);
         }
@@ -54,11 +67,17 @@ public class LikeService {
         User author = authenticationService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostRepository.findById(questionPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + questionPostId + "."));
-        Set<Like> likes = questionPost.getLikes();
-        if (isLikedBySameAuthor(likes, author) == null){
-            likes.add(Like.builder()
-                    .author(author)
-                    .build());
+//        Set<Like> likes = questionPost.getLikes();
+//        if (isLikedBySameAuthor(likes, author) == null){
+//            likes.add(Like.builder()
+//                    .author(author)
+//                    .build());
+//            questionPost.setLikes(likes);
+//            questionPostRepository.save(questionPost);
+//        }
+        List<Integer> likes = questionPost.getLikes();
+        if (isLikedBySameAuthor(likes, author.getId()) == null) {
+            likes.add(author.getId());
             questionPost.setLikes(likes);
             questionPostRepository.save(questionPost);
         }
@@ -68,19 +87,35 @@ public class LikeService {
         User author = authenticationService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostRepository.findById(questionPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + questionPostId + "."));
-        Set<Like> likes = questionPost.getLikes();
-        Like like = isLikedBySameAuthor(likes, author);
-        if (like != null){
-            likes.remove(like);
+//        Set<Like> likes = questionPost.getLikes();
+//        Like like = isLikedBySameAuthor(likes, author);
+//        if (like != null){
+//            likes.remove(like);
+//            questionPost.setLikes(likes);
+//            questionPostRepository.save(questionPost);
+//        }
+        List<Integer> likes = questionPost.getLikes();
+        Integer authorId = isLikedBySameAuthor(likes, author.getId());
+        if (authorId != null) {
+            likes.remove(authorId);
             questionPost.setLikes(likes);
             questionPostRepository.save(questionPost);
         }
     }
 
-    public Like isLikedBySameAuthor(Set<Like> likes, User author) {
-        for (Like like : likes) {
-            if (like.getAuthor().equals(author)){
-                return like;
+//    public Like isLikedBySameAuthor(Set<Like> likes, User author) {
+//        for (Like like : likes) {
+//            if (like.getAuthor().equals(author)){
+//                return like;
+//            }
+//        }
+//        return null;
+//    }
+
+    public Integer isLikedBySameAuthor(List<Integer> likes, Integer authorId) {
+        for (Integer like : likes) {
+            if (like.equals(authorId)){
+                return authorId;
             }
         }
         return null;

@@ -3,6 +3,7 @@ package com.ensak.connect.question_post.model;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.like.Like;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -32,8 +33,8 @@ public class QuestionPost {
     @OneToMany(mappedBy = "questionPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Like> likes = new HashSet<>();
+    @ElementCollection
+    private List<Integer> likes = new ArrayList<>();
 
     @CreationTimestamp
     private Date createdAt;

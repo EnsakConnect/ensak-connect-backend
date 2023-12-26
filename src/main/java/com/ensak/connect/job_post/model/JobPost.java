@@ -40,8 +40,8 @@ public class JobPost {
 
     private String category;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Like> likes = new HashSet<>();
+    @ElementCollection
+    private List<Integer> likes = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
