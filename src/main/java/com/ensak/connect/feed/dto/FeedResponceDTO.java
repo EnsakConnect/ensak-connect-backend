@@ -46,7 +46,7 @@ public class FeedResponceDTO {
 
     private String timePassed;
 
-    public static FeedResponceDTO map(JobPost jobPost){
+    public static FeedResponceDTO map(JobPost jobPost, Integer authorId){
         PrettyTime prettyTime = new PrettyTime();
         return FeedResponceDTO.builder()
                 .id(jobPost.getId())
@@ -63,25 +63,25 @@ public class FeedResponceDTO {
                         .build()
                 )
                 .likesCount(jobPost.getLikes().size())
-                .isLiked(false)
+                .isLiked(jobPost.getLikes().contains(authorId))
                 .updatedAt(jobPost.getUpdatedAt())
                 .tags(jobPost.getTags())
                 .timePassed(prettyTime.format(jobPost.getUpdatedAt()))
                 .build();
     }
 
-    public static List<FeedResponceDTO> mapJobPosts(List<JobPost> jobPosts) {
+    public static List<FeedResponceDTO> mapJobPosts(List<JobPost> jobPosts, Integer authId) {
         if (jobPosts == null) {
             return null;
         }
         List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(jobPosts.size());
         for (JobPost jobPost: jobPosts){
-            result.add(map(jobPost));
+            result.add(map(jobPost, authId));
         }
         return result;
     }
 
-    public static FeedResponceDTO map(QuestionPost questionPost){
+    public static FeedResponceDTO map(QuestionPost questionPost, Integer authId){
         PrettyTime prettyTime = new PrettyTime();
         return FeedResponceDTO.builder()
                 .id(questionPost.getId())
@@ -93,20 +93,20 @@ public class FeedResponceDTO {
                 .author(ProfileFeedResponseDTO.map(questionPost.getAuthor().getProfile(), questionPost.getAuthor().getProfileType()))
                 .commentsCount(questionPost.getAnswers().size())
                 .likesCount(questionPost.getLikes().size())
-                .isLiked(false)
+                .isLiked(questionPost.getLikes().contains(authId))
                 .updatedAt(questionPost.getUpdatedAt())
                 .tags(questionPost.getTags())
                 .timePassed(prettyTime.format(questionPost.getUpdatedAt()))
                 .build();
     }
 
-    public static List<FeedResponceDTO> mapQuestionPosts(List<QuestionPost> questionPosts) {
+    public static List<FeedResponceDTO> mapQuestionPosts(List<QuestionPost> questionPosts, Integer authId) {
         if (questionPosts == null) {
             return null;
         }
         List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(questionPosts.size());
         for (QuestionPost questionPost: questionPosts){
-            result.add(map(questionPost));
+            result.add(map(questionPost, authId));
         }
         return result;
     }

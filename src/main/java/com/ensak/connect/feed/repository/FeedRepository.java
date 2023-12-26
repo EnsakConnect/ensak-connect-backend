@@ -1,5 +1,7 @@
 package com.ensak.connect.feed.repository;
 
+import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.feed.dto.FeedListIdResponseDTO;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
 import com.ensak.connect.feed.dto.FeedResponceDTO;
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class FeedRepository {
 
     private final EntityManagerFactory managerFactory;
+    private final AuthenticationService authenticationService;
 
     public FeedPageResponseDTO findAll(PageRequest pageRequest) {
         EntityManager entityManager = managerFactory.createEntityManager();
@@ -176,15 +179,16 @@ public class FeedRepository {
         List<FeedResponceDTO> feedResponceDTOList = new ArrayList<>();
 
         if (!queryResult.isEmpty()) {
+            User author = authenticationService.getAuthenticatedUser();
             if ("JOB_POST".equals(queryResult.get(0)[1])){
                 log.info("On est dans job post");
                 for (Object[] row : queryResult) {
-                    feedResponceDTOList.add(FeedResponceDTO.map((JobPost) row[0]));
+                    feedResponceDTOList.add(FeedResponceDTO.map((JobPost) row[0], author.getId()));
                 }
             }else {
                 log.info("On est dans question post");
                 for (Object[] row : queryResult) {
-                    feedResponceDTOList.add(FeedResponceDTO.map((QuestionPost) row[0]));
+                    feedResponceDTOList.add(FeedResponceDTO.map((QuestionPost) row[0], author.getId()));
                 }
             }
         }
