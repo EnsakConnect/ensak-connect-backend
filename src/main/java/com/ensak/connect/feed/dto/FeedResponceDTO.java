@@ -4,6 +4,7 @@ package com.ensak.connect.feed.dto;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.resource.model.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -61,6 +62,11 @@ public class FeedResponceDTO {
                         .companyName(jobPost.getCompanyName())
                         .location(jobPost.getLocation())
                         .build()
+                )
+                .resources(
+                        jobPost.getResources() != null
+                                ? jobPost.getResources().stream().map(Resource::getFilename).toList()
+                                : null
                 )
                 .likesCount(0)
                 .isLiked(false)
