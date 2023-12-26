@@ -162,6 +162,7 @@ public class FeedRepository {
                             "AND (LOWER(j.category) = LOWER(:filter) )")
 
                     .setParameter("search", "%" + search + "%")
+                    .setParameter("filter", filter)
                     .getSingleResult();
         }
 

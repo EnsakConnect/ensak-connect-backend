@@ -1,6 +1,7 @@
 package com.ensak.connect.job_post.model;
 
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.like.Like;
 import com.ensak.connect.resource.model.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -11,9 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Data
@@ -41,6 +40,9 @@ public class JobPost {
     private List<String> tags = new ArrayList<>();
 
     private String category;
+
+    @ElementCollection
+    private List<Integer> likes = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

@@ -54,7 +54,6 @@ public class FeedResponceDTO {
                 .postType(jobPost.getCategory().toUpperCase())
                 .title(jobPost.getTitle())
                 .description(jobPost.getDescription())
-                .resources(new ArrayList<>())
                 .author(ProfileResponseDTO.mapToDTO(jobPost.getAuthor().getProfile()))
                 .commentsCount(jobPost.getComments().size())
                 .company(CompanyFeedDTO.builder()
@@ -63,12 +62,12 @@ public class FeedResponceDTO {
                         .location(jobPost.getLocation())
                         .build()
                 )
+                .likesCount(jobPost.getLikes().size())
                 .resources(
                         jobPost.getResources() != null
                                 ? jobPost.getResources().stream().map(Resource::getFilename).toList()
                                 : null
                 )
-                .likesCount(0)
                 .isLiked(false)
                 .updatedAt(jobPost.getUpdatedAt())
                 .tags(jobPost.getTags())
@@ -98,7 +97,7 @@ public class FeedResponceDTO {
                 .resources(new ArrayList<>())
                 .author(ProfileResponseDTO.mapToDTO(questionPost.getAuthor().getProfile()))
                 .commentsCount(questionPost.getAnswers().size())
-                .likesCount(0)
+                .likesCount(questionPost.getLikes().size())
                 .isLiked(false)
                 .updatedAt(questionPost.getUpdatedAt())
                 .tags(questionPost.getTags())
