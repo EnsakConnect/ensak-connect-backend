@@ -2,6 +2,7 @@ package com.ensak.connect.profile.dto;
 
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.profile.model.util.ProfileType;
+import com.ensak.connect.resource.model.Resource;
 import lombok.Builder;
 import lombok.Data;
 
@@ -30,7 +31,9 @@ public class ProfileResponseDTO {
                 .id(profile.getId())
                 .title(profile.getTitle())
                 .fullName(profile.getFullName())
-                .profilePicture(profile.getProfilePicture())
+                .profilePicture(
+                        (profile.getProfilePicture()!=null)?profile.getProfilePicture().getFilename():null
+                )
                 .profileType(profile.getProfileType())
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())

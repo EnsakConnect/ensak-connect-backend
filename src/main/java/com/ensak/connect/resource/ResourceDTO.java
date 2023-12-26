@@ -14,9 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class ResourceDTO {
 
-    private String filename;
+    private Integer id;
 
-    private ResourceType type;
+    private String filename;
 
     private Date createdAt;
 
@@ -24,8 +24,8 @@ public class ResourceDTO {
 
     public static ResourceDTO mapToDTO(Resource resource){
         return ResourceDTO.builder()
+                .id(resource.getId())
                 .filename(resource.getFilename())
-                .type(resource.getType())
                 .createdAt(resource.getCreatedAt())
                 .updatedAt(resource.getUpdatedAt())
                 .build();

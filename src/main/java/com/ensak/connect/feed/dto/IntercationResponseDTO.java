@@ -1,10 +1,6 @@
 package com.ensak.connect.feed.dto;
 
-import com.ensak.connect.auth.model.User;
-import com.ensak.connect.job_post.dto.JobPostResponseDTO;
 import com.ensak.connect.job_post.model.CommentPost;
-import com.ensak.connect.job_post.model.JobPost;
-import com.ensak.connect.profile.dto.ProfileFeedResponseDTO;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.Answer;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
 package com.ensak.connect.resource.model;
 
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.resource.ResourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -23,18 +24,16 @@ public class Resource {
     @GeneratedValue
     private Integer id;
 
-    private ResourceType type;
-
-    @JsonIgnore
     @Column(nullable = false)
-    private String ownerType;
+    private Boolean used;
 
+    @Column(nullable = false)
     private String filename;
 
-    @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "owner_id")
-    private ResourceOwner owner;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 
     @CreationTimestamp
     private Date createdAt;

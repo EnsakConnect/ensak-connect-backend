@@ -1,7 +1,7 @@
 package com.ensak.connect.profile.model;
 
 import com.ensak.connect.profile.model.util.ProfileType;
-import com.ensak.connect.resource.model.ResourceOwner;
+import com.ensak.connect.resource.model.Resource;
 import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -20,7 +20,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile extends ResourceOwner {
+public class Profile {
+
+    @Id
+    @GeneratedValue
+    private Integer id;
 
     private String fullName;
 
@@ -32,7 +36,19 @@ public class Profile extends ResourceOwner {
 
     private String address;
 
-    private String profilePicture;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_picture_id", referencedColumnName = "id")
+    private Resource profilePicture;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_id", referencedColumnName = "id")
+    private Resource resume;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "banner_id", referencedColumnName = "id")
+    private Resource banner;
+
 
     private String description;
 
@@ -67,13 +83,4 @@ public class Profile extends ResourceOwner {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projectList;
 
-    @Override
-    public String getResourceOwnerType() {
-        return "Profile";
-    }
-
-    @Override
-    public String[] getAllowedExtensions() {
-        return new String[]{"png", "jpg","pdf"};
-    }
 }

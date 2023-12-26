@@ -29,7 +29,7 @@ public class ProfileFeedResponseDTO {
                 .id(profile.getId())
                 .title(profile.getTitle())
                 .fullName(profile.getFullName())
-                .profilePicture(profile.getProfilePicture())
+                //.profilePicture(profile.getProfilePicture())
                 .profileType(profileType)
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())
