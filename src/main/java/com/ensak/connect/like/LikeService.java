@@ -23,7 +23,7 @@ public class LikeService {
     private final QuestionPostRepository questionPostRepository;
     private final AuthenticationService authenticationService;
 
-    public void likeJobPost(Integer jobPostId) {
+    public String likeJobPost(Integer jobPostId) {
         User author = authenticationService.getAuthenticatedUser();
         JobPost jobPost = jobPostRepository.findById(jobPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + jobPostId + "."));
@@ -40,10 +40,12 @@ public class LikeService {
             likes.add(author.getId());
             jobPost.setLikes(likes);
             jobPostRepository.save(jobPost);
+            return "Job post liked";
         }
+        return "Job post already liked";
     }
 
-    public void dislikeJobPost(Integer jobPostId) {
+    public String dislikeJobPost(Integer jobPostId) {
         User author = authenticationService.getAuthenticatedUser();
         JobPost jobPost = jobPostRepository.findById(jobPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + jobPostId + "."));
@@ -60,10 +62,12 @@ public class LikeService {
             likes.remove(authorId);
             jobPost.setLikes(likes);
             jobPostRepository.save(jobPost);
+            return "Job post disliked";
         }
+        return "Job post already disliked";
     }
 
-    public void likeQuestionPost(Integer questionPostId) {
+    public String likeQuestionPost(Integer questionPostId) {
         User author = authenticationService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostRepository.findById(questionPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + questionPostId + "."));
@@ -80,10 +84,12 @@ public class LikeService {
             likes.add(author.getId());
             questionPost.setLikes(likes);
             questionPostRepository.save(questionPost);
+            return "Question post liked";
         }
+        return "Question post already liked";
     }
 
-    public void dislikeQuestionPost(Integer questionPostId) {
+    public String dislikeQuestionPost(Integer questionPostId) {
         User author = authenticationService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostRepository.findById(questionPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + questionPostId + "."));
@@ -100,7 +106,9 @@ public class LikeService {
             likes.remove(authorId);
             questionPost.setLikes(likes);
             questionPostRepository.save(questionPost);
+            return "Question post disliked";
         }
+        return "Question post already disliked";
     }
 
 //    public Like isLikedBySameAuthor(Set<Like> likes, User author) {
