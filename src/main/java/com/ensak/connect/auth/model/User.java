@@ -2,6 +2,7 @@ package com.ensak.connect.auth.model;
 
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.Token;
+import com.ensak.connect.like.Like;
 import com.ensak.connect.profile.model.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -51,6 +52,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "author")
+    private List<Like> likes;
 
 
     @Override
