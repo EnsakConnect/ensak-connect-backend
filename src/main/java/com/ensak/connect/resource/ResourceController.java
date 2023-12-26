@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,6 +47,22 @@ public class ResourceController {
         Resource resource = resourceService.createResource(user,file);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resource);
+    }
+
+    @PostMapping("/multiple-files")
+    public ResponseEntity<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+
+        User user = this.authenticationService.getAuthenticatedUser();
+        List<Resource> uploadedResources = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                Resource resource = resourceService.createResource(user, file);
+                uploadedResources.add(resource);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(uploadedResources);
     }
 
     @GetMapping
