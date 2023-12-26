@@ -7,9 +7,7 @@ import com.ensak.connect.auth.model.User;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.config.exception.model.EmailExistException;
 import com.ensak.connect.profile.ProfileService;
-import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.profile.model.util.ProfileType;
-import com.ensak.connect.profile.repository.ProfileRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,12 +28,12 @@ public class UserService {
     @Transactional
     public User createUser(RegisterRequest registerRequest){
 
-        Optional<User> existing = userRepository.findByEmail(registerRequest.getEmail());
+        Optional<User> existing = userRepository.findByEmail(registerRequest.getEmail().toLowerCase());
         if(existing.isPresent()){
             throw new EmailExistException("Email account already exists");
         }
         User user = User.builder()
-                .email(registerRequest.getEmail())
+                .email(registerRequest.getEmail().toLowerCase())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.ROLE_USER)
                 .build();
@@ -73,7 +71,7 @@ public class UserService {
     }
 
     public User getUserByEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow(
+        return userRepository.findByEmail(email.toLowerCase()).orElseThrow(
                 () -> new NotFoundException("User Not Found")
         );
     }
