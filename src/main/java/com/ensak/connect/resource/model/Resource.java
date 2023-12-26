@@ -1,6 +1,6 @@
 package com.ensak.connect.resource.model;
 
-import com.ensak.connect.resource.ResourceType;
+import com.ensak.connect.auth.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,18 +23,17 @@ public class Resource {
     @GeneratedValue
     private Integer id;
 
-    private ResourceType type;
-
-    @JsonIgnore
     @Column(nullable = false)
-    private String ownerType;
+    private Boolean used;
+    //TODO : consider changing used to false after the using entity is deleted (Profile, Job, Blog, Answer)
 
+    @Column(nullable = false)
     private String filename;
 
-    @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "owner_id")
-    private ResourceOwner owner;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 
     @CreationTimestamp
     private Date createdAt;

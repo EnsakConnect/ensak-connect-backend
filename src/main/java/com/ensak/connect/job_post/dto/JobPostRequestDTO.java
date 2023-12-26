@@ -36,4 +36,7 @@ public class JobPostRequestDTO {
 
     @Size(max = 10, message = "You can have a maximum of 10 tags")
     private List<String> tags = new ArrayList<>();
+
+    @Size(max = 10, message = "You can have a maximum of 10 resources")
+    private List<Integer> resources = new ArrayList<>();
 }

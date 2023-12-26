@@ -3,16 +3,15 @@ package com.ensak.connect.profile;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.profile.repository.*;
 import com.ensak.connect.resource.ResourceService;
-import com.ensak.connect.resource.ResourceType;
-import com.ensak.connect.resource.model.Resource;
-import com.ensak.connect.resource.model.ResourceOwner;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.resource.model.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,43 +30,26 @@ public class ProfileService {
     private final ProjectRepository projectRepository;
     private final ResourceService resourceService;
 
-    public void createEmptyProfile(User user, String fullName){
-        Profile profile = Profile.builder().fullName(fullName).user(user).build();
+    public void createEmptyProfile(User user, String fullName, ProfileType type){
+        Profile profile = Profile.builder()
+                .fullName(fullName)
+                .user(user)
+                .profileType(type)
+                .build();
         profileRepository.save(profile);
     }
 
     public Profile updateProfile(Integer user_id,ProfileRequestDTO pDTO){
         Profile profile = getUserProfileById(user_id);
-        if(pDTO.getTitle() != null){
-            profile.setTitle(pDTO.getTitle());
-        }
-        if(pDTO.getFullName() != null){
-            profile.setFullName(pDTO.getFullName());
-        }
-        if(pDTO.getPhone() != null){
-            profile.setPhone(pDTO.getPhone());
-        }
-        if(pDTO.getCity() != null){
-            profile.setCity(pDTO.getCity());
-        }
-        if(pDTO.getAddress() != null){
-            profile.setAddress(pDTO.getAddress());
-        }
+        profile.setTitle(pDTO.getTitle());
+        profile.setFullName(pDTO.getFullName());
+        profile.setPhone(pDTO.getPhone());
+        profile.setCity(pDTO.getCity());
+        profile.setAddress(pDTO.getAddress());
+        profile.setProfileType(ProfileType.valueOf(pDTO.getProfileType()));
+        profile.setDescription(pDTO.getDescription());
+
         return profileRepository.save(profile);
-    }
-
-    public Resource handleProfileResourceUpload(User user, ResourceType resume, MultipartFile file) {
-        Profile profile = getUserProfileById(user.getId());
-
-        List<Resource> resources = resourceService.getAllOwnerResource(profile, resume);
-        Resource resource;
-        if (resources == null || resources.isEmpty()) {
-            resource = resourceService.createResource(profile, resume, file);
-        } else {
-            resource = resources.get(0);
-            resource = resourceService.updateResource(resource, resume, file);
-        }
-        return resource;
     }
 
     public Profile getUserProfileById(Integer userId){
@@ -82,22 +64,89 @@ public class ProfileService {
         );
 
         ProfileDetailResponseDTO responseDTO = ProfileDetailResponseDTO.mapToDTO(profile);
-        Resource profilePicture = getProfilePicture(profile);
-        if(profilePicture != null){
-            responseDTO.setProfilePicture(profilePicture.getFilename());
-        }
-        Resource banner = getBanner(profile);
-        if(profilePicture != null){
-            responseDTO.setBanner(banner.getFilename());
-        }
-        Resource resume = getResume(profile);
-        if(profilePicture != null){
-            responseDTO.setResume(resume.getFilename());
-        }
 
         return responseDTO;
     }
 
+    @SneakyThrows
+    public Profile updateProfilePicture(Integer resource_id,User user){
+
+        Resource resource = resourceService.useResource(resource_id,user);
+        Profile profile = user.getProfile();
+        if(profile.getProfilePicture() != null){
+            resourceService.unuseResource(profile.getProfilePicture().getId(),user);
+        }
+        profile.setProfilePicture(resource);
+        return profileRepository.save(profile);
+    }
+    @SneakyThrows
+    public Profile unuseProfilePicture(User user){
+        var profile = user.getProfile();
+        if(profile.getProfilePicture() != null) {
+            resourceService.unuseResource(profile.getProfilePicture().getId(), user);
+            profile.setProfilePicture(null);
+        }
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile updateBanner(Integer resource_id, User user) {
+        Resource resource = resourceService.useResource(resource_id, user);
+        Profile profile = user.getProfile();
+        if (profile.getBanner() != null) {
+            resourceService.unuseResource(profile.getBanner().getId(), user);
+        }
+        profile.setBanner(resource);
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile unuseBanner(User user) {
+        var profile = user.getProfile();
+        if (profile.getBanner() != null) { // Check if a banner is set before trying to unuse it
+            resourceService.unuseResource(profile.getBanner().getId(), user);
+            profile.setBanner(null);
+        }
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile updateResume(Integer resource_id, User user) {
+        Resource resource = resourceService.useResource(resource_id, user);
+        Profile profile = user.getProfile();
+        if (profile.getResume() != null) {
+            resourceService.unuseResource(profile.getResume().getId(), user);
+        }
+        profile.setResume(resource);
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile unuseResume(User user) {
+        var profile = user.getProfile();
+        if (profile.getResume() != null) { // Check if a resume is set before trying to unuse it
+            resourceService.unuseResource(profile.getResume().getId(), user);
+            profile.setResume(null);
+        }
+        return profileRepository.save(profile);
+    }
+
+
+
+    /*
+    public Resource handleProfileResourceUpload(User user, ResourceType resume, MultipartFile file) {
+        Profile profile = getUserProfileById(user.getId());
+
+        List<Resource> resources = resourceService.getAllOwnerResource(profile, resume);
+        Resource resource;
+        if (resources == null || resources.isEmpty()) {
+            resource = resourceService.createResource(profile, resume, file);
+        } else {
+            resource = resources.get(0);
+            resource = resourceService.updateResource(resource, resume, file);
+        }
+        return resource;
+    }
     public Resource getProfilePicture(ResourceOwner owner) {
         List<Resource> resources = resourceService.getAllOwnerResource(owner, ResourceType.ProfilePicture);
         return resources.isEmpty() ? null : resources.get(0);
@@ -122,16 +171,15 @@ public class ProfileService {
         Resource resource = getResume(owner);
         resourceService.deleteResource(resource);
     }
+
+     */
     public ProfileResponseDTO getSummaryProfile(Integer userId){
         Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
                 () -> new NotFoundException("Profile Not Found")
         );
 
         ProfileResponseDTO responseDTO = ProfileResponseDTO.mapToDTO(profile);
-        Resource profilePicture = getProfilePicture(profile);
-        if(profilePicture != null){
-            responseDTO.setProfilePicture(profilePicture.getFilename());
-        }
+
         return responseDTO;
     }
 

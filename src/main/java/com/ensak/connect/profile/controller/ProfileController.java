@@ -7,18 +7,11 @@ import com.ensak.connect.profile.dto.ProfileDetailResponseDTO;
 import com.ensak.connect.profile.dto.ProfileRequestDTO;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.profile.model.Profile;
-import com.ensak.connect.resource.ResourceType;
-import com.ensak.connect.resource.model.Resource;
-import com.ensak.connect.auth.model.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -40,25 +33,58 @@ public class ProfileController {
     }
 
     @PutMapping
-    public ResponseEntity<ProfileResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){
+    public ResponseEntity<ProfileDetailResponseDTO> updateProfile(@RequestBody @Valid ProfileRequestDTO profileRequestDTO){
         Integer id = authenticationService.getAuthenticatedUser().getId();
         Profile profile = profileService.updateProfile(id,profileRequestDTO);
-        return new ResponseEntity<>(ProfileResponseDTO.mapToDTO(profile),HttpStatus.OK);
+        return new ResponseEntity<>(ProfileDetailResponseDTO.mapToDTO(profile),HttpStatus.OK);
     }
 
+
+    @PutMapping("/profile-picture/{resource_id}")
+    public ResponseEntity updateProfilePicture(@PathVariable Integer resource_id) {
+
+        var user = authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.updateProfilePicture(resource_id,user);
+
+        return ResponseEntity.ok(ProfileResponseDTO.mapToDTO(profile));
+    }
     @PutMapping("/profile-picture")
-    public ResponseEntity<?> uploadProfilePicture(@RequestParam("picture") MultipartFile file) {
+    public ResponseEntity noProfilePicture() {
 
-        User user = this.authenticationService.getAuthenticatedUser();
-        Resource resource = profileService.handleProfileResourceUpload(user, ResourceType.ProfilePicture, file);
+        var user = authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.unuseProfilePicture(user);
 
-
-        Map<String, String> response = new HashMap<>();
-        response.put("profile-picture", resource.getFilename());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.ok(ProfileResponseDTO.mapToDTO(profile));
     }
 
+    @PutMapping("/banner/{resource_id}")
+    public ResponseEntity<?> updateBanner(@PathVariable Integer resource_id) {
+        var user = authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.updateBanner(resource_id, user);
+        return ResponseEntity.ok(ProfileResponseDTO.mapToDTO(profile));
+    }
+
+    @PutMapping("/banner")
+    public ResponseEntity<?> noBanner() {
+        var user = authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.unuseBanner(user);
+        return ResponseEntity.ok(ProfileResponseDTO.mapToDTO(profile));
+    }
+    @PutMapping("/resume/{resource_id}")
+    public ResponseEntity<?> updateResume(@PathVariable Integer resource_id) {
+        var user = authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.updateResume(resource_id, user);
+        return ResponseEntity.ok(ProfileResponseDTO.mapToDTO(profile));
+    }
+
+    @PutMapping("/resume")
+    public ResponseEntity<?> noResume() {
+        var user = authenticationService.getAuthenticatedUser();
+        Profile profile = profileService.unuseResume(user);
+        return ResponseEntity.ok(ProfileResponseDTO.mapToDTO(profile));
+    }
+
+     /*
     @DeleteMapping("/profile-picture")
     public ResponseEntity<?> deleteProfilePicture(){
         User user = this.authenticationService.getAuthenticatedUser();
@@ -112,5 +138,5 @@ public class ProfileController {
 
         return ResponseEntity.noContent().build();
     }
-
+    */
 }

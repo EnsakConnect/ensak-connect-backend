@@ -2,6 +2,7 @@ package com.ensak.connect.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +27,6 @@ public class RegisterRequest {
     private String password;
 
     @NotBlank(message = "Role shouldn't be blank")
+    @Pattern(regexp = "STUDENT|LAUREATE|PROFESSOR", message = "role must be STUDENT, LAUREATE or PROFESSOR")
     private String role;
 }

@@ -2,6 +2,7 @@ package com.ensak.connect.job_post.dto;
 
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.auth.dto.UserResponseDTO;
+import com.ensak.connect.resource.model.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class JobPostResponseDTO {
     private String category;
     private List<String> tags;
     private UserResponseDTO author;
+    private List<String> resources;
     private Date createdAt;
     private Date updatedAt;
 
@@ -40,6 +42,11 @@ public class JobPostResponseDTO {
                 .category(jobPost.getCategory())
                 .tags(jobPost.getTags())
                 .author(UserResponseDTO.map(jobPost.getAuthor()))
+                .resources(
+                        jobPost.getResources() != null
+                                ? jobPost.getResources().stream().map(Resource::getFilename).toList()
+                                : null
+                        )
                 .createdAt(jobPost.getCreatedAt())
                 .updatedAt(jobPost.getUpdatedAt())
                 .build();
