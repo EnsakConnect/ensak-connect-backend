@@ -7,8 +7,10 @@ import com.ensak.connect.profile.model.util.ProfileType;
 import com.ensak.connect.profile.repository.*;
 import com.ensak.connect.resource.ResourceService;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.resource.model.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -62,10 +64,75 @@ public class ProfileService {
         );
 
         ProfileDetailResponseDTO responseDTO = ProfileDetailResponseDTO.mapToDTO(profile);
-        //TODO check if pp banner resume is sent
 
         return responseDTO;
     }
+
+    @SneakyThrows
+    public Profile updateProfilePicture(Integer resource_id,User user){
+
+        Resource resource = resourceService.useResource(resource_id,user);
+        Profile profile = user.getProfile();
+        if(profile.getProfilePicture() != null){
+            resourceService.unuseResource(profile.getProfilePicture().getId(),user);
+        }
+        profile.setProfilePicture(resource);
+        return profileRepository.save(profile);
+    }
+    @SneakyThrows
+    public Profile unuseProfilePicture(User user){
+        var profile = user.getProfile();
+        if(profile.getProfilePicture() != null) {
+            resourceService.unuseResource(profile.getProfilePicture().getId(), user);
+            profile.setProfilePicture(null);
+        }
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile updateBanner(Integer resource_id, User user) {
+        Resource resource = resourceService.useResource(resource_id, user);
+        Profile profile = user.getProfile();
+        if (profile.getBanner() != null) {
+            resourceService.unuseResource(profile.getBanner().getId(), user);
+        }
+        profile.setBanner(resource);
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile unuseBanner(User user) {
+        var profile = user.getProfile();
+        if (profile.getBanner() != null) { // Check if a banner is set before trying to unuse it
+            resourceService.unuseResource(profile.getBanner().getId(), user);
+            profile.setBanner(null);
+        }
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile updateResume(Integer resource_id, User user) {
+        Resource resource = resourceService.useResource(resource_id, user);
+        Profile profile = user.getProfile();
+        if (profile.getResume() != null) {
+            resourceService.unuseResource(profile.getResume().getId(), user);
+        }
+        profile.setResume(resource);
+        return profileRepository.save(profile);
+    }
+
+    @SneakyThrows
+    public Profile unuseResume(User user) {
+        var profile = user.getProfile();
+        if (profile.getResume() != null) { // Check if a resume is set before trying to unuse it
+            resourceService.unuseResource(profile.getResume().getId(), user);
+            profile.setResume(null);
+        }
+        return profileRepository.save(profile);
+    }
+
+
+
     /*
     public Resource handleProfileResourceUpload(User user, ResourceType resume, MultipartFile file) {
         Profile profile = getUserProfileById(user.getId());
@@ -110,7 +177,7 @@ public class ProfileService {
         Profile profile = profileRepository.findProfileByUserId(userId).orElseThrow(
                 () -> new NotFoundException("Profile Not Found")
         );
-        //TODO check if profile pic is sent
+
         ProfileResponseDTO responseDTO = ProfileResponseDTO.mapToDTO(profile);
 
         return responseDTO;
