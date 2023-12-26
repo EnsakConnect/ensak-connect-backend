@@ -16,32 +16,32 @@ public class LikeController {
     public ResponseEntity<String> likeJobPost (
             @PathVariable Integer id
     ) {
-        likeService.likeJobPost(id);
-        return new ResponseEntity<>("Job post liked", HttpStatus.OK);
+
+        return new ResponseEntity<>(likeService.likeJobPost(id), HttpStatus.OK);
     }
 
     @GetMapping("/job-post/{id}/dislike")
     public ResponseEntity<String> dislikeJobPost (
             @PathVariable Integer id
     ) {
-        likeService.dislikeJobPost(id);
-        return new ResponseEntity<>("Job post disliked", HttpStatus.OK);
+
+        return new ResponseEntity<>(likeService.dislikeJobPost(id), HttpStatus.OK);
     }
 
     @GetMapping("/question-post/{id}/like")
     public ResponseEntity<String> likeQuestionPost (
             @PathVariable Integer id
     ) {
-        likeService.likeQuestionPost(id);
-        return new ResponseEntity<>("Question post liked", HttpStatus.OK);
+
+        return new ResponseEntity<>(likeService.likeQuestionPost(id), HttpStatus.OK);
     }
 
     @GetMapping("/question-post/{id}/dislike")
     public ResponseEntity<String> dislikeQuestionPost (
             @PathVariable Integer id
     ) {
-        likeService.dislikeQuestionPost(id);
-        return new ResponseEntity<>("Question post disliked", HttpStatus.OK);
+
+        return new ResponseEntity<>(likeService.dislikeQuestionPost(id), HttpStatus.OK);
     }
 
 

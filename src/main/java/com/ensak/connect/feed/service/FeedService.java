@@ -1,6 +1,8 @@
 package com.ensak.connect.feed.service;
 
 
+import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
 import com.ensak.connect.feed.dto.FeedResponceDTO;
 import com.ensak.connect.feed.repository.FeedRepository;
@@ -27,6 +29,7 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final JobPostRepository jobPostRepository;
     private final QuestionPostRepository questionPostRepository;
+    private final AuthenticationService authenticationService;
 
     public Page<FeedResponceDTO> getPageOfFeed(PageRequest pageRequest) {
         FeedPageResponseDTO feedPageResponse = feedRepository.findAll(pageRequest);
@@ -48,10 +51,11 @@ public class FeedService {
     }
 
     public List<FeedResponceDTO> getPageFromIds(FeedPageResponseDTO pageRequest) {
+        User author = authenticationService.getAuthenticatedUser();
         List<JobPost> jobPosts = jobPostRepository.findAllByIds(pageRequest.getListIds().getJobPostIds());
-        List<FeedResponceDTO> jobPostList = FeedResponceDTO.mapJobPosts(jobPosts);
+        List<FeedResponceDTO> jobPostList = FeedResponceDTO.mapJobPosts(jobPosts, author.getId());
         List<QuestionPost> questionPosts = questionPostRepository.findAllByIds(pageRequest.getListIds().getQuestionPostIds());
-        List<FeedResponceDTO> questionPostList = FeedResponceDTO.mapQuestionPosts(questionPosts);
+        List<FeedResponceDTO> questionPostList = FeedResponceDTO.mapQuestionPosts(questionPosts, author.getId());
         return Stream.concat(jobPostList.stream(), questionPostList.stream())
                 .sorted(Comparator.comparing(FeedResponceDTO::getUpdatedAt).reversed())
                 .toList();
