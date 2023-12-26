@@ -21,7 +21,7 @@ public class ExperienceRequestDTO {
     @Size(max = 100)
     private String positionTitle;
 
-    @NotNull(message = "Contract type is required")
+    //@NotNull(message = "Contract type is required")
     private ContractType contractType;
 
     @NotBlank(message = "Company name is required")

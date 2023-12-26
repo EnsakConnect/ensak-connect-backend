@@ -2,8 +2,9 @@ package com.ensak.connect.feed.dto;
 
 
 import com.ensak.connect.job_post.model.JobPost;
-import com.ensak.connect.profile.dto.ProfileFeedResponseDTO;
+import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.resource.model.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class FeedResponceDTO {
 
     private List<String> resources;
 
-    private ProfileFeedResponseDTO author;
+    private ProfileResponseDTO author;
 
     private Integer commentsCount;
 
@@ -53,8 +54,7 @@ public class FeedResponceDTO {
                 .postType(jobPost.getCategory().toUpperCase())
                 .title(jobPost.getTitle())
                 .description(jobPost.getDescription())
-                .resources(new ArrayList<>())
-                .author(ProfileFeedResponseDTO.map(jobPost.getAuthor().getProfile(), jobPost.getAuthor().getProfileType()))
+                .author(ProfileResponseDTO.mapToDTO(jobPost.getAuthor().getProfile()))
                 .commentsCount(jobPost.getComments().size())
                 .company(CompanyFeedDTO.builder()
                         .logo(null)
@@ -63,6 +63,11 @@ public class FeedResponceDTO {
                         .build()
                 )
                 .likesCount(jobPost.getLikes().size())
+                .resources(
+                        jobPost.getResources() != null
+                                ? jobPost.getResources().stream().map(Resource::getFilename).toList()
+                                : null
+                )
                 .isLiked(false)
                 .updatedAt(jobPost.getUpdatedAt())
                 .tags(jobPost.getTags())
@@ -90,7 +95,7 @@ public class FeedResponceDTO {
                 .description(null)
                 .company(null)
                 .resources(new ArrayList<>())
-                .author(ProfileFeedResponseDTO.map(questionPost.getAuthor().getProfile(), questionPost.getAuthor().getProfileType()))
+                .author(ProfileResponseDTO.mapToDTO(questionPost.getAuthor().getProfile()))
                 .commentsCount(questionPost.getAnswers().size())
                 .likesCount(questionPost.getLikes().size())
                 .isLiked(false)
