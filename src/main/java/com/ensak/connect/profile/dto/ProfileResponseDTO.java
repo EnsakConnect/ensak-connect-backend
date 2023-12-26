@@ -22,7 +22,7 @@ public class ProfileResponseDTO {
 
     private Date updatedAt;
 
-    private Resource profilePicture;
+    private String profilePicture;
 
     private ProfileType profileType;
 
@@ -31,7 +31,9 @@ public class ProfileResponseDTO {
                 .id(profile.getId())
                 .title(profile.getTitle())
                 .fullName(profile.getFullName())
-                .profilePicture(profile.getProfilePicture())
+                .profilePicture(
+                        (profile.getProfilePicture()!=null)?profile.getProfilePicture().getFilename():null
+                )
                 .profileType(profile.getProfileType())
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())

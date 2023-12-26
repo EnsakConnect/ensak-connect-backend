@@ -50,6 +50,17 @@ public class ProfileDetailResponseDTO {
                 .title(profile.getTitle())
                 .profileType(profile.getProfileType())
                 .description(profile.getDescription())
+                .profilePicture(
+                        (profile.getProfilePicture()!=null)?profile.getProfilePicture().getFilename():null
+                )
+                .banner(
+                        (profile.getBanner()!=null)?profile.getBanner().getFilename():null
+
+                )
+                .resume(
+                        (profile.getResume()!=null)?profile.getResume().getFilename():null
+
+                )
                 .createdAt(profile.getCreatedAt())
                 .updatedAt(profile.getUpdatedAt())
                 .skillList(profile.getSkillList())
