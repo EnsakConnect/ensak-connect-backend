@@ -36,6 +36,8 @@ public class UserService {
                 .email(registerRequest.getEmail().toLowerCase())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.ROLE_USER)
+                .isNotLocked(true)
+                .isActive(true)
                 .build();
 
         user = userRepository.save(user);

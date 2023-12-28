@@ -17,6 +17,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,6 +44,7 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request";
     private static final String INCORRECT_CREDENTIALS = "Email / password incorrect. Please try again";
     private static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
+    private static final String ACCOUNT_LOCKED = "Your account has been locked. Please contact administration";
 
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<?> handleUnknownException(
@@ -82,6 +84,11 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<HttpResponse> accessDeniedException() {
         return createHttpResponse(FORBIDDEN, NOT_ENOUGH_PERMISSION);
+    }
+
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<HttpResponse> lockedException() {
+        return createHttpResponse(UNAUTHORIZED, ACCOUNT_LOCKED);
     }
 
     @ExceptionHandler(EmailExistException.class)
