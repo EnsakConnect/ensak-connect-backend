@@ -31,6 +31,10 @@ public class User implements UserDetails {
 
     private String email;
 
+    private Boolean isActive;
+
+    private Boolean isNotLocked;
+
     private Date activatedAt;
 
     @CreationTimestamp
@@ -72,7 +76,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isNotLocked;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 
 
