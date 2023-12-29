@@ -1,5 +1,7 @@
 package com.ensak.connect.profile.dto;
 
+import com.ensak.connect.profile.model.Profile;
+import com.ensak.connect.profile.model.util.ProfileType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -33,4 +35,23 @@ public class ProfileRequestDTO {
     @NotBlank(message = "address is required")
     @Size(min = 3, max = 200, message = "Address must be between 3 and 200 characters")
     private String address;
+
+    @NotBlank(message = "profileType is required")
+    @Pattern(regexp = "STUDENT|LAUREATE|PROFESSOR", message = "profileType must be STUDENT, LAUREATE or PROFESSOR")
+    private String profileType;
+
+    //optional
+    private String description;
+
+    public static Profile mapToProfile(ProfileRequestDTO pDTO) {
+        return Profile.builder()
+                .title(pDTO.title)
+                .fullName(pDTO.fullName)
+                .phone(pDTO.phone)
+                .city(pDTO.city)
+                .address(pDTO.address)
+                .profileType(ProfileType.valueOf(pDTO.profileType))
+                .description(pDTO.description)
+                .build();
+    }
 }

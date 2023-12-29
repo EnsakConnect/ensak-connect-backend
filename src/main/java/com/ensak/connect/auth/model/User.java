@@ -2,6 +2,8 @@ package com.ensak.connect.auth.model;
 
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.Token;
+import com.ensak.connect.like.Like;
+import com.ensak.connect.profile.model.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +31,10 @@ public class User implements UserDetails {
 
     private String email;
 
+    private Boolean isActive;
+
+    private Boolean isNotLocked;
+
     private Date activatedAt;
 
     @CreationTimestamp
@@ -40,13 +46,17 @@ public class User implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private String profileType;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Profile profile;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "author")
+    private List<Like> likes;
 
 
     @Override
@@ -66,7 +76,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isNotLocked;
     }
 
     @Override
@@ -76,7 +86,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 
 

@@ -27,6 +27,11 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.ocpsoft.prettytime</groupId>
+			<artifactId>prettytime</artifactId>
+			<version>5.0.7.Final</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
@@ -163,19 +168,10 @@
 				<version>3.2.2</version>
 				<configuration>
 					<useFile>false</useFile>
-					<testFailureIgnore>true</testFailureIgnore>
+					<testFailureIgnore>false</testFailureIgnore>
 					<reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-<!--	<properties>-->
-<!--		<sonar.host.url>http://localhost:9000</sonar.host.url>-->
-<!--		<sonar.login>sqp_0b2848ec99ff5771c5d67a723a7abbda3f358a7b</sonar.login>-->
-<!--		<sonar.projectKey>YOUR_PROJECT_KEY</sonar.projectKey>-->
-<!--		<sonar.projectName>YOUR_PROJECT_NAME</sonar.projectName>-->
-<!--		<sonar.projectVersion>YOUR_PROJECT_VERSION</sonar.projectVersion>-->
-<!--	</properties>-->
-
 </project>

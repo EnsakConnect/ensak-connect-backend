@@ -8,6 +8,7 @@ import com.ensak.connect.auth.model.EmailConfirmation;
 import com.ensak.connect.auth.repository.EmailConfirmationRepository;
 import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.security.JwtService;
+import com.ensak.connect.config.security.listener.LoginAttemptService;
 import com.ensak.connect.util.email.EmailService;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
@@ -49,6 +50,9 @@ public class AuthenticationServiceTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private LoginAttemptService loginAttemptService;
 
     @Mock
     private EmailService emailService;
@@ -99,9 +103,12 @@ public class AuthenticationServiceTest {
         user.setEmail("jane.doe@example.org");
         user.setId(1);
         user.setPassword("password");
+        user.setIsNotLocked(true);
+        user.setIsActive(true);
         user.setRole(Role.ROLE_USER);
         Optional<User> ofResult = Optional.of(user);
         when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
+        when(loginAttemptService.hasExceededMaxAttempts(user.getUsername())).thenReturn(false);
         //when(userService.getUserByEmail(Mockito.<String>any())).thenReturn(user);
         when(authenticationService.generateTokenForEmail(Mockito.<String>any())).thenReturn("ABC123");
         when(jwtService.generateRefreshToken(Mockito.<UserDetails>any())).thenReturn("ABC123");

@@ -7,6 +7,7 @@ import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
 import com.ensak.connect.profile.model.util.ContractType;
 import com.ensak.connect.profile.model.util.Level;
+import com.ensak.connect.profile.model.util.ProfileType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
@@ -119,6 +122,7 @@ class ProfileControllerIntegrationTest extends AuthenticatedBaseIntegrationTest 
                 .city("Kenitra")
                 .address("adress")
                 .title("Frontend React Dev")
+                .profileType(ProfileType.STUDENT.toString())
                 .build();
         String JsonPayload = objectMapper.writeValueAsString(payload);
         //request

@@ -5,34 +5,43 @@ import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.config.exception.NotFoundException;
+import com.ensak.connect.config.exception.model.EmailExistException;
 import com.ensak.connect.profile.ProfileService;
+import com.ensak.connect.profile.model.util.ProfileType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final ProfileService profileService;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileService profileService;
 
+    @SneakyThrows
     @Transactional
     public User createUser(RegisterRequest registerRequest){
+
+        Optional<User> existing = userRepository.findByEmail(registerRequest.getEmail().toLowerCase());
+        if(existing.isPresent()){
+            throw new EmailExistException("Email account already exists");
+        }
         User user = User.builder()
-                .email(registerRequest.getEmail())
+                .email(registerRequest.getEmail().toLowerCase())
                 .password( passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.ROLE_USER)
-                .profileType(registerRequest.getRole())
+                .isNotLocked(true)
+                .isActive(true)
                 .build();
-        // call the profile service to create an empty profile
 
         user = userRepository.save(user);
-        profileService.createEmptyProfile(user, registerRequest.getFullname());
-
+        profileService.createEmptyProfile(user, registerRequest.getFullname(), ProfileType.valueOf(registerRequest.getRole()));
 
         return user;
     }
@@ -64,7 +73,7 @@ public class UserService {
     }
 
     public User getUserByEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow(
+        return userRepository.findByEmail(email.toLowerCase()).orElseThrow(
                 () -> new NotFoundException("User Not Found")
         );
     }

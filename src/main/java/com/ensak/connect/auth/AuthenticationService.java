@@ -3,7 +3,9 @@ package com.ensak.connect.auth;
 import com.ensak.connect.auth.dto.*;
 import com.ensak.connect.auth.model.EmailConfirmation;
 import com.ensak.connect.auth.service.EmailConfirmationService;
+import com.ensak.connect.config.exception.model.UserNotFoundException;
 import com.ensak.connect.config.security.JwtService;
+import com.ensak.connect.config.security.listener.LoginAttemptService;
 import com.ensak.connect.util.email.EmailService;
 import com.ensak.connect.util.email.dto.EmailDTO;
 import com.ensak.connect.config.exception.NotFoundException;
@@ -23,14 +25,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.attribute.UserPrincipal;
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationService implements UserDetailsService {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -39,6 +47,23 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
     private final EmailConfirmationService emailConfirmationService;
+    private final LoginAttemptService loginAttemptService;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        } else {
+            validateLoginAttempt(user.get());
+            userRepository.save(user.get());
+            return new org.springframework.security.core.userdetails.User(
+                    user.get().getUsername(), user.get().getPassword(), user.get().isEnabled(), true, true, user.get().getIsNotLocked(),
+                    new ArrayList<>());
+        }
+
+    }
+
     public AuthenticationResponse register(RegisterRequest request) {
         var user = userService.createUser(request);
         this.sendRegistrationRequest(request);
@@ -51,15 +76,16 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
+        loadUserByUsername(request.getEmail());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getEmail().toLowerCase(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail().toLowerCase())
                 .orElseThrow(
-                        ()-> new NotFoundException("Email Not Found")
+                        () -> new NotFoundException("Email Not Found")
                 );
         String jwtToken = this.generateTokenForEmail(request.getEmail());
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -98,13 +124,13 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
         if (userEmail != null) {
-            var user = this.userRepository.findByEmail(userEmail)
+            var user = this.userRepository.findByEmail(userEmail.toLowerCase())
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
@@ -126,7 +152,7 @@ public class AuthenticationService {
 
     public Boolean activate(ActivateAccountRequest request) {
         Boolean res = emailConfirmationService.verify(request.getEmail(), request.getCode());
-        if(! res) {
+        if (!res) {
             return false;
         }
         emailConfirmationService.deleteEmailConfirmation(request.getEmail());
@@ -150,11 +176,19 @@ public class AuthenticationService {
                 EmailDTO.builder()
                         .to(request.getEmail())
                         .subject("Ensak Connect - Please confirm your email address")
-                        .content("Hello "+ request.getFullname() +", Please confirm your email address using the verification code: " + confirmation.getCode())
+                        .content("Hello " + request.getFullname() + ", Please confirm your email address using the verification code: " + confirmation.getCode())
                         .build()
         );
-        if(!res) {
+        if (!res) {
             log.warn("Register: Could not send email verification.");
+        }
+    }
+
+    private void validateLoginAttempt(User user) {
+        if (user.getIsNotLocked()) {
+            user.setIsNotLocked(!loginAttemptService.hasExceededMaxAttempts(user.getUsername()));
+        } else {
+            loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
         }
     }
 }
