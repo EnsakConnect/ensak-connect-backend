@@ -36,7 +36,7 @@ public class BlogPostApplicationController {
     @PutMapping("/applications")
     public ResponseEntity<BlogPostApplicationResponseDTO> updateApplication(@PathVariable Integer blogPostId,@RequestBody BlogPostApplicationResponseDTO requestDTO) {
         User user = authenticationService.getAuthenticatedUser();
-        BlogPostApplication application = blogPostApplicationService.updateApplication(user.getId(),blogPostId,requestDTO.getMessage());
+        BlogPostApplication application = blogPostApplicationService.updateApplication(user.getId(), blogPostId,requestDTO.getMessage());
         return  ResponseEntity.ok(BlogPostApplicationResponseDTO.mapToDTO(application));
     }
 

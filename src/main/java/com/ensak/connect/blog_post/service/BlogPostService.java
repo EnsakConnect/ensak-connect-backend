@@ -73,7 +73,7 @@ public class BlogPostService {
         );
 
         if (!author.getId().equals(blogPost.getAuthor().getId())){
-            throw  new ForbiddenException("Connot delete posts made by others users");
+            throw  new ForbiddenException("Cannot delete posts made by other users");
 
         }
 

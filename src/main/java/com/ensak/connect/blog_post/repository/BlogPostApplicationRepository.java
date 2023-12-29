@@ -17,6 +17,6 @@ public interface BlogPostApplicationRepository extends JpaRepository<BlogPostApp
     public  Optional<List<BlogPostApplication>> findByBlogPostId(Integer blogPostId);
     Page<BlogPostApplication> findByBlogPostId(Integer blogPostId, Pageable pageable);
 
-    public Optional<BlogPostApplication> findBlogPostApplicationByApplicantAndBlogPostId(Integer applicantId,Integer blogPostId);
+    public Optional<BlogPostApplication> findBlogPostApplicationByApplicantIdAndBlogPostId(Integer applicantId,Integer blogPostId);
 
 }

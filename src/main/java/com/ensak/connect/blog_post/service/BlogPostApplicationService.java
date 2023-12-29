@@ -31,7 +31,7 @@ public class BlogPostApplicationService {
     }
 
     public  BlogPostApplication updateApplication(Integer userId,Integer blogPostId,String message){
-        var application = blogPostApplicationRepository.findBlogPostApplicationByApplicantAndBlogPostId(userId,blogPostId).orElseThrow(
+        var application = blogPostApplicationRepository.findBlogPostApplicationByApplicantIdAndBlogPostId(userId,blogPostId).orElseThrow(
                 () -> new NotFoundException("Blog Application Not Found")
         );
         application.setMessage(message);
@@ -54,7 +54,7 @@ public class BlogPostApplicationService {
     }
 
     public BlogPostApplication getUserApplication(Integer userId,Integer blogPostId){
-        return blogPostApplicationRepository.findBlogPostApplicationByApplicantAndBlogPostId(userId,blogPostId).orElseThrow(
+        return blogPostApplicationRepository.findBlogPostApplicationByApplicantIdAndBlogPostId(userId,blogPostId).orElseThrow(
                 () -> new NotFoundException("Blog Post Application Not Found")
         );
 
