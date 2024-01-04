@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Optional;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,13 +19,20 @@ public class UserResponseDTO {
     private String role;
 
     public static UserResponseDTO map(User user) {
-        return UserResponseDTO.builder()
+        var userBuilder =  UserResponseDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
-                .role(user.getRole().name())
-                .name(user.getProfile().getFullName())
-                .title(user.getProfile().getTitle())
-                .picture(user.getProfile().getProfilePicture().getFilename())
-                .build();
+                .role(user.getRole().name());
+        if(user.getProfile() != null){
+            userBuilder.name(user.getProfile().getFullName())
+                    .title(user.getProfile().getTitle())
+                    .picture(
+                            user.getProfile() == null || user.getProfile().getProfilePicture() == null ?
+                                    null :
+                                    user.getProfile().getProfilePicture().getFilename()
+                    );
+        }
+
+        return userBuilder.build();
     }
 }
