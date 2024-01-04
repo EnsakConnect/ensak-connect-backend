@@ -10,6 +10,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserResponseDTO {
     private Integer id;
+    private String name;
+    private String title;
+    private String picture;
     private String email;
     private String role;
 
@@ -18,6 +21,9 @@ public class UserResponseDTO {
                 .id(user.getId())
                 .email(user.getEmail())
                 .role(user.getRole().name())
+                .name(user.getProfile().getFullName())
+                .title(user.getProfile().getTitle())
+                .picture(user.getProfile().getProfilePicture().getFilename())
                 .build();
     }
 }
