@@ -30,8 +30,8 @@ public class ProfileController {
 
     @GetMapping("/search/{fullname}")
     public ResponseEntity<List<ProfileResponseDTO>> getProfiles(@PathVariable String fullname){
-        ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
-        return new ResponseEntity<>(profile, HttpStatus.OK);
+        List<ProfileResponseDTO> profiles = profileService.getSummaryProfiles(fullname);
+        return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/detailed")

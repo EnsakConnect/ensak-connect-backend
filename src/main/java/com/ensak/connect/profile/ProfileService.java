@@ -183,6 +183,14 @@ public class ProfileService {
         return responseDTO;
     }
 
+    public List<ProfileResponseDTO> getSummaryProfiles(String fullname){
+        List<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%");
+
+        List<ProfileResponseDTO> responseDTO = ProfileResponseDTO.map(profiles);
+
+        return responseDTO;
+    }
+
 
     public List<Certification> getCertifications(Integer userId) {
         Integer profileId = getUserProfileById(userId).getId();
