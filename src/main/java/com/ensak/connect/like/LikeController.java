@@ -45,4 +45,20 @@ public class LikeController {
     }
 
 
+    @GetMapping("/blog-post/{id}/like")
+    public ResponseEntity<String> likeBlogPost (
+            @PathVariable Integer id
+    ) {
+
+        return new ResponseEntity<>(likeService.likeBlogPost(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/blog-post/{id}/dislike")
+    public ResponseEntity<String> dislikeBlogPost (
+            @PathVariable Integer id
+    ) {
+
+        return new ResponseEntity<>(likeService.dislikeBlogPost(id), HttpStatus.OK);
+    }
+
 }
