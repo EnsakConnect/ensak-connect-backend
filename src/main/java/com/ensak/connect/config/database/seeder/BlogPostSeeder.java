@@ -51,6 +51,7 @@ public class BlogPostSeeder implements CommandLineRunner {
         blogPostRepository.save(
                 BlogPost.builder()
                         .content("Blog Post Content 1")
+                        .author(author)
                         .tags(List.of(new String[]{"Java", "Spring boot", "Test"}))
                         .build()
         );
@@ -58,6 +59,7 @@ public class BlogPostSeeder implements CommandLineRunner {
         blogPostRepository.save(
                 BlogPost.builder()
                         .content("Blog Post Content 2")
+                        .author(author)
                         .tags(List.of(new String[]{"Java", "Spring boot", "Test"}))
                         .build()
         );
@@ -65,6 +67,7 @@ public class BlogPostSeeder implements CommandLineRunner {
         blogPostRepository.save(
                 BlogPost.builder()
                         .content("Blog Post Content 3")
+                        .author(author)
                         .tags(List.of(new String[]{"Java", "Spring boot", "Test"}))
                         .build()
         );
@@ -72,6 +75,7 @@ public class BlogPostSeeder implements CommandLineRunner {
         blogPostRepository.save(
                 BlogPost.builder()
                         .content("Blog Post Content 4")
+                        .author(author)
                         .tags(List.of(new String[]{"Java", "Spring boot", "Test"}))
                         .build()
         );
