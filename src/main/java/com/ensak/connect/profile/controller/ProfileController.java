@@ -9,6 +9,9 @@ import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.profile.model.Profile;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +32,14 @@ public class ProfileController {
     }
 
     @GetMapping("/search/{fullname}")
-    public ResponseEntity<List<ProfileResponseDTO>> getProfiles(@PathVariable String fullname){
-        List<ProfileResponseDTO> profiles = profileService.getSummaryProfiles(fullname);
+    public ResponseEntity<List<ProfileResponseDTO>> getProfiles(
+            @PathVariable String fullname,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        Pageable pageRequest =
+                PageRequest.of(page, size, Sort.by("fullName").descending());
+        List<ProfileResponseDTO> profiles = profileService.getSummaryProfiles(fullname, pageRequest);
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 

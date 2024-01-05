@@ -11,6 +11,7 @@ import com.ensak.connect.resource.model.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -183,8 +184,8 @@ public class ProfileService {
         return responseDTO;
     }
 
-    public List<ProfileResponseDTO> getSummaryProfiles(String fullname){
-        List<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%");
+    public List<ProfileResponseDTO> getSummaryProfiles(String fullname, Pageable pageRequest){
+        List<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%", pageRequest);
 
         List<ProfileResponseDTO> responseDTO = ProfileResponseDTO.map(profiles);
 
