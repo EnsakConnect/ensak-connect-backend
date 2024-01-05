@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
@@ -22,6 +24,12 @@ public class ProfileController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<ProfileResponseDTO> getProfile(@PathVariable Integer userId){
+        ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{fullname}")
+    public ResponseEntity<List<ProfileResponseDTO>> getProfiles(@PathVariable String fullname){
         ProfileResponseDTO profile = profileService.getSummaryProfile(userId);
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
