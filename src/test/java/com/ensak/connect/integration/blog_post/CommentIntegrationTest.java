@@ -1,6 +1,8 @@
-package com.ensak.connect.integration.job_post;
+package com.ensak.connect.integration.blog_post;
 
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.blog_post.model.BlogPost;
+import com.ensak.connect.blog_post.repository.BlogPostRepository;
 import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.blog_post.dto.CommentPostRequestDTO;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
 
-    public static final String API_JOB_COMMENT = "/api/v1/job-posts";
+    public static final String API_JOB_COMMENT = "/api/v1/blog-posts";
 
     @Autowired
     private MockMvc api;
@@ -40,33 +42,28 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private JobPostRepository jobPostRepository;
+    private BlogPostRepository blogPostRepository;
 
     @Autowired
     private CommentPostRepository commentPostRepository;
 
     @AfterEach
     void tearDown() {
-        jobPostRepository.deleteAll();
+        blogPostRepository.deleteAll();
         commentPostRepository.deleteAll();
     }
 
     @BeforeEach
-    void createJobPost() {
+    void createBlogPost() {
         userTest = this.createDummyUser();
-        jobPostTest = jobPostRepository.save(JobPost.builder()
-                .title("This is a job title test")
+        blogPostTest = blogPostRepository.save(BlogPost.builder()
+                .content("This is a blog content test")
                 .author(userTest)
-                .description("This is a job post description test")
-                .companyName("This is the companyName test")
-                .location("This is the location test")
-                .companyType("This is the companyType test")
-                .category("This is the category test")
                 .tags(List.of(new String[]{"test1", "test2"}))
                 .build());
     }
 
-    JobPost jobPostTest = new JobPost();
+    BlogPost blogPostTest = new BlogPost();
     User userTest = new User();
 
     CommentPostRequestDTO commentPostTest = CommentPostRequestDTO.builder()
@@ -79,7 +76,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         this.authenticateAsUser();
         String requestJSON = objectMapper.writeValueAsString(commentPostTest);
         String response = api.perform(
-                        post(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments")
+                        post(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments")
                                 .contentType(APPLICATION_JSON)
                                 .content(requestJSON)
                 )
@@ -95,7 +92,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
     public void itShouldNotCreateCommentPostWhenNotAuthenticated() throws Exception {
         String requestJSON = objectMapper.writeValueAsString(commentPostTest);
         String response = api.perform(
-                        post(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments")
+                        post(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments")
                                 .contentType(APPLICATION_JSON)
                                 .content(requestJSON)
                 )
@@ -111,7 +108,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         this.authenticateAsUser();
         String requestJSON = objectMapper.writeValueAsString("");
         String response = api.perform(
-                        post(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments")
+                        post(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments")
                                 .contentType(APPLICATION_JSON)
                                 .content(requestJSON)
                 )
@@ -126,7 +123,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         this.authenticateAs(userTest);
         var comment = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(userTest)
                         .content("This is a comment test")
                         .build()
@@ -139,7 +136,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         String requestJSON = objectMapper.writeValueAsString(commentUpdated);
 
         String response = api.perform(
-                        put(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments/" + comment.getId())
+                        put(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments/" + comment.getId())
                                 .contentType(APPLICATION_JSON)
                                 .content(requestJSON)
                 )
@@ -159,7 +156,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         User user = this.createDummyUser();
         var comment = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(user)
                         .content("This is a comment test")
                         .build()
@@ -172,7 +169,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         String requestJSON = objectMapper.writeValueAsString(commentUpdated);
 
         String response = api.perform(
-                        put(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments/" + comment.getId())
+                        put(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments/" + comment.getId())
                                 .contentType(APPLICATION_JSON)
                                 .content(requestJSON)
                 )
@@ -187,28 +184,28 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         this.authenticateAs(userTest);
         var comment1 = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(userTest)
                         .content("This is a comment test 1")
                         .build()
         );
         var comment2 = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(userTest)
                         .content("This is a comment test 2")
                         .build()
         );
         var comment3 = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(userTest)
                         .content("This is a comment test 3")
                         .build()
         );
 
         String response = api.perform(
-                        get(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments")
+                        get(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments")
                 )
                 .andExpect(status().isOk())
                 .andReturn()
@@ -239,14 +236,14 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         User user = this.createDummyUser();
         var comment = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(user)
                         .content("This is a comment test")
                         .build()
         );
 
         String response = api.perform(
-                        get(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments")
+                        get(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments")
                 )
                 .andExpect(status().isForbidden())
                 .andReturn()
@@ -259,14 +256,14 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         this.authenticateAs(userTest);
         var comment = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(userTest)
                         .content("This is a comment test")
                         .build()
         );
 
         api.perform(
-                        delete(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments/" + comment.getId())
+                        delete(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments/" + comment.getId())
                 )
                 .andExpect(status().isOk())
                 .andReturn()
@@ -279,14 +276,14 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         User user = this.createDummyUser();
         var comment = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(userTest)
                         .content("This is a comment test")
                         .build()
         );
 
         api.perform(
-                        delete(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments/" + comment.getId())
+                        delete(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments/" + comment.getId())
                 )
                 .andExpect(status().isForbidden())
                 .andReturn()
@@ -300,14 +297,14 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         User user = this.createDummyUser();
         var comment = commentPostRepository.save(
                 CommentPost.builder()
-                        .jobPost(jobPostTest)
+                        .blogPost(blogPostTest)
                         .author(user)
                         .content("This is a comment test")
                         .build()
         );
 
         String response = api.perform(
-                        delete(API_JOB_COMMENT + "/" + jobPostTest.getId() + "/comments/" + comment.getId())
+                        delete(API_JOB_COMMENT + "/" + blogPostTest.getId() + "/comments/" + comment.getId())
                 )
                 .andExpect(status().isForbidden())
                 .andReturn()
