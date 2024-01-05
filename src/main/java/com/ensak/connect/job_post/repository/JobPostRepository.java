@@ -14,10 +14,10 @@ public interface JobPostRepository extends JpaRepository<JobPost, Integer> {
     public boolean existsJobPostByIdAndAuthorId(Integer Id, Integer authorId);
 
     @Query("SELECT p FROM JobPost p JOIN p.tags t WHERE t = Lower(:tag)")
-    List<QuestionPost> retrieveByTag(@Param("tag") String tag);
+    List<JobPost> retrieveByTag(@Param("tag") String tag);
 
     @Query("SELECT p FROM JobPost p JOIN p.tags t WHERE t IN (:tags)")
-    List<QuestionPost> retrieveByTags(@Param("tags") List<String> tags);
+    List<JobPost> retrieveByTags(@Param("tags") List<String> tags);
 
     @Query("SELECT j FROM JobPost j WHERE j.id IN :ids ORDER BY j.updatedAt DESC ")
     List<JobPost> findAllByIds(@Param("ids") List<Integer> ids);
