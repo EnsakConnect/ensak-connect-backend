@@ -9,9 +9,7 @@ import com.ensak.connect.config.exception.dto.HttpResponse;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +38,8 @@ public class BlogPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
-    @AfterEach
+
+    @BeforeEach
     void tearDown() {
         blogPostRepository.deleteAll();
     }
