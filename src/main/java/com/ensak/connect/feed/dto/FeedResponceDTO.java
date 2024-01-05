@@ -55,7 +55,7 @@ public class FeedResponceDTO {
                 .title(jobPost.getTitle())
                 .description(jobPost.getDescription())
                 .author(ProfileResponseDTO.mapToDTO(jobPost.getAuthor().getProfile()))
-                .commentsCount(jobPost.getComments().size())
+                .commentsCount(jobPost.getJobApplications().size())
                 .company(CompanyFeedDTO.builder()
                         .logo(null)
                         .companyName(jobPost.getCompanyName())
