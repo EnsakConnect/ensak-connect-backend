@@ -1,6 +1,7 @@
 package com.ensak.connect.feed.dto;
 
 
+import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
@@ -82,6 +83,39 @@ public class FeedResponceDTO {
         List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(jobPosts.size());
         for (JobPost jobPost: jobPosts){
             result.add(map(jobPost, authId));
+        }
+        return result;
+    }
+
+    public static FeedResponceDTO map(BlogPost blogPost, Integer authorId){
+        PrettyTime prettyTime = new PrettyTime();
+        return FeedResponceDTO.builder()
+                .id(blogPost.getId())
+                .postType("BlogPost")
+                .title(null)
+                .description(blogPost.getContent())
+                .author(ProfileResponseDTO.mapToDTO(blogPost.getAuthor().getProfile()))
+                .commentsCount(blogPost.getComments().size())
+                .likesCount(blogPost.getLikes().size())
+                .isLiked(blogPost.getLikes().contains(authorId))
+                .resources(
+                        blogPost.getResources() != null
+                                ? blogPost.getResources().stream().map(Resource::getFilename).toList()
+                                : null
+                )
+                .updatedAt(blogPost.getUpdatedAt())
+                .tags(blogPost.getTags())
+                .timePassed(prettyTime.format(blogPost.getUpdatedAt()))
+                .build();
+    }
+
+    public static List<FeedResponceDTO> mapBlogPosts(List<BlogPost> blogPosts, Integer authId) {
+        if (blogPosts == null) {
+            return null;
+        }
+        List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(blogPosts.size());
+        for (BlogPost blogPost: blogPosts){
+            result.add(map(blogPost, authId));
         }
         return result;
     }

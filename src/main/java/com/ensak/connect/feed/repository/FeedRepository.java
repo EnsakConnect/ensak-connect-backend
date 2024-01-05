@@ -2,6 +2,7 @@ package com.ensak.connect.feed.repository;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.feed.dto.FeedListIdResponseDTO;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
 import com.ensak.connect.feed.dto.FeedResponceDTO;
@@ -39,7 +40,9 @@ public class FeedRepository {
                         "SELECT result.id, result.updatedAt, result.type FROM ( " +
                                 "SELECT j.id as id, j.updatedAt as updatedAt, 'JOB_POST' as type FROM JobPost j " +
                                 "UNION ALL " +
-                                "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q) result " +
+                                "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
+                                "UNION ALL " +
+                                "SELECT b.id as id, b.updatedAt as updatedAt, 'BLOG_POST' as type FROM BlogPost b) result " +
                                 "ORDER BY result.updatedAt DESC "
                 )
                 .setFirstResult(offset)
@@ -52,13 +55,16 @@ public class FeedRepository {
 
         List<Integer> jobPostIds = new ArrayList<>();
         List<Integer> questionPostIds = new ArrayList<>();
+        List<Integer> blogPostIds = new ArrayList<>();
 
         if (!queryResult.isEmpty()) {
             for (Object[] row : queryResult) {
                 if ("JOB_POST".equals(row[2])) {
                     jobPostIds.add((Integer) row[0]);
-                } else {
+                } else if ("QUESTION_POST".equals(row[2])){
                     questionPostIds.add((Integer) row[0]);
+                } else {
+                    blogPostIds.add((Integer) row[0]);
                 }
             }
         }
@@ -66,12 +72,15 @@ public class FeedRepository {
         FeedListIdResponseDTO feedIds = FeedListIdResponseDTO.builder()
                 .jobPostIds(jobPostIds)
                 .questionPostIds(questionPostIds)
+                .blogPostIds(blogPostIds)
                 .build();
         log.warn("ids {}", feedIds);
 
         long totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
                 .getSingleResult() +
                 (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
+                        .getSingleResult() +
+                (Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b")
                         .getSingleResult();
 
         return new FeedPageResponseDTO(feedIds, pageRequest, totals);
@@ -91,7 +100,9 @@ public class FeedRepository {
                         "UNION ALL " +
                         "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
                         "WHERE (LOWER(q.question) LIKE LOWER(:search))" +
-                        ") result " +
+                        "UNION ALL " +
+                        "SELECT b.id as id, b.updatedAt as updatedAt, 'BLOG_POST' as type FROM BlogPost b " +
+                        "WHERE (LOWER(b.content) LIKE LOWER(:search))) result " +
                         "ORDER BY result.updatedAt DESC"
         );
         query.setParameter("search", "%" + search + "%");
@@ -104,13 +115,16 @@ public class FeedRepository {
 
         List<Integer> jobPostIds = new ArrayList<>();
         List<Integer> questionPostIds = new ArrayList<>();
+        List<Integer> blogPostIds = new ArrayList<>();
 
         if (!queryResult.isEmpty()) {
             for (Object[] row : queryResult) {
                 if ("JOB_POST".equals(row[2])) {
                     jobPostIds.add((Integer) row[0]);
-                } else {
+                } else if ("QUESTION_POST".equals(row[2])){
                     questionPostIds.add((Integer) row[0]);
+                } else {
+                    blogPostIds.add((Integer) row[0]);
                 }
             }
         }
@@ -119,6 +133,7 @@ public class FeedRepository {
         FeedListIdResponseDTO feedIds = FeedListIdResponseDTO.builder()
                 .jobPostIds(jobPostIds)
                 .questionPostIds(questionPostIds)
+                .blogPostIds(blogPostIds)
                 .build();
 
         long totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j " +
@@ -127,6 +142,10 @@ public class FeedRepository {
                 .getSingleResult() +
                 (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q " +
                                 "WHERE (LOWER(q.question) LIKE LOWER(:search))")
+                        .setParameter("search", "%" + search + "%")
+                        .getSingleResult() +
+                (Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b " +
+                                "WHERE (LOWER(b.content) LIKE LOWER(:search))")
                         .setParameter("search", "%" + search + "%")
                         .getSingleResult();
 
@@ -153,7 +172,17 @@ public class FeedRepository {
                             "WHERE LOWER(q.question) LIKE LOWER(:search) ")
                     .setParameter("search", "%" + search + "%")
                     .getSingleResult();
-        }else {
+        } else if (filter.equals("BlogPost")) {
+            query = entityManager.createQuery(
+                    "SELECT b, 'BLOG_POST' as type FROM BlogPost b " +
+                            "WHERE LOWER(b.content) LIKE LOWER(:search) " +
+                            "ORDER BY b.updatedAt DESC "
+            );
+            totals = (Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b " +
+                            "WHERE LOWER(b.content) LIKE LOWER(:search) ")
+                    .setParameter("search", "%" + search + "%")
+                    .getSingleResult();
+        } else {
             query = entityManager.createQuery(
                     "SELECT j, 'JOB_POST' as type FROM JobPost j " +
                             "WHERE (LOWER(j.title) LIKE LOWER(:search) OR LOWER(j.description) LIKE LOWER(:search)) " +
@@ -185,7 +214,12 @@ public class FeedRepository {
                 for (Object[] row : queryResult) {
                     feedResponceDTOList.add(FeedResponceDTO.map((JobPost) row[0], author.getId()));
                 }
-            }else {
+            } else if ("BLOG_POST".equals(queryResult.get(0)[1])) {
+                log.info("On est dans blog post");
+                for (Object[] row : queryResult) {
+                    feedResponceDTOList.add(FeedResponceDTO.map((BlogPost) row[0], author.getId()));
+                }
+            } else {
                 log.info("On est dans question post");
                 for (Object[] row : queryResult) {
                     feedResponceDTOList.add(FeedResponceDTO.map((QuestionPost) row[0], author.getId()));
