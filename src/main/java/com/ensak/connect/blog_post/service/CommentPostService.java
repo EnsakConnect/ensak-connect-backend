@@ -1,14 +1,16 @@
-package com.ensak.connect.job_post.service;
+package com.ensak.connect.blog_post.service;
 
 
 import com.ensak.connect.auth.AuthenticationService;
-import com.ensak.connect.job_post.model.CommentPost;
-import com.ensak.connect.job_post.repository.CommentPostRepository;
-import com.ensak.connect.job_post.dto.CommentPostRequestDTO;
+import com.ensak.connect.blog_post.model.BlogPost;
+import com.ensak.connect.blog_post.model.CommentPost;
+import com.ensak.connect.blog_post.repository.CommentPostRepository;
+import com.ensak.connect.blog_post.dto.CommentPostRequestDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.job_post.service.JobPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -20,34 +22,34 @@ import java.util.List;
 public class CommentPostService {
 
     private final CommentPostRepository commentPostRepository;
-    private final JobPostService jobPostService;
+    private final BlogPostService blogPostService;
     private final AuthenticationService authService;
 
-    public List<CommentPost> getCommentsByJobPostId(Integer jobPostId) {
-        JobPost jobPost = jobPostService.getJobPostById(jobPostId);
-        return jobPost.getComments();
+    public List<CommentPost> getCommentsByBlogPostId(Integer blogPostId) {
+        BlogPost blogPost = blogPostService.getBlogPostById(blogPostId);
+        return blogPost.getComments();
     }
 
-    public CommentPost createCommentForJobPost(Integer jobPostId, CommentPostRequestDTO request) {
-        JobPost jobPost = jobPostService.getJobPostById(jobPostId);
+    public CommentPost createCommentForBlogPost(Integer blogPostId, CommentPostRequestDTO request) {
+        BlogPost blogPost = blogPostService.getBlogPostById(blogPostId);
         User author = authService.getAuthenticatedUser();
         return commentPostRepository.save(
                 CommentPost.builder()
                         .content(request.getContent())
-                        .jobPost(jobPost)
+                        .blogPost(blogPost)
                         .author(author)
                         .build()
         );
     }
 
     @SneakyThrows
-    public CommentPost updateCommentPostById(Integer jobPostId, Integer commentPostId, CommentPostRequestDTO request) {
+    public CommentPost updateCommentPostById(Integer blogPostId, Integer commentPostId, CommentPostRequestDTO request) {
         User auth = authService.getAuthenticatedUser();
-        JobPost jobPost = jobPostService.getJobPostById(jobPostId);
+        BlogPost blogPost = blogPostService.getBlogPostById(blogPostId);
         CommentPost commentPost = commentPostRepository.findById(commentPostId).orElseThrow(
                 () -> new NotFoundException("Cannot find comment with the requested id.")
         );
-        if(!jobPost.getId().equals(commentPost.getJobPost().getId())) {
+        if(!blogPost.getId().equals(commentPost.getBlogPost().getId())) {
             throw new ForbiddenException("Cannot updated the requested comment.");
         }
         if(!commentPost.getAuthor().getId().equals(auth.getId())){
@@ -58,13 +60,13 @@ public class CommentPostService {
     }
 
     @SneakyThrows
-    public void deleteCommentPostById(Integer jobPostId, Integer commentPostId) {
+    public void deleteCommentPostById(Integer blogPostId, Integer commentPostId) {
         User auth = authService.getAuthenticatedUser();
-        JobPost jobPost = jobPostService.getJobPostById(jobPostId);
+        BlogPost blogPost = blogPostService.getBlogPostById(blogPostId);
         CommentPost commentPost = commentPostRepository.findById(commentPostId).orElseThrow(
                 () -> new NotFoundException("Cannot find comment with the requested id.")
         );
-        if(!jobPost.getId().equals(commentPost.getJobPost().getId())) {
+        if(!blogPost.getId().equals(commentPost.getBlogPost().getId())) {
             throw new ForbiddenException("Cannot delete the requested comment.");
         }
         if(!commentPost.getAuthor().getId().equals(auth.getId())){

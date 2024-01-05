@@ -1,6 +1,6 @@
 package com.ensak.connect.feed.dto;
 
-import com.ensak.connect.job_post.model.CommentPost;
+import com.ensak.connect.blog_post.model.CommentPost;
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.Answer;
 import lombok.AllArgsConstructor;

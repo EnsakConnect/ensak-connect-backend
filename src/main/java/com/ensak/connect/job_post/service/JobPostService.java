@@ -101,7 +101,7 @@ public class JobPostService {
         jobPostRepository.deleteById(id);
     }
 
-    public List<QuestionPost> retrieveByTags(List<String> tags) {
+    public List<JobPost> retrieveByTags(List<String> tags) {
         return jobPostRepository.retrieveByTags(tags);
     }
 }
