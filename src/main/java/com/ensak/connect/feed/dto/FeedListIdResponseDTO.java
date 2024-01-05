@@ -13,4 +13,6 @@ public class FeedListIdResponseDTO {
 
     private List<Integer> questionPostIds;
 
+    private List<Integer> blogPostIds;
+
 }
