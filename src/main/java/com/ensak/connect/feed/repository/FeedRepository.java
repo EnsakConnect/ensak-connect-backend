@@ -40,9 +40,9 @@ public class FeedRepository {
                         "SELECT result.id, result.updatedAt, result.type FROM ( " +
                                 "SELECT j.id as id, j.updatedAt as updatedAt, 'JOB_POST' as type FROM JobPost j " +
                                 "UNION ALL " +
-                                "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q" +
+                                "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
                                 "UNION ALL " +
-                                "SELECT b.id as id, b.updqtedAt as updatedAt, 'BLOG_POST' as type FROM BlogPost b) result " +
+                                "SELECT b.id as id, b.updatedAt as updatedAt, 'BLOG_POST' as type FROM BlogPost b) result " +
                                 "ORDER BY result.updatedAt DESC "
                 )
                 .setFirstResult(offset)
