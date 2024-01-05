@@ -1,7 +1,7 @@
 package com.ensak.connect.job_post.model;
 
 import com.ensak.connect.auth.model.User;
-import com.ensak.connect.like.Like;
+import com.ensak.connect.blog_post.model.CommentPost;
 import com.ensak.connect.resource.model.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -47,10 +47,6 @@ public class JobPost {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "jobPost", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentPost> comments;
 
     @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JobApplication> jobApplications;
