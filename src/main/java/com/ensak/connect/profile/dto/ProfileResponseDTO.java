@@ -1,12 +1,13 @@
 package com.ensak.connect.profile.dto;
 
-import com.ensak.connect.job_post.dto.JobPostResponseDTO;
-import com.ensak.connect.job_post.model.JobPost;
+import com.ensak.connect.auth.model.User;
 import com.ensak.connect.profile.model.Profile;
 import com.ensak.connect.profile.model.util.ProfileType;
-import com.ensak.connect.resource.model.Resource;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 
 import java.util.ArrayList;
@@ -16,7 +17,9 @@ import java.util.List;
 @Data
 @Builder
 public class ProfileResponseDTO {
-    private Integer id;
+    private Integer userId;
+
+    private Integer profileId;
 
     private String fullName;
 
@@ -32,7 +35,24 @@ public class ProfileResponseDTO {
 
     public static ProfileResponseDTO mapToDTO(Profile profile){
         return ProfileResponseDTO.builder()
-                .id(profile.getId())
+                .userId(profile.getUser().getId())
+                .profileId(profile.getId())
+                .title(profile.getTitle())
+                .fullName(profile.getFullName())
+                .profilePicture(
+                        (profile.getProfilePicture()!=null)?profile.getProfilePicture().getFilename():null
+                )
+                .profileType(profile.getProfileType())
+                .createdAt(profile.getCreatedAt())
+                .updatedAt(profile.getUpdatedAt())
+                .build();
+    }
+
+    public static ProfileResponseDTO mapToDTO(User user){
+        Profile profile = user.getProfile();
+        return ProfileResponseDTO.builder()
+                .userId(user.getId())
+                .profileId(profile.getId())
                 .title(profile.getTitle())
                 .fullName(profile.getFullName())
                 .profilePicture(

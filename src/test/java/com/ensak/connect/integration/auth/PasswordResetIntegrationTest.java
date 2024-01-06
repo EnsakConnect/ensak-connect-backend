@@ -3,16 +3,25 @@ package com.ensak.connect.integration.auth;
 import com.ensak.connect.auth.dto.PasswordResetRequest;
 import com.ensak.connect.auth.dto.PasswordResetVerificationRequest;
 import com.ensak.connect.auth.dto.PasswordResetVerificationResponse;
+import com.ensak.connect.auth.dto.RegisterRequest;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.PasswordReset;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.auth.repository.PasswordResetRepository;
 import com.ensak.connect.auth.repository.UserRepository;
+import com.ensak.connect.auth.service.UserService;
 import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.integration.FakeRequest;
+import com.ensak.connect.profile.ProfileService;
+import com.ensak.connect.profile.model.Profile;
+import com.ensak.connect.profile.model.util.ProfileType;
+import com.ensak.connect.profile.repository.ProfileRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Slf4j
 public class PasswordResetIntegrationTest extends AuthenticatedBaseIntegrationTest {
     @Autowired
     private MockMvc api;
@@ -40,17 +50,34 @@ public class PasswordResetIntegrationTest extends AuthenticatedBaseIntegrationTe
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private ProfileService profileService;
+
+    @Autowired
+    private UserService userService;
+
 
     @Test
     @Transactional
     public void itShouldCreatePasswordResetQueryWhenRequestIsValid() throws Exception {
-        User user = userRepository.save(
-                User.builder()
-                        .password("random")
-                        .role(Role.ROLE_USER)
+        User user = userService.createUser(
+                RegisterRequest.builder()
                         .email("demo@testensakconnect.com")
+                        .role(String.valueOf(ProfileType.STUDENT))
+                        .fullname("user demo")
+                        .password("random")
                         .build()
         );
+//        User user = userRepository.save(
+//                User.builder()
+//                        .password("random")
+//                        .role(Role.ROLE_USER)
+//                        .email("demo@testensakconnect.com")
+//                        .build()
+//        );
         String url = "/api/v1/auth/password-reset";
         PasswordResetRequest request = PasswordResetRequest.builder()
                 .email(user.getEmail())
@@ -110,13 +137,21 @@ public class PasswordResetIntegrationTest extends AuthenticatedBaseIntegrationTe
     @Test
     @Transactional
     public void itShouldAuthenticateUserWhenVerificationRequestIsCorrect() throws Exception {
-        User user = userRepository.save(
-                User.builder()
-                        .password("random")
-                        .role(Role.ROLE_USER)
+        User user = userService.createUser(
+                RegisterRequest.builder()
                         .email("demo@testensakconnect.com")
+                        .role(String.valueOf(ProfileType.STUDENT))
+                        .fullname("user demo")
+                        .password("random")
                         .build()
         );
+//        User user = userRepository.save(
+//                User.builder()
+//                        .password("random")
+//                        .role(Role.ROLE_USER)
+//                        .email("demo@testensakconnect.com")
+//                        .build()
+//        );
         PasswordReset passwordReset = passwordResetRepository.save(
                 PasswordReset.builder()
                         .code("123456")
@@ -136,7 +171,6 @@ public class PasswordResetIntegrationTest extends AuthenticatedBaseIntegrationTe
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-
         PasswordResetVerificationResponse response = objectMapper.readValue(responseJSON, PasswordResetVerificationResponse.class);
         assertTrue(response.getStatus());
         assertNotNull(response.getToken());

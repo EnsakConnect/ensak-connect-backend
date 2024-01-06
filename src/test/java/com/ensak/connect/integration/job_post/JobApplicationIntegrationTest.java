@@ -151,7 +151,7 @@ public class JobApplicationIntegrationTest extends AuthenticatedBaseIntegrationT
         JobApplicationResponseDTO jobApplicationResponseDTO = objectMapper.readValue(response, JobApplicationResponseDTO.class);
 
         Assertions.assertEquals(application.getId(), jobApplicationResponseDTO.getId());
-        Assertions.assertEquals(application.getApplicant().getId(), jobApplicationResponseDTO.getApplicant().getId());
+        Assertions.assertEquals(application.getApplicant().getId(), jobApplicationResponseDTO.getApplicant().getUserId());
         Assertions.assertEquals(application.getJobPost().getId(), jobApplicationResponseDTO.getJobPostId());
         Assertions.assertNotEquals(application.getMessage(), jobApplicationResponseDTO.getMessage());
         Assertions.assertEquals(applicationUpdated.getMessage(), jobApplicationResponseDTO.getMessage());
@@ -227,17 +227,17 @@ public class JobApplicationIntegrationTest extends AuthenticatedBaseIntegrationT
         JobApplicationResponseDTO applicationTest3 = jobApplicationResponseDTOList.get(2);
 
         Assertions.assertEquals(application1.getId(), applicationTest1.getId());
-        Assertions.assertEquals(application1.getApplicant().getId(), applicationTest1.getApplicant().getId());
+        Assertions.assertEquals(application1.getApplicant().getId(), applicationTest1.getApplicant().getUserId());
         Assertions.assertEquals(application1.getJobPost().getId(), applicationTest1.getJobPostId());
         Assertions.assertEquals(application1.getMessage(), applicationTest1.getMessage());
 
         Assertions.assertEquals(application2.getId(), applicationTest2.getId());
-        Assertions.assertEquals(application2.getApplicant().getId(), applicationTest2.getApplicant().getId());
+        Assertions.assertEquals(application2.getApplicant().getId(), applicationTest2.getApplicant().getUserId());
         Assertions.assertEquals(application2.getJobPost().getId(), applicationTest2.getJobPostId());
         Assertions.assertEquals(application2.getMessage(), applicationTest2.getMessage());
 
         Assertions.assertEquals(application3.getId(), applicationTest3.getId());
-        Assertions.assertEquals(application3.getApplicant().getId(), applicationTest3.getApplicant().getId());
+        Assertions.assertEquals(application3.getApplicant().getId(), applicationTest3.getApplicant().getUserId());
         Assertions.assertEquals(application3.getJobPost().getId(), applicationTest3.getJobPostId());
         Assertions.assertEquals(application3.getMessage(), applicationTest3.getMessage());
 

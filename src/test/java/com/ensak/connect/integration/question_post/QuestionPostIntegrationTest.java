@@ -114,7 +114,7 @@ public class QuestionPostIntegrationTest extends AuthenticatedBaseIntegrationTes
 
         Assertions.assertEquals(post.getId(), postResponse.getId());
         Assertions.assertEquals(post.getQuestion(), postResponse.getQuestion());
-        Assertions.assertEquals(post.getAuthor().getId(), postResponse.getAuthor().getId());
+        Assertions.assertEquals(post.getAuthor().getId(), postResponse.getAuthor().getUserId());
     }
 
     @Test
