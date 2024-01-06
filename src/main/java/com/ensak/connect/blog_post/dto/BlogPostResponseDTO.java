@@ -3,6 +3,7 @@ package com.ensak.connect.blog_post.dto;
 import com.ensak.connect.auth.dto.UserResponseDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.job_post.model.JobPost;
+import com.ensak.connect.resource.ResourceDTO;
 import com.ensak.connect.resource.model.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +34,7 @@ public class BlogPostResponseDTO {
                 .content(blogPost.getContent())
                 .tags(blogPost.getTags())
                 .author(UserResponseDTO.map(blogPost.getAuthor()))
-                .resources(
-                        blogPost.getResources() != null
-                                ? blogPost.getResources().stream().map(Resource::getFilename).toList()
-                                : null
-                        )
+                .resources(ResourceDTO.toString(blogPost.getResources()))
                 .createdAt(blogPost.getCreatedAt())
                 .updatedAt(blogPost.getUpdatedAt())
                 .build();

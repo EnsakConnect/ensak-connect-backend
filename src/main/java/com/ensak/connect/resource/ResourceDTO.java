@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -29,5 +30,11 @@ public class ResourceDTO {
                 .createdAt(resource.getCreatedAt())
                 .updatedAt(resource.getUpdatedAt())
                 .build();
+    }
+
+    public static List<String> toString(List<Resource> resourceList){
+        return resourceList != null
+                ? resourceList.stream().map(Resource::getFilename).toList()
+                : null;
     }
 }

@@ -8,6 +8,9 @@ import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.AnswerRepository;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.resource.ResourceRepository;
+import com.ensak.connect.resource.ResourceService;
+import com.ensak.connect.resource.model.Resource;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,14 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionPostService questionPostService;
     private final AuthenticationService authService;
+    private final ResourceService resourceService;
 
     public List<Answer> getAnswerByQuestionId(Integer questionPostId) {
         QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
         return questionPost.getAnswers();
     }
 
+    @SneakyThrows
     public Answer createAnswerForQuestionPost(Integer questionPostId, AnswerRequestDTO request) {
         QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
         User author = authService.getAuthenticatedUser();
@@ -34,6 +39,7 @@ public class AnswerService {
                         .content(request.getContent())
                         .questionPost(questionPost)
                         .author(author)
+                        .resources(resourceService.useResources(request.getResources(),author))
                         .build()
         );
     }
@@ -52,6 +58,12 @@ public class AnswerService {
             throw new ForbiddenException("Cannot updated the requested answer.");
         }
         answer.setContent(request.getContent());
+        answer.setResources(resourceService.updateUsedResource(
+                answer.getResources().stream().map(Resource::getId).toList(),
+                request.getResources(),
+                auth
+                )
+        );
         return answerRepository.save(answer);
     }
 
@@ -64,6 +76,10 @@ public class AnswerService {
         if(!questionPost.getId().equals(answer.getQuestionPost().getId())) {
             throw new ForbiddenException("Cannot updated the requested answer.");
         }
+        resourceService.unuseResources(
+                answer.getResources().stream().map(Resource::getId).toList(),
+                answer.getAuthor()
+        );
         answerRepository.delete(answer);
     }
 }
