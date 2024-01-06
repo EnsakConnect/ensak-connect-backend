@@ -1,5 +1,6 @@
 package com.ensak.connect.question_post.dto.question;
 
+import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.auth.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
