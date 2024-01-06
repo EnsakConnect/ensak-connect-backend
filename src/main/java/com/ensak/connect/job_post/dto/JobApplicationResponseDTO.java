@@ -1,7 +1,7 @@
 package com.ensak.connect.job_post.dto;
 
 import com.ensak.connect.job_post.model.JobApplication;
-import com.ensak.connect.auth.dto.UserResponseDTO;
+import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class JobApplicationResponseDTO {
 
     private Integer jobPostId;
 
-    private UserResponseDTO applicant;
+    private ProfileResponseDTO applicant;
 
     private String message;
 
@@ -25,7 +25,7 @@ public class JobApplicationResponseDTO {
 
     public static JobApplicationResponseDTO mapToDTO(JobApplication application){
         return JobApplicationResponseDTO.builder()
-                .applicant(UserResponseDTO.map(application.getApplicant()))
+                .applicant(ProfileResponseDTO.mapToDTO(application.getApplicant()))
                 .jobPostId(application.getJobPost().getId())
                 .id(application.getId())
                 .createdAt(application.getCreatedAt())
