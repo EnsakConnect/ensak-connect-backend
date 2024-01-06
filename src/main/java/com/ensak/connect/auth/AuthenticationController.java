@@ -2,7 +2,7 @@ package com.ensak.connect.auth;
 
 import com.ensak.connect.auth.dto.*;
 import com.ensak.connect.auth.model.User;
-import com.ensak.connect.auth.dto.UserResponseDTO;
+import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -46,9 +46,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/me")
-    public ResponseEntity<UserResponseDTO> me() {
+    public ResponseEntity<ProfileResponseDTO> me() {
         User auth = authenticationService.getAuthenticatedUser();
-        return new ResponseEntity<>(UserResponseDTO.map(auth), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(ProfileResponseDTO.mapToDTO(auth), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/activate")
