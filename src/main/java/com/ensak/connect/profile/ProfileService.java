@@ -31,13 +31,14 @@ public class ProfileService {
     private final ProjectRepository projectRepository;
     private final ResourceService resourceService;
 
-    public void createEmptyProfile(User user, String fullName, ProfileType type){
+    @Transactional
+    public Profile createEmptyProfile(User user, String fullName, ProfileType type){
         Profile profile = Profile.builder()
                 .fullName(fullName)
                 .user(user)
                 .profileType(type)
                 .build();
-        profileRepository.save(profile);
+        return profileRepository.save(profile);
     }
 
     public Profile updateProfile(Integer user_id,ProfileRequestDTO pDTO){

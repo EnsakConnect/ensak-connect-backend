@@ -141,7 +141,7 @@ public class JobPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post.getCompanyType(), jobPostResponseDTO.getCompanyType());
         Assertions.assertEquals(post.getCategory(), jobPostResponseDTO.getCategory());
         Assertions.assertArrayEquals(post.getTags().toArray(), jobPostResponseDTO.getTags().toArray());
-        Assertions.assertEquals(post.getAuthor().getId(), jobPostResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(post.getAuthor().getId(), jobPostResponseDTO.getAuthor().getUserId());
 
     }
 
@@ -232,7 +232,7 @@ public class JobPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post1.getCompanyType(), postTest1.getCompanyType());
         Assertions.assertEquals(post1.getCategory(), postTest1.getCategory());
         Assertions.assertArrayEquals(post1.getTags().toArray(), postTest1.getTags().toArray());
-        Assertions.assertEquals(post1.getAuthor().getId(), postTest1.getAuthor().getId());
+        Assertions.assertEquals(post1.getAuthor().getId(), postTest1.getAuthor().getUserId());
 
         Assertions.assertEquals(post2.getId(), postTest2.getId());
         Assertions.assertEquals(post2.getTitle(), postTest2.getTitle());
@@ -242,7 +242,7 @@ public class JobPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post2.getCompanyType(), postTest2.getCompanyType());
         Assertions.assertEquals(post2.getCategory(), postTest2.getCategory());
         Assertions.assertArrayEquals(post2.getTags().toArray(), postTest2.getTags().toArray());
-        Assertions.assertEquals(post2.getAuthor().getId(), postTest2.getAuthor().getId());
+        Assertions.assertEquals(post2.getAuthor().getId(), postTest2.getAuthor().getUserId());
 
         Assertions.assertEquals(post3.getId(), postTest3.getId());
         Assertions.assertEquals(post3.getTitle(), postTest3.getTitle());
@@ -252,7 +252,7 @@ public class JobPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post3.getCompanyType(), postTest3.getCompanyType());
         Assertions.assertEquals(post3.getCategory(), postTest3.getCategory());
         Assertions.assertArrayEquals(post3.getTags().toArray(), postTest3.getTags().toArray());
-        Assertions.assertEquals(post3.getAuthor().getId(), postTest3.getAuthor().getId());
+        Assertions.assertEquals(post3.getAuthor().getId(), postTest3.getAuthor().getUserId());
 
     }
 
@@ -328,7 +328,7 @@ public class JobPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertNotEquals(post.getCompanyType(), jobPostResponseDTO.getCompanyType());
         Assertions.assertNotEquals(post.getCategory(), jobPostResponseDTO.getCategory());
         Assertions.assertNotEquals(post.getTags(), jobPostResponseDTO.getTags());
-        Assertions.assertEquals(post.getAuthor().getId(), jobPostResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(post.getAuthor().getId(), jobPostResponseDTO.getAuthor().getUserId());
         Assertions.assertEquals(postUpdated.getTitle(), jobPostResponseDTO.getTitle());
         Assertions.assertEquals(postUpdated.getDescription(), jobPostResponseDTO.getDescription());
         Assertions.assertEquals(postUpdated.getCompanyName(), jobPostResponseDTO.getCompanyName());

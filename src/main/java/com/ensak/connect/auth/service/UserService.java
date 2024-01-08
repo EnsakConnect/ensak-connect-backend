@@ -41,9 +41,9 @@ public class UserService {
                 .build();
 
         user = userRepository.save(user);
-        profileService.createEmptyProfile(user, registerRequest.getFullname(), ProfileType.valueOf(registerRequest.getRole()));
-
-        return user;
+        var profile = profileService.createEmptyProfile(user, registerRequest.getFullname(), ProfileType.valueOf(registerRequest.getRole()));
+        user.setProfile(profile);
+        return userRepository.save(user);
     }
 
     public User updateEmail(Integer id,String email){

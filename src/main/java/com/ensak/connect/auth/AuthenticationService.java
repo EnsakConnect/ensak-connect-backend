@@ -76,7 +76,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
-        loadUserByUsername(request.getEmail());
+        loadUserByUsername(request.getEmail().toLowerCase());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail().toLowerCase(),
@@ -167,7 +167,8 @@ public class AuthenticationService implements UserDetailsService {
 
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
+        return userRepository.findById(user.getId()).get();
     }
 
     private void sendRegistrationRequest(RegisterRequest request) {
