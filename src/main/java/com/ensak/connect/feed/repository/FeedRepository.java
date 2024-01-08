@@ -10,6 +10,7 @@ import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.question_post.model.QuestionPost;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +28,12 @@ import java.util.Objects;
 @Slf4j
 public class FeedRepository {
 
-    private final EntityManagerFactory managerFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
     private final AuthenticationService authenticationService;
 
     public FeedPageResponseDTO findAll(PageRequest pageRequest) {
-        EntityManager entityManager = managerFactory.createEntityManager();
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         int offset = pageNumber * pageSize;
@@ -87,7 +89,6 @@ public class FeedRepository {
     }
 
     public FeedPageResponseDTO findAllWithSearch(PageRequest pageRequest, String search) {
-        EntityManager entityManager = managerFactory.createEntityManager();
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         int offset = pageNumber * pageSize;
@@ -154,7 +155,6 @@ public class FeedRepository {
 
 
     public Page<FeedResponceDTO> findAllWithSearchAndFilter(PageRequest pageRequest, String search, String filter) {
-        EntityManager entityManager = managerFactory.createEntityManager();
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         int offset = pageNumber * pageSize;
