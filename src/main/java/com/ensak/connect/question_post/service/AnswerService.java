@@ -82,4 +82,11 @@ public class AnswerService {
         );
         answerRepository.delete(answer);
     }
+
+    public Answer getAnswerById(Integer answerId) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new NotFoundException("Cannot find answer with the requested id.")
+        );
+        return answer;
+    }
 }
