@@ -74,4 +74,10 @@ public class CommentPostService {
         }
         commentPostRepository.delete(commentPost);
     }
+
+    public CommentPost getCommentById(Integer commentPostId) {
+        return commentPostRepository.findById(commentPostId).orElseThrow(
+                () -> new NotFoundException("Cannot find comment with the requested id.")
+        );
+    }
 }

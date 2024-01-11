@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Builder
@@ -42,16 +40,4 @@ public class ProfileRequestDTO {
 
     //optional
     private String description;
-
-    public static Profile mapToProfile(ProfileRequestDTO pDTO) {
-        return Profile.builder()
-                .title(pDTO.title)
-                .fullName(pDTO.fullName)
-                .phone(pDTO.phone)
-                .city(pDTO.city)
-                .address(pDTO.address)
-                .profileType(ProfileType.valueOf(pDTO.profileType))
-                .description(pDTO.description)
-                .build();
-    }
 }
