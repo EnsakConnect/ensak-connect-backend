@@ -125,7 +125,7 @@ public class BlogPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post.getId(), blogPostResponseDTO.getId());
         Assertions.assertEquals(post.getContent(), blogPostResponseDTO.getContent());
         Assertions.assertArrayEquals(post.getTags().toArray(), blogPostResponseDTO.getTags().toArray());
-        Assertions.assertEquals(post.getAuthor().getId(), blogPostResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(post.getAuthor().getId(), blogPostResponseDTO.getAuthor().getUserId());
 
     }
 
@@ -190,17 +190,17 @@ public class BlogPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post1.getId(), postTest1.getId());
         Assertions.assertEquals(post1.getContent(), postTest1.getContent());
         Assertions.assertArrayEquals(post1.getTags().toArray(), postTest1.getTags().toArray());
-        Assertions.assertEquals(post1.getAuthor().getId(), postTest1.getAuthor().getId());
+        Assertions.assertEquals(post1.getAuthor().getId(), postTest1.getAuthor().getUserId());
 
         Assertions.assertEquals(post2.getId(), postTest2.getId());
         Assertions.assertEquals(post2.getContent(), postTest2.getContent());
         Assertions.assertArrayEquals(post2.getTags().toArray(), postTest2.getTags().toArray());
-        Assertions.assertEquals(post2.getAuthor().getId(), postTest2.getAuthor().getId());
+        Assertions.assertEquals(post2.getAuthor().getId(), postTest2.getAuthor().getUserId());
 
         Assertions.assertEquals(post3.getId(), postTest3.getId());
         Assertions.assertEquals(post3.getContent(), postTest3.getContent());
         Assertions.assertArrayEquals(post3.getTags().toArray(), postTest3.getTags().toArray());
-        Assertions.assertEquals(post3.getAuthor().getId(), postTest3.getAuthor().getId());
+        Assertions.assertEquals(post3.getAuthor().getId(), postTest3.getAuthor().getUserId());
 
     }
 
@@ -256,7 +256,7 @@ public class BlogPostIntegrationTest extends AuthenticatedBaseIntegrationTest {
         Assertions.assertEquals(post.getId(), blogPostResponseDTO.getId());
         Assertions.assertNotEquals(post.getContent(), blogPostResponseDTO.getContent());
         Assertions.assertNotEquals(post.getTags(), blogPostResponseDTO.getTags());
-        Assertions.assertEquals(post.getAuthor().getId(), blogPostResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(post.getAuthor().getId(), blogPostResponseDTO.getAuthor().getUserId());
         Assertions.assertEquals(postUpdated.getContent(), blogPostResponseDTO.getContent());
         Assertions.assertEquals(postUpdated.getTags(), blogPostResponseDTO.getTags());
 

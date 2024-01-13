@@ -112,7 +112,7 @@ public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTes
         Assertions.assertEquals(notification.getMessage(), notificationResponseDTO.getMessage());
         Assertions.assertEquals(notification.getStatus(), notificationResponseDTO.getStatus());
         Assertions.assertEquals(notification.getCategory(), notificationResponseDTO.getCategory());
-        Assertions.assertEquals(notification.getAuthor().getId(), notificationResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(notification.getAuthor().getId(), notificationResponseDTO.getAuthor().getUserId());
 
     }
 
@@ -189,21 +189,21 @@ public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTes
         Assertions.assertEquals(notification1.getMessage(), notificationTest1.getMessage());
         Assertions.assertEquals(notification1.getStatus(), notificationTest1.getStatus());
         Assertions.assertEquals(notification1.getCategory(), notificationTest1.getCategory());
-        Assertions.assertEquals(notification1.getAuthor().getId(), notificationTest1.getAuthor().getId());
+        Assertions.assertEquals(notification1.getAuthor().getId(), notificationTest1.getAuthor().getUserId());
 
         Assertions.assertEquals(notification2.getId(), notificationTest2.getId());
         Assertions.assertEquals(notification2.getTitle(), notificationTest2.getTitle());
         Assertions.assertEquals(notification2.getMessage(), notificationTest2.getMessage());
         Assertions.assertEquals(notification2.getStatus(), notificationTest2.getStatus());
         Assertions.assertEquals(notification2.getCategory(), notificationTest2.getCategory());
-        Assertions.assertEquals(notification2.getAuthor().getId(), notificationTest2.getAuthor().getId());
+        Assertions.assertEquals(notification2.getAuthor().getId(), notificationTest2.getAuthor().getUserId());
 
         Assertions.assertEquals(notification3.getId(), notificationTest3.getId());
         Assertions.assertEquals(notification3.getTitle(), notificationTest3.getTitle());
         Assertions.assertEquals(notification3.getMessage(), notificationTest3.getMessage());
         Assertions.assertEquals(notification3.getStatus(), notificationTest3.getStatus());
         Assertions.assertEquals(notification3.getCategory(), notificationTest3.getCategory());
-        Assertions.assertEquals(notification3.getAuthor().getId(), notificationTest3.getAuthor().getId());
+        Assertions.assertEquals(notification3.getAuthor().getId(), notificationTest3.getAuthor().getUserId());
 
     }
 
@@ -267,7 +267,7 @@ public class NotificationIntegrationTest extends AuthenticatedBaseIntegrationTes
         Assertions.assertNotEquals(notification.getMessage(), notificationResponseDTO.getMessage());
         Assertions.assertNotEquals(notification.getStatus(), notificationResponseDTO.getStatus());
         Assertions.assertNotEquals(notification.getCategory(), notificationResponseDTO.getCategory());
-        Assertions.assertEquals(notification.getAuthor().getId(), notificationResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(notification.getAuthor().getId(), notificationResponseDTO.getAuthor().getUserId());
         Assertions.assertEquals(notificationUpdated.getTitle(), notificationResponseDTO.getTitle());
         Assertions.assertEquals(notificationUpdated.getMessage(), notificationResponseDTO.getMessage());
         Assertions.assertEquals(notificationUpdated.getStatus(), notificationResponseDTO.getStatus());

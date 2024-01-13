@@ -1,7 +1,7 @@
 package com.ensak.connect.notification.dto;
 
-import com.ensak.connect.auth.dto.UserResponseDTO;
 import com.ensak.connect.notification.model.Notification;
+import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class NotificationResponseDTO {
     private String category;
     private String message;
     private String status;
-    private UserResponseDTO author;
+    private ProfileResponseDTO author;
     private Date createdAt;
     private Date updatedAt;
 
@@ -33,7 +33,7 @@ public class NotificationResponseDTO {
                 .message(notification.getMessage())
                 .category(notification.getCategory())
                 .status(notification.getStatus())
-                .author(UserResponseDTO.map(notification.getAuthor()))
+                .author(ProfileResponseDTO.mapToDTO(notification.getAuthor()))
                 .createdAt(notification.getCreatedAt())
                 .updatedAt(notification.getUpdatedAt())
                 .build();

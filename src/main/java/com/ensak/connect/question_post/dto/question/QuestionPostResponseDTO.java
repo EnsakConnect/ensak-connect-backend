@@ -2,12 +2,10 @@ package com.ensak.connect.question_post.dto.question;
 
 import com.ensak.connect.profile.dto.ProfileResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
-import com.ensak.connect.auth.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class QuestionPostResponseDTO {
     private Integer id;
     private String question;
     private List<String> tags;
-    private UserResponseDTO author;
+    private ProfileResponseDTO author;
     private Date createdAt;
     private Date updatedAt;
 
@@ -27,7 +25,7 @@ public class QuestionPostResponseDTO {
                 .id(questionPost.getId())
                 .question(questionPost.getQuestion())
                 .tags(questionPost.getTags())
-                .author(UserResponseDTO.map(questionPost.getAuthor()))
+                .author(ProfileResponseDTO.mapToDTO(questionPost.getAuthor()))
                 .createdAt(questionPost.getCreatedAt())
                 .updatedAt(questionPost.getUpdatedAt())
                 .build();

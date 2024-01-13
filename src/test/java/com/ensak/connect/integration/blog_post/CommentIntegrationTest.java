@@ -8,9 +8,7 @@ import com.ensak.connect.integration.AuthenticatedBaseIntegrationTest;
 import com.ensak.connect.blog_post.dto.CommentPostRequestDTO;
 import com.ensak.connect.blog_post.dto.CommentPostResponseDTO;
 import com.ensak.connect.blog_post.model.CommentPost;
-import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.blog_post.repository.CommentPostRepository;
-import com.ensak.connect.job_post.repository.JobPostRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -147,7 +145,7 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         CommentPostResponseDTO commentPostResponseDTO = objectMapper.readValue(response, CommentPostResponseDTO.class);
 
         Assertions.assertEquals(comment.getId(), commentPostResponseDTO.getId());
-        Assertions.assertEquals(comment.getAuthor().getId(), commentPostResponseDTO.getAuthor().getId());
+        Assertions.assertEquals(comment.getAuthor().getId(), commentPostResponseDTO.getAuthor().getUserId());
         Assertions.assertNotEquals(comment.getContent(), commentPostResponseDTO.getContent());
     }
 
@@ -219,15 +217,15 @@ public class CommentIntegrationTest extends AuthenticatedBaseIntegrationTest {
         CommentPostResponseDTO commentTest3 = commentPostResponseDTOList.get(2);
 
         Assertions.assertEquals(comment1.getId(), commentTest1.getId());
-        Assertions.assertEquals(comment1.getAuthor().getId(), commentTest1.getAuthor().getId());
+        Assertions.assertEquals(comment1.getAuthor().getId(), commentTest1.getAuthor().getUserId());
         Assertions.assertEquals(comment1.getContent(), commentTest1.getContent());
 
         Assertions.assertEquals(comment2.getId(), commentTest2.getId());
-        Assertions.assertEquals(comment2.getAuthor().getId(), commentTest2.getAuthor().getId());
+        Assertions.assertEquals(comment2.getAuthor().getId(), commentTest2.getAuthor().getUserId());
         Assertions.assertEquals(comment2.getContent(), commentTest2.getContent());
 
         Assertions.assertEquals(comment3.getId(), commentTest3.getId());
-        Assertions.assertEquals(comment3.getAuthor().getId(), commentTest3.getAuthor().getId());
+        Assertions.assertEquals(comment3.getAuthor().getId(), commentTest3.getAuthor().getUserId());
         Assertions.assertEquals(comment3.getContent(), commentTest3.getContent());
     }
 
