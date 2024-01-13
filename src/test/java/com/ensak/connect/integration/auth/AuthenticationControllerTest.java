@@ -61,6 +61,7 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                         post("/api/v1/auth/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestJson)
+                                .header("origin", "http://localhost:8081")
                 )
                 .andExpect(status().isOk())
                 .andReturn()
@@ -152,6 +153,7 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                 post("/api/v1/auth/change-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request)
+                        .header("origin", "http://localhost:8081")
         ).andExpect(status().isOk());
 
         String loginRequest = objectMapper.writeValueAsString(
@@ -164,6 +166,7 @@ class AuthenticationControllerTest extends AuthenticatedBaseIntegrationTest {
                 post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginRequest)
+                        .header("origin", "http://localhost:8081")
         ).andExpect(status().isOk());
     }
 }
