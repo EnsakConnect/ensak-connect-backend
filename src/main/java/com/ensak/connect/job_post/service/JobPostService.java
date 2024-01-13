@@ -1,6 +1,8 @@
 package com.ensak.connect.job_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.auth.enums.Role;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
@@ -90,7 +92,7 @@ public class JobPostService {
                 () -> new NotFoundException("Could not find job post with id " + id + ".")
         );
 
-        if (!author.getId().equals(jobPost.getAuthor().getId())) {
+        if (!author.getId().equals(jobPost.getAuthor().getId()) && !author.getRole().equals(Role.ROLE_ADMIN)) {
             throw new ForbiddenException("Cannot delete posts made by other users");
         }
         resourceService.unuseResources(
@@ -103,5 +105,9 @@ public class JobPostService {
 
     public List<JobPost> retrieveByTags(List<String> tags) {
         return jobPostRepository.retrieveByTags(tags);
+    }
+
+    public DashboardResponseDTO getCountPostsMonthly () {
+        return DashboardResponseDTO.mapO(jobPostRepository.countByMonthOfCurrentYear());
     }
 }

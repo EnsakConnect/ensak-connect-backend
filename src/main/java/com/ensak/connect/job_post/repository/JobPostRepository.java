@@ -21,4 +21,7 @@ public interface JobPostRepository extends JpaRepository<JobPost, Integer> {
 
     @Query("SELECT j FROM JobPost j WHERE j.id IN :ids ORDER BY j.updatedAt DESC ")
     List<JobPost> findAllByIds(@Param("ids") List<Integer> ids);
+
+    @Query("SELECT MONTH(j.createdAt) as month, COUNT(j) as count FROM JobPost j WHERE (YEAR(j.createdAt) = YEAR(current_date) ) GROUP BY MONTH(j.createdAt)")
+    List<Object[]> countByMonthOfCurrentYear();
 }

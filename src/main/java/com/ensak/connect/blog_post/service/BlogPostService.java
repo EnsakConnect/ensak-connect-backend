@@ -1,7 +1,9 @@
 package com.ensak.connect.blog_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.blog_post.dto.BlogPostRequestDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.blog_post.repository.BlogPostRepository;
@@ -82,7 +84,7 @@ public class BlogPostService {
                 () -> new NotFoundException("Could not find blog post with id " + id + ".")
         );
 
-        if (!author.getId().equals(blogPost.getAuthor().getId())) {
+        if (!author.getId().equals(blogPost.getAuthor().getId()) && !author.getRole().equals(Role.ROLE_ADMIN)) {
             throw new ForbiddenException("Cannot delete posts made by other users");
         }
         resourceService.unuseResources(
@@ -95,5 +97,9 @@ public class BlogPostService {
 
     public List<BlogPost> retrieveByTags(List<String> tags) {
         return blogPostRepository.retrieveByTags(tags);
+    }
+
+    public DashboardResponseDTO getCountPostsMonthly () {
+        return DashboardResponseDTO.mapO(blogPostRepository.countByMonthOfCurrentYear());
     }
 }

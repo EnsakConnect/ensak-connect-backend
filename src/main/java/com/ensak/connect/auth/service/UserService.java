@@ -1,6 +1,7 @@
 package com.ensak.connect.auth.service;
 
 import com.ensak.connect.auth.dto.RegisterRequest;
+import com.ensak.connect.auth.dto.UserResponseDTO;
 import com.ensak.connect.auth.repository.UserRepository;
 import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
@@ -11,6 +12,8 @@ import com.ensak.connect.profile.model.util.ProfileType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +29,15 @@ public class UserService {
 
     @SneakyThrows
     @Transactional
-    public User createUser(RegisterRequest registerRequest){
+    public User createUser(RegisterRequest registerRequest) {
 
         Optional<User> existing = userRepository.findByEmail(registerRequest.getEmail().toLowerCase());
-        if(existing.isPresent()){
+        if (existing.isPresent()) {
             throw new EmailExistException("Email account already exists");
         }
         User user = User.builder()
                 .email(registerRequest.getEmail().toLowerCase())
-                .password( passwordEncoder.encode(registerRequest.getPassword()))
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.ROLE_USER)
                 .isNotLocked(true)
                 .isActive(true)
@@ -46,7 +49,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateEmail(Integer id,String email){
+    public User updateEmail(Integer id, String email) {
         User user = getUserById(id);
         user.setEmail(email);
         //if the user changes his email it will require an identity check
@@ -54,36 +57,56 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User activateUser(String email){
+    public User activateUser(String email) {
         User user = getUserByEmail(email);
         user.setActivatedAt(new Date());
         return userRepository.save(user);
     }
 
-    public void updatePassword(Integer id, String password){
+    public void updatePassword(Integer id, String password) {
         User user = getUserById(id);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
 
-    public User getUserById(Integer id){
+    public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("User Not Found")
         );
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email.toLowerCase()).orElseThrow(
                 () -> new NotFoundException("User Not Found")
         );
     }
 
-    public void deleteUserById(Integer id){
+    public Page<UserResponseDTO> getUsersPage(Pageable pageable) {
+        return UserResponseDTO.map(userRepository.getUsersPage(pageable));
+    }
+
+    @Transactional
+    public void deleteUserById(Integer id) {
         User user = getUserById(id);
         userRepository.delete(user);
     }
 
-    public void deleteUserByEmail(String email){
+    @Transactional
+    public void patchIsNotLockedById(Integer id) {
+        User user = getUserById(id);
+        user.setIsNotLocked(!user.getIsNotLocked());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void patchIsActiveById(Integer id) {
+        User user = getUserById(id);
+        user.setIsActive(!user.getIsActive());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUserByEmail(String email) {
         User user = getUserByEmail(email);
         userRepository.delete(user);
     }

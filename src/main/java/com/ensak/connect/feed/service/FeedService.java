@@ -3,6 +3,7 @@ package com.ensak.connect.feed.service;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.blog_post.repository.BlogPostRepository;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
@@ -66,5 +67,9 @@ public class FeedService {
         return Stream.concat(blogPostList.stream(), result.stream())
                 .sorted(Comparator.comparing(FeedResponceDTO::getUpdatedAt).reversed())
                 .toList();
+    }
+
+    public DashboardResponseDTO getCountPosts () {
+        return feedRepository.countPosts();
     }
 }

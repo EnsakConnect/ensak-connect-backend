@@ -1,5 +1,6 @@
 package com.ensak.connect.profile;
 
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
@@ -11,6 +12,8 @@ import com.ensak.connect.resource.model.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -185,12 +188,12 @@ public class ProfileService {
         return responseDTO;
     }
 
-    public List<ProfileResponseDTO> getSummaryProfiles(String fullname, Pageable pageRequest){
-        List<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%", pageRequest);
+    public Page<ProfileResponseDTO> getSearchProfiles(String fullname, Pageable pageRequest){
+        Page<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%", pageRequest);
 
-        List<ProfileResponseDTO> responseDTO = ProfileResponseDTO.map(profiles);
+        List<ProfileResponseDTO> responseDTO = ProfileResponseDTO.map(profiles.getContent());
 
-        return responseDTO;
+        return new PageImpl<>(responseDTO, pageRequest, profiles.getTotalElements());
     }
 
 
@@ -446,6 +449,10 @@ public class ProfileService {
         update.setProfile(certification.getProfile());
         update.setId(certification.getId());
         return projectRepository.save(update);
+    }
+
+    public DashboardResponseDTO countProfileWithProfileType(){
+        return DashboardResponseDTO.mapO(profileRepository.countAllByProfileType());
     }
 
 }

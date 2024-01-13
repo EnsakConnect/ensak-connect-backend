@@ -19,4 +19,7 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Integer> {
 
     @Query("SELECT j FROM BlogPost j WHERE j.id IN :ids ORDER BY j.updatedAt DESC ")
     List<BlogPost> findAllByIds(@Param("ids") List<Integer> ids);
+
+    @Query("SELECT MONTH(b.createdAt) as month, COUNT(b) as count FROM BlogPost b WHERE (YEAR(b.createdAt) = YEAR(current_date) ) GROUP BY MONTH(b.createdAt)")
+    List<Object[]> countByMonthOfCurrentYear();
 }

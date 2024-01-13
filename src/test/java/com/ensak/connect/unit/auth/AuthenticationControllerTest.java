@@ -54,9 +54,9 @@ public class AuthenticationControllerTest {
         AuthenticationResponse response = new AuthenticationResponse();
         response.setToken("token");
 
-        when(authenticationService.login(request)).thenReturn(response);
+        when(authenticationService.login("test", request)).thenReturn(response);
 
-        ResponseEntity<AuthenticationResponse> actualResponse = authenticationController.login(request);
+        ResponseEntity<AuthenticationResponse> actualResponse = authenticationController.login("test", request);
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertThat(actualResponse.getBody()).isEqualTo(response);

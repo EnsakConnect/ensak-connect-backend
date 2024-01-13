@@ -114,7 +114,7 @@ public class AuthenticationServiceTest {
         when(jwtService.generateRefreshToken(Mockito.<UserDetails>any())).thenReturn("ABC123");
         when(authenticationManager.authenticate(Mockito.<Authentication>any())).thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
         AuthenticationResponse actualLoginResult = authenticationService
-                .login(new AuthenticationRequest("jane.doe@example.org", "password"));
+                .login("test", new AuthenticationRequest("jane.doe@example.org", "password"));
         verify(jwtService).generateToken(Mockito.<UserDetails>any());
         //verify(userService).getUserByEmail(Mockito.<String>any());
         verify(authenticationManager).authenticate(Mockito.<Authentication>any());
