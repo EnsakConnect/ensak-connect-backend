@@ -1,6 +1,7 @@
 package com.ensak.connect.question_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
@@ -55,7 +56,7 @@ public class QuestionPostService {
         QuestionPost post = qnaRepository.findById(id).orElseThrow(
             () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
-        if(!auth.getId().equals(post.getAuthor().getId())){
+        if(!auth.getId().equals(post.getAuthor().getId()) && !auth.getRole().equals(Role.ROLE_ADMIN)){
             throw new ForbiddenException("Cannot delete posts made by other users");
         }
         qnaRepository.deleteById(id);

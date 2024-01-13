@@ -1,6 +1,7 @@
 package com.ensak.connect.auth;
 
 import com.ensak.connect.auth.dto.*;
+import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.EmailConfirmation;
 import com.ensak.connect.auth.service.EmailConfirmationService;
 import com.ensak.connect.config.exception.model.UserNotFoundException;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,7 +77,14 @@ public class AuthenticationService implements UserDetailsService {
                 .build();
     }
 
-    public AuthenticationResponse login(AuthenticationRequest request) {
+    public AuthenticationResponse login(String origin, AuthenticationRequest request) {
+        var user = userRepository.findByEmail(request.getEmail().toLowerCase())
+                .orElseThrow(
+                        () -> new BadCredentialsException("Email or password incorrect")
+                );
+        if (user.getRole().equals(Role.ROLE_USER) && origin.contains("localhost:4200")){
+            throw new BadCredentialsException("Email or password incorrect");
+        }
         loadUserByUsername(request.getEmail().toLowerCase());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -83,10 +92,7 @@ public class AuthenticationService implements UserDetailsService {
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail().toLowerCase())
-                .orElseThrow(
-                        () -> new NotFoundException("Email Not Found")
-                );
+
         String jwtToken = this.generateTokenForEmail(request.getEmail());
         var refreshToken = jwtService.generateRefreshToken(user);
         return AuthenticationResponse.builder()
