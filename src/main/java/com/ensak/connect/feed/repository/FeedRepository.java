@@ -230,4 +230,18 @@ public class FeedRepository {
 
         return new PageImpl<>(feedResponceDTOList, pageRequest, totals);
     }
+
+    public List<Long> countPosts() {
+        List<Long> result = new ArrayList<>();
+        Long job = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
+                .getSingleResult();
+        Long blog = (Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b")
+                .getSingleResult();
+        Long question = (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
+                .getSingleResult();
+        result.add(job);
+        result.add(blog);
+        result.add(question);
+        return result;
+    }
 }
