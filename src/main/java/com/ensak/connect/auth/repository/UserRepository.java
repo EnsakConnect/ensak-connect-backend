@@ -2,7 +2,9 @@ package com.ensak.connect.auth.repository;
 
 import com.ensak.connect.auth.model.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
@@ -12,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Integer>, PagingAndS
 
     Optional<User> findByEmail(String email);
 
-    Page<User>
+    @Query("SELECT u FROM User u ORDER BY u.updatedAt DESC ")
+    Page<User> getUsersPage(Pageable pageable);
+
 
 }
