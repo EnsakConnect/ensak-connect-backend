@@ -1,6 +1,8 @@
 package com.ensak.connect.conversation.controller;
 
 
+import com.ensak.connect.chat_message.model.ChatMessage;
+import com.ensak.connect.chat_message.service.ChatMessageService;
 import com.ensak.connect.conversation.dto.ConversationRequestDTO;
 import com.ensak.connect.conversation.dto.ConversationResponseDTO;
 import com.ensak.connect.conversation.model.Conversation;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ConversationController {
 
     private final ConversationService conversationService;
+    private final ChatMessageService chatMessageService;
 
     @PostMapping
     public ResponseEntity<ConversationResponseDTO> create(
@@ -31,6 +34,13 @@ public class ConversationController {
     @GetMapping
     public ResponseEntity<List<ConversationResponseDTO>> getAll() {
         List<Conversation> conversations = conversationService.getConversations();
+        conversations.forEach(conversation -> {
+            ChatMessage lastMessage = chatMessageService.getLastChatMessage(conversation.getId());
+            if (lastMessage != null) {
+                conversation.setLastMessage(lastMessage.getContent());
+                conversation.setLastMessageDate(lastMessage.getCreatedAt());
+            }
+        });
         return ResponseEntity.ok(ConversationResponseDTO.map(conversations));
     }
 
