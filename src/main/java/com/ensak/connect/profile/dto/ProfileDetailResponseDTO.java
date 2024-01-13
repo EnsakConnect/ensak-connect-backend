@@ -12,35 +12,23 @@ import java.util.List;
 @Builder
 public class ProfileDetailResponseDTO {
     private Integer id;
-
     private String fullName;
-
     private String title;
-
-    private Date createdAt;
-
-    private Date updatedAt;
-
-    private String profilePicture;
-
-    private String banner;
-
-    private String resume;
-
+    private String phone;
+    private String city;
+    private String address;
     private ProfileType profileType;
-
     private String description;
-
+    private Date createdAt;
+    private Date updatedAt;
+    private String profilePicture;
+    private String banner;
+    private String resume;
     private List<Skill> skillList;
-
     private List<Language> languageList;
-
     private List<Education> educationList;
-
     private List<Certification> certificationList;
-
     private List<Experience> experienceList;
-
     private List<Project> projectList;
 
     public static ProfileDetailResponseDTO mapToDTO(Profile profile){
@@ -50,6 +38,9 @@ public class ProfileDetailResponseDTO {
                 .title(profile.getTitle())
                 .profileType(profile.getProfileType())
                 .description(profile.getDescription())
+                .phone(profile.getPhone())
+                .city(profile.getCity())
+                .address(profile.getAddress())
                 .profilePicture(
                         (profile.getProfilePicture()!=null)?profile.getProfilePicture().getFilename():null
                 )
