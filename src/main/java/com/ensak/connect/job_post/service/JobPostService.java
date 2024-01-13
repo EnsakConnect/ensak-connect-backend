@@ -1,6 +1,7 @@
 package com.ensak.connect.job_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
@@ -103,5 +104,9 @@ public class JobPostService {
 
     public List<JobPost> retrieveByTags(List<String> tags) {
         return jobPostRepository.retrieveByTags(tags);
+    }
+
+    public DashboardResponseDTO getCountPostsMonthly () {
+        return DashboardResponseDTO.mapO(jobPostRepository.countByMonthOfCurrentYear());
     }
 }

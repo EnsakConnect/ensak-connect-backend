@@ -17,4 +17,7 @@ public interface QuestionPostRepository extends JpaRepository<QuestionPost, Inte
 
     @Query("SELECT q FROM QuestionPost q WHERE q.id IN :ids ORDER BY q.updatedAt DESC ")
     List<QuestionPost> findAllByIds(@Param("ids") List<Integer> ids);
+
+    @Query("SELECT MONTH(q.createdAt) as month, COUNT(q) as count FROM QuestionPost q WHERE (YEAR(q.createdAt) = YEAR(current_date) ) GROUP BY MONTH(q.createdAt)")
+    List<Object[]> countByMonthOfCurrentYear();
 }

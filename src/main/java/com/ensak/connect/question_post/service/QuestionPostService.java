@@ -1,6 +1,7 @@
 package com.ensak.connect.question_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
@@ -62,5 +63,9 @@ public class QuestionPostService {
 
     public List<QuestionPost> retrieveByTags(List<String> tags) {
         return qnaRepository.retrieveByTags(tags);
+    }
+
+    public DashboardResponseDTO getCountPostsMonthly () {
+        return DashboardResponseDTO.mapO(qnaRepository.countByMonthOfCurrentYear());
     }
 }

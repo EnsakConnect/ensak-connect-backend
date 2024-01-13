@@ -2,6 +2,8 @@ package com.ensak.connect.feed.repository;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
+import com.ensak.connect.backoffice.dto.DashboardSingleObjectDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.feed.dto.FeedListIdResponseDTO;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
@@ -51,8 +53,6 @@ public class FeedRepository {
                 .setMaxResults(pageSize);
 
 
-
-
         List<Object[]> queryResult = query.getResultList();
 
         List<Integer> jobPostIds = new ArrayList<>();
@@ -63,7 +63,7 @@ public class FeedRepository {
             for (Object[] row : queryResult) {
                 if ("JOB_POST".equals(row[2])) {
                     jobPostIds.add((Integer) row[0]);
-                } else if ("QUESTION_POST".equals(row[2])){
+                } else if ("QUESTION_POST".equals(row[2])) {
                     questionPostIds.add((Integer) row[0]);
                 } else {
                     blogPostIds.add((Integer) row[0]);
@@ -122,7 +122,7 @@ public class FeedRepository {
             for (Object[] row : queryResult) {
                 if ("JOB_POST".equals(row[2])) {
                     jobPostIds.add((Integer) row[0]);
-                } else if ("QUESTION_POST".equals(row[2])){
+                } else if ("QUESTION_POST".equals(row[2])) {
                     questionPostIds.add((Integer) row[0]);
                 } else {
                     blogPostIds.add((Integer) row[0]);
@@ -209,7 +209,7 @@ public class FeedRepository {
 
         if (!queryResult.isEmpty()) {
             User author = authenticationService.getAuthenticatedUser();
-            if ("JOB_POST".equals(queryResult.get(0)[1])){
+            if ("JOB_POST".equals(queryResult.get(0)[1])) {
                 log.info("On est dans job post");
                 for (Object[] row : queryResult) {
                     feedResponceDTOList.add(FeedResponceDTO.map((JobPost) row[0], author.getId()));
@@ -231,17 +231,25 @@ public class FeedRepository {
         return new PageImpl<>(feedResponceDTOList, pageRequest, totals);
     }
 
-    public List<Long> countPosts() {
-        List<Long> result = new ArrayList<>();
-        Long job = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
-                .getSingleResult();
-        Long blog = (Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b")
-                .getSingleResult();
-        Long question = (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
-                .getSingleResult();
-        result.add(job);
-        result.add(blog);
-        result.add(question);
-        return result;
+    public DashboardResponseDTO countPosts() {
+        List<DashboardSingleObjectDTO> list = new ArrayList<>();
+        list.add(DashboardSingleObjectDTO.builder()
+                .field("JOB")
+                .count((Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
+                        .getSingleResult())
+                .build());
+        list.add(DashboardSingleObjectDTO.builder()
+                .field("BLOG")
+                .count((Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b")
+                        .getSingleResult())
+                .build());
+        list.add(DashboardSingleObjectDTO.builder()
+                .field("Q&A")
+                .count((Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
+                        .getSingleResult())
+                .build());
+
+
+        return DashboardResponseDTO.map(list);
     }
 }

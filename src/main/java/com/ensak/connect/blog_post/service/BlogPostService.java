@@ -2,6 +2,7 @@ package com.ensak.connect.blog_post.service;
 
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.blog_post.dto.BlogPostRequestDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.blog_post.repository.BlogPostRepository;
@@ -95,5 +96,9 @@ public class BlogPostService {
 
     public List<BlogPost> retrieveByTags(List<String> tags) {
         return blogPostRepository.retrieveByTags(tags);
+    }
+
+    public DashboardResponseDTO getCountPostsMonthly () {
+        return DashboardResponseDTO.mapO(blogPostRepository.countByMonthOfCurrentYear());
     }
 }
