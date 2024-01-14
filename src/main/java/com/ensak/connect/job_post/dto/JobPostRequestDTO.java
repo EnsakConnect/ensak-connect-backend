@@ -31,6 +31,9 @@ public class JobPostRequestDTO {
     @NotBlank(message = "Company type should not be blank")
     private String companyType;
 
+    //optional
+    private String companyLogo;
+
     @NotBlank(message = "Category should not be blank")
     private String category;
 

@@ -54,6 +54,7 @@ public class JobPostService {
                         .category(request.getCategory())
                         .description(request.getDescription())
                         .tags(request.getTags())
+                        .companyLogo(request.getCompanyLogo())
                         .resources(resourceService.useResources(request.getResources(),author))
                         .build()
         );
@@ -74,6 +75,7 @@ public class JobPostService {
         jobPost.setCategory(request.getCategory());
         jobPost.setDescription(request.getDescription());
         jobPost.setTags(request.getTags());
+        jobPost.setCompanyLogo(request.getCompanyLogo());
         jobPost.setResources(resourceService.updateUsedResource(
                 jobPost.getResources().stream().map(Resource::getId).toList(),
                 request.getResources(),

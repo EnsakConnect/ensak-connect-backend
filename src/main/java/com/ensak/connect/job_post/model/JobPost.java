@@ -41,6 +41,8 @@ public class JobPost {
 
     private String category;
 
+    private String companyLogo;
+
     @ElementCollection
     private List<Integer> likes = new ArrayList<>();
 
