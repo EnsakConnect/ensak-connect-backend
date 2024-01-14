@@ -82,7 +82,7 @@ public class AuthenticationService implements UserDetailsService {
                 .orElseThrow(
                         () -> new BadCredentialsException("Email or password incorrect")
                 );
-        if (user.getRole().equals(Role.ROLE_USER) && origin.contains("localhost:4200")){
+        if (user.getRole().equals(Role.ROLE_USER) && origin != null && origin.contains("localhost:4200")){
             throw new BadCredentialsException("Email or password incorrect");
         }
         loadUserByUsername(request.getEmail().toLowerCase());
