@@ -72,4 +72,10 @@ public class FeedService {
     public DashboardResponseDTO getCountPosts () {
         return feedRepository.countPosts();
     }
+
+    public Page<FeedResponceDTO> getUserPosts(PageRequest pageRequest, Integer userId) {
+        FeedPageResponseDTO feedPageResponse = feedRepository.findAllUserPosts(pageRequest,userId);
+        List<FeedResponceDTO> feedResponse = getPageFromIds(feedPageResponse);
+        return new PageImpl<>(feedResponse, feedPageResponse.getPage(), feedPageResponse.getTotals());
+    }
 }

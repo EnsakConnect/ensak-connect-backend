@@ -1,11 +1,13 @@
 package com.ensak.connect.blog_post.repository;
 
 import com.ensak.connect.blog_post.model.BlogPost;
+import com.ensak.connect.job_post.model.JobPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface BlogPostRepository extends JpaRepository<BlogPost, Integer> {
@@ -22,4 +24,7 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Integer> {
 
     @Query("SELECT MONTH(b.createdAt) as month, COUNT(b) as count FROM BlogPost b WHERE (YEAR(b.createdAt) = YEAR(current_date) ) GROUP BY MONTH(b.createdAt)")
     List<Object[]> countByMonthOfCurrentYear();
+
+    Optional<List<BlogPost>> findByAuthorId(Integer authorId);
+
 }
