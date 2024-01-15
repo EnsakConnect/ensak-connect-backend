@@ -1,8 +1,11 @@
 package com.ensak.connect.question_post.model;
 
 import com.ensak.connect.auth.model.User;
+import com.ensak.connect.interaction.dto.InteractionResponseDTO;
+import com.ensak.connect.interaction.model.Interaction;
 import com.ensak.connect.resource.model.Resource;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +46,11 @@ public class Answer {
             inverseJoinColumns = @JoinColumn(name = "resource_id")
     )
     private List<Resource> resources;
+
+    @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interaction> interactions;
+
+    private Integer interactionsCount;
 
     @CreationTimestamp
     private Date createdAt;
