@@ -5,6 +5,7 @@ import com.ensak.connect.auth.enums.Role;
 import com.ensak.connect.auth.model.User;
 import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.blog_post.dto.BlogPostRequestDTO;
+import com.ensak.connect.blog_post.dto.BlogPostResponseDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
 import com.ensak.connect.blog_post.repository.BlogPostRepository;
 import com.ensak.connect.config.exception.ForbiddenException;
@@ -33,32 +34,42 @@ public class BlogPostService {
         return blogPostRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find blog post with id "+ id + ".")
         );
+
+    }
+
+    public BlogPostResponseDTO getBlogPostByIdMapped(Integer id) {
+        User author = authenticationService.getAuthenticatedUser();
+        var blog = blogPostRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Could not find blog post with id "+ id + ".")
+        );
+        return BlogPostResponseDTO.map(blog, author.getId());
     }
 
     public boolean existsBlogPost(Integer authorId, Integer blogPostId){
         return blogPostRepository.existsBlogPostByIdAndAuthorId(blogPostId, authorId);
     }
 
-    public List<BlogPost> getBlogPosts() {
-        return blogPostRepository.findAll();
+    public List<BlogPostResponseDTO> getBlogPosts() {
+        User author = authenticationService.getAuthenticatedUser();
+        return BlogPostResponseDTO.map(blogPostRepository.findAll(), author.getId());
     }
 
     @SneakyThrows
-    public BlogPost createBlogPost(BlogPostRequestDTO request) {
+    public BlogPostResponseDTO createBlogPost(BlogPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
-        return blogPostRepository.save(
+        return BlogPostResponseDTO.map(blogPostRepository.save(
                 BlogPost.builder()
                         .content(request.getContent())
                         .author(author)
                         .tags(request.getTags())
                         .resources(resourceService.useResources(request.getResources(),author))
                         .build()
-        );
+        ), author.getId());
     }
 
     @SneakyThrows
     @Transactional
-    public BlogPost updateBlogPostById(Integer id, BlogPostRequestDTO request) {
+    public BlogPostResponseDTO updateBlogPostById(Integer id, BlogPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
         BlogPost blogPost = blogPostRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find blog post with id " + id + ".")
@@ -73,7 +84,7 @@ public class BlogPostService {
                 )
         );
 
-        return blogPostRepository.save(blogPost);
+        return BlogPostResponseDTO.map(blogPostRepository.save(blogPost), author.getId());
     }
 
     @SneakyThrows

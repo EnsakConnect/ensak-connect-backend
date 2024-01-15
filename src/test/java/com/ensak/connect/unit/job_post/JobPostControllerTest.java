@@ -63,8 +63,7 @@ public class JobPostControllerTest {
                 .companyType("company type")
                 .author(null)
                 .build();
-        when(jobPostService.createJobPost(Mockito.any(JobPostRequestDTO.class))).thenReturn(jobPost);
-        when(JobPostResponseDTO.map(Mockito.any(JobPost.class))).thenReturn(res);
+        when(jobPostService.createJobPost(Mockito.any(JobPostRequestDTO.class))).thenReturn(res);
 
 
         ResponseEntity<?> responseEntity = jobPostController.create(request);
@@ -86,13 +85,13 @@ public class JobPostControllerTest {
 
     @Test
     public void testFindAllJobPosts_returnsOk() {
-        List<JobPost> jobPosts = new ArrayList<>();
-        JobPost jobPost1 = new JobPost();
+        List<JobPostResponseDTO> jobPosts = new ArrayList<>();
+        JobPostResponseDTO jobPost1 = new JobPostResponseDTO();
         jobPost1.setTitle("Software Engineer");
         jobPost1.setDescription("Develop and maintain software applications.");
         jobPosts.add(jobPost1);
 
-        JobPost jobPost2 = new JobPost();
+        JobPostResponseDTO jobPost2 = new JobPostResponseDTO();
         jobPost2.setTitle("Product Manager");
         jobPost2.setDescription("Manage the product development lifecycle.");
         jobPosts.add(jobPost2);

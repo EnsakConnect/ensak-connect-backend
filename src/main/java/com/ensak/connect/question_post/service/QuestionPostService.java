@@ -6,6 +6,7 @@ import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.question_post.dto.question.QuestionPostRequestDTO;
+import com.ensak.connect.question_post.dto.question.QuestionPostResponseDTO;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import com.ensak.connect.auth.model.User;
@@ -23,13 +24,22 @@ public class QuestionPostService {
     private final QuestionPostRepository qnaRepository;
     private final AuthenticationService authenticationService;
 
-    public QuestionPost getQuestionPostById(Integer id) {
+    public QuestionPostResponseDTO getQuestionPostById(Integer id) {
+        User author = authenticationService.getAuthenticatedUser();
+        var question = qnaRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Could not find qna post with id " + id + ".")
+        );
+        return QuestionPostResponseDTO.map(question, author.getId());
+    }
+
+    public QuestionPost getQuestionPostByIdForAnswers(Integer id) {
+
         return qnaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find qna post with id " + id + ".")
         );
     }
 
-    public QuestionPost createQuestionPost(QuestionPostRequestDTO request) {
+    public QuestionPostResponseDTO createQuestionPost(QuestionPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
         QuestionPost post = QuestionPost.builder()
                 .question(request.getQuestion())
@@ -38,7 +48,7 @@ public class QuestionPostService {
         if(request.getTags() != null) {
             post.setTags(request.getTags());
         }
-        return qnaRepository.save(post);
+        return QuestionPostResponseDTO.map(qnaRepository.save(post), author.getId());
     }
 
     @Transactional

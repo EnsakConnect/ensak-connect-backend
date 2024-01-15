@@ -6,6 +6,7 @@ import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
 import com.ensak.connect.job_post.dto.JobPostRequestDTO;
+import com.ensak.connect.job_post.dto.JobPostResponseDTO;
 import com.ensak.connect.job_post.model.JobPost;
 import com.ensak.connect.job_post.repository.JobPostRepository;
 import com.ensak.connect.auth.model.User;
@@ -33,18 +34,27 @@ public class JobPostService {
         );
     }
 
+    public JobPostResponseDTO getJobPostByIdMapped(Integer id) {
+        User author = authenticationService.getAuthenticatedUser();
+        var jobPost = jobPostRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Could not find job post with id "+ id + ".")
+        );
+        return JobPostResponseDTO.map(jobPost, author.getId());
+    }
+
     public boolean existsJobPost(Integer authorId, Integer jobPostId){
         return jobPostRepository.existsJobPostByIdAndAuthorId(jobPostId, authorId);
     }
 
-    public List<JobPost> getJobPosts() {
-        return jobPostRepository.findAll();
+    public List<JobPostResponseDTO> getJobPosts() {
+        User author = authenticationService.getAuthenticatedUser();
+        return JobPostResponseDTO.map(jobPostRepository.findAll(), author.getId());
     }
 
     @SneakyThrows
-    public JobPost createJobPost(JobPostRequestDTO request) {
+    public JobPostResponseDTO createJobPost(JobPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
-        return jobPostRepository.save(
+        var jobPost = jobPostRepository.save(
                 JobPost.builder()
                         .title(request.getTitle())
                         .companyName(request.getCompanyName())
@@ -56,13 +66,13 @@ public class JobPostService {
                         .tags(request.getTags())
                         .companyLogo(request.getCompanyLogo())
                         .resources(resourceService.useResources(request.getResources(),author))
-                        .build()
-        );
+                        .build());
+        return JobPostResponseDTO.map(jobPost, author.getId());
     }
 
     @SneakyThrows
     @Transactional
-    public JobPost updateJobPostById(Integer id, JobPostRequestDTO request) {
+    public JobPostResponseDTO updateJobPostById(Integer id, JobPostRequestDTO request) {
         User author = authenticationService.getAuthenticatedUser();
         JobPost jobPost = jobPostRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Could not find job post with id " + id + ".")
@@ -83,7 +93,7 @@ public class JobPostService {
                 )
         );
 
-        return jobPostRepository.save(jobPost);
+        return JobPostResponseDTO.map(jobPostRepository.save(jobPost), author.getId());
     }
 
     @SneakyThrows
