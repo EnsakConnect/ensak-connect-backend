@@ -33,9 +33,14 @@ public class AnswerService {
         User author = authService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         List<Answer> answers = questionPost.getAnswers();
-        return AnswerResponseDTO.map(answers.stream().sorted(Comparator.comparing(Answer::getInteractionsCount)
-                        .thenComparing(Answer::getUpdatedAt).reversed()).toList()
-                , author.getId());
+        if (answers != null){
+            return AnswerResponseDTO.map(answers.stream().sorted(Comparator.comparing(Answer::getInteractionsCount)
+                            .thenComparing(Answer::getUpdatedAt).reversed()).toList()
+                    , author.getId());
+        }else {
+            return null;
+        }
+
     }
 
     @SneakyThrows
