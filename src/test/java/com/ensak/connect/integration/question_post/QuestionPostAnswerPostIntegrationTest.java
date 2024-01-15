@@ -87,6 +87,7 @@ public class QuestionPostAnswerPostIntegrationTest extends AuthenticatedBaseInte
             answerRepository.save(
                     Answer.builder()
                             .author(author)
+                            .interactionsCount(0)
                             .questionPost(questionPost)
                             .content("My test answer number " + i + ".")
                             .build()
