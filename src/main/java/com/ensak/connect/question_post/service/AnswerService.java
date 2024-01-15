@@ -26,13 +26,13 @@ public class AnswerService {
     private final ResourceService resourceService;
 
     public List<Answer> getAnswerByQuestionId(Integer questionPostId) {
-        QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
+        QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         return questionPost.getAnswers();
     }
 
     @SneakyThrows
     public Answer createAnswerForQuestionPost(Integer questionPostId, AnswerRequestDTO request) {
-        QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
+        QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         User author = authService.getAuthenticatedUser();
         return answerRepository.save(
                 Answer.builder()
@@ -47,7 +47,7 @@ public class AnswerService {
     @SneakyThrows
     public Answer updateAnswerById(Integer questionPostId, Integer answerId, AnswerRequestDTO request) {
         User auth = authService.getAuthenticatedUser();
-        QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
+        QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new NotFoundException("Cannot find answer with the requested id.")
         );
@@ -69,7 +69,7 @@ public class AnswerService {
 
     @SneakyThrows
     public void deleteAnswerById(Integer questionPostId, Integer answerId) {
-        QuestionPost questionPost = questionPostService.getQuestionPostById(questionPostId);
+        QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new NotFoundException("Cannot find answer with the requested id.")
         );

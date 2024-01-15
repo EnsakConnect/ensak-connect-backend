@@ -17,14 +17,20 @@ public class QuestionPostResponseDTO {
     private String question;
     private List<String> tags;
     private ProfileResponseDTO author;
+    private Boolean isLiked;
+    private Integer answersCount;
+    private Integer likesCount;
     private Date createdAt;
     private Date updatedAt;
 
-    public static QuestionPostResponseDTO map(QuestionPost questionPost) {
+    public static QuestionPostResponseDTO map(QuestionPost questionPost, Integer authorId) {
         return QuestionPostResponseDTO.builder()
                 .id(questionPost.getId())
                 .question(questionPost.getQuestion())
                 .tags(questionPost.getTags())
+                .isLiked(questionPost.getLikes() != null && questionPost.getLikes().contains(authorId))
+                .likesCount(questionPost.getLikes() != null ? questionPost.getLikes().size() : 0)
+                .answersCount(questionPost.getAnswers() != null ? questionPost.getAnswers().size() : 0)
                 .author(ProfileResponseDTO.mapToDTO(questionPost.getAuthor()))
                 .createdAt(questionPost.getCreatedAt())
                 .updatedAt(questionPost.getUpdatedAt())

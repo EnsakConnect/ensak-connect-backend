@@ -28,26 +28,22 @@ public class BlogPostController {
     public ResponseEntity<BlogPostResponseDTO> create (
             @RequestBody @Valid BlogPostRequestDTO request
     ) {
-        BlogPost blogPost = blogPostService.createBlogPost(request);
-        return new ResponseEntity<>(BlogPostResponseDTO.map(blogPost), HttpStatus.CREATED);
+        return new ResponseEntity<>(blogPostService.createBlogPost(request), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<BlogPostResponseDTO>> getAll() {
-        List<BlogPost> blogPosts = blogPostService.getBlogPosts();
-        return ResponseEntity.ok(BlogPostResponseDTO.map(blogPosts));
+        return ResponseEntity.ok(blogPostService.getBlogPosts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BlogPostResponseDTO> show(@PathVariable Integer id) {
-        BlogPost blogPost = blogPostService.getBlogPostById(id);
-        return ResponseEntity.ok(BlogPostResponseDTO.map(blogPost));
+        return ResponseEntity.ok(blogPostService.getBlogPostByIdMapped(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BlogPostResponseDTO> update(@PathVariable Integer id, @RequestBody @Valid BlogPostRequestDTO request) {
-        BlogPost blogPost = blogPostService.updateBlogPostById(id, request);
-        return new ResponseEntity<>(BlogPostResponseDTO.map(blogPost), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(blogPostService.updateBlogPostById(id, request), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

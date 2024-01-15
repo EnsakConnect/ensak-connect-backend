@@ -13,52 +13,52 @@ public class LikeController {
     private final LikeService likeService;
 
     @GetMapping("/job-post/{id}/like")
-    public ResponseEntity<String> likeJobPost (
+    public ResponseEntity<LikeResponseDTO> likeJobPost (
             @PathVariable Integer id
     ) {
 
-        return new ResponseEntity<>(likeService.likeJobPost(id), HttpStatus.OK);
+        return new ResponseEntity<>(LikeResponseDTO.builder().message(likeService.likeJobPost(id)).build(), HttpStatus.OK);
     }
 
     @GetMapping("/job-post/{id}/dislike")
-    public ResponseEntity<String> dislikeJobPost (
+    public ResponseEntity<LikeResponseDTO> dislikeJobPost (
             @PathVariable Integer id
     ) {
 
-        return new ResponseEntity<>(likeService.dislikeJobPost(id), HttpStatus.OK);
+        return new ResponseEntity<>(LikeResponseDTO.builder().message(likeService.dislikeJobPost(id)).build(), HttpStatus.OK);
     }
 
     @GetMapping("/question-post/{id}/like")
-    public ResponseEntity<String> likeQuestionPost (
+    public ResponseEntity<LikeResponseDTO> likeQuestionPost (
             @PathVariable Integer id
     ) {
 
-        return new ResponseEntity<>(likeService.likeQuestionPost(id), HttpStatus.OK);
+        return new ResponseEntity<>(LikeResponseDTO.builder().message(likeService.likeQuestionPost(id)).build(), HttpStatus.OK);
     }
 
     @GetMapping("/question-post/{id}/dislike")
-    public ResponseEntity<String> dislikeQuestionPost (
+    public ResponseEntity<LikeResponseDTO> dislikeQuestionPost (
             @PathVariable Integer id
     ) {
 
-        return new ResponseEntity<>(likeService.dislikeQuestionPost(id), HttpStatus.OK);
+        return new ResponseEntity<>(LikeResponseDTO.builder().message(likeService.dislikeQuestionPost(id)).build(), HttpStatus.OK);
     }
 
 
     @GetMapping("/blog-post/{id}/like")
-    public ResponseEntity<String> likeBlogPost (
+    public ResponseEntity<LikeResponseDTO> likeBlogPost (
             @PathVariable Integer id
     ) {
 
-        return new ResponseEntity<>(likeService.likeBlogPost(id), HttpStatus.OK);
+        return new ResponseEntity<>(LikeResponseDTO.builder().message(likeService.likeBlogPost(id)).build(), HttpStatus.OK);
     }
 
     @GetMapping("/blog-post/{id}/dislike")
-    public ResponseEntity<String> dislikeBlogPost (
+    public ResponseEntity<LikeResponseDTO> dislikeBlogPost (
             @PathVariable Integer id
     ) {
 
-        return new ResponseEntity<>(likeService.dislikeBlogPost(id), HttpStatus.OK);
+        return new ResponseEntity<>(LikeResponseDTO.builder().message(likeService.dislikeBlogPost(id)).build(), HttpStatus.OK);
     }
 
 }
