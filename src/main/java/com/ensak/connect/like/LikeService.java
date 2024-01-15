@@ -30,14 +30,6 @@ public class LikeService {
         User author = authenticationService.getAuthenticatedUser();
         JobPost jobPost = jobPostRepository.findById(jobPostId)
                 .orElseThrow(()-> new NotFoundException("Could not find job post with id " + jobPostId + "."));
-//        Set<Like> likes = jobPost.getLikes();
-//        if (isLikedBySameAuthor(likes, author) == null){
-//            likes.add(Like.builder()
-//                    .author(author)
-//                    .build());
-//            jobPost.setLikes(likes);
-//            jobPostRepository.save(jobPost);
-//        }
         List<Integer> likes = jobPost.getLikes();
         if (isLikedBySameAuthor(likes, author.getId()) == null) {
             likes.add(author.getId());

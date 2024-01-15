@@ -64,7 +64,7 @@ public class FeedResponceDTO {
                         .build()
                 )
                 .likesCount(jobPost.getLikes().size())
-                .isLiked(jobPost.getLikes().contains(authorId))
+                .isLiked(jobPost.getJobApplications().stream().anyMatch(application -> application.getApplicant().getId().equals(authorId)))
                 .resources(
                         jobPost.getResources() != null
                                 ? jobPost.getResources().stream().map(Resource::getFilename).toList()

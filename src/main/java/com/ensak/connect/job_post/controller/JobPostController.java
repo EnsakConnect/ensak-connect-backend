@@ -24,26 +24,22 @@ public class JobPostController {
     public ResponseEntity<JobPostResponseDTO> create (
             @RequestBody @Valid JobPostRequestDTO request
     ) {
-        JobPost jobPost = jobPostService.createJobPost(request);
-        return new ResponseEntity<>(JobPostResponseDTO.map(jobPost), HttpStatus.CREATED);
+        return new ResponseEntity<>(jobPostService.createJobPost(request), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<JobPostResponseDTO>> getAll() {
-        List<JobPost> jobPosts = jobPostService.getJobPosts();
-        return ResponseEntity.ok(JobPostResponseDTO.map(jobPosts));
+        return ResponseEntity.ok(jobPostService.getJobPosts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<JobPostResponseDTO> show(@PathVariable Integer id) {
-        JobPost jobPost = jobPostService.getJobPostById(id);
-        return ResponseEntity.ok(JobPostResponseDTO.map(jobPost));
+        return ResponseEntity.ok(jobPostService.getJobPostByIdMapped(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<JobPostResponseDTO> update(@PathVariable Integer id, @RequestBody @Valid JobPostRequestDTO request) {
-        JobPost jobPost = jobPostService.updateJobPostById(id, request);
-        return new ResponseEntity<>(JobPostResponseDTO.map(jobPost), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(jobPostService.updateJobPostById(id, request), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
