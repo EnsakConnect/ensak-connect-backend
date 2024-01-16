@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface JobPostRepository extends JpaRepository<JobPost, Integer> {
@@ -24,4 +25,6 @@ public interface JobPostRepository extends JpaRepository<JobPost, Integer> {
 
     @Query("SELECT MONTH(j.createdAt) as month, COUNT(j) as count FROM JobPost j WHERE (YEAR(j.createdAt) = YEAR(current_date) ) GROUP BY MONTH(j.createdAt)")
     List<Object[]> countByMonthOfCurrentYear();
+
+    Optional<List<JobPost>> findByAuthorId(Integer authorId);
 }

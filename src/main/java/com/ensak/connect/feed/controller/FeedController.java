@@ -1,5 +1,6 @@
 package com.ensak.connect.feed.controller;
 
+import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
 import com.ensak.connect.feed.dto.FeedResponceDTO;
 import com.ensak.connect.feed.service.FeedService;
@@ -36,5 +37,7 @@ public class FeedController {
         PageRequest pageRequest = PageRequest.of(page, size);
         return new ResponseEntity<>(feedService.getPageOfFeedWithSearchAndFilter(pageRequest, search, filter), HttpStatus.OK);
     }
+
+
 
 }

@@ -5,13 +5,15 @@ import com.ensak.connect.auth.model.User;
 import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.backoffice.dto.DashboardSingleObjectDTO;
 import com.ensak.connect.blog_post.model.BlogPost;
+import com.ensak.connect.blog_post.repository.BlogPostRepository;
 import com.ensak.connect.feed.dto.FeedListIdResponseDTO;
 import com.ensak.connect.feed.dto.FeedPageResponseDTO;
 import com.ensak.connect.feed.dto.FeedResponceDTO;
 import com.ensak.connect.job_post.model.JobPost;
+import com.ensak.connect.job_post.repository.JobPostRepository;
 import com.ensak.connect.question_post.model.QuestionPost;
+import com.ensak.connect.question_post.repository.QuestionPostRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,11 @@ public class FeedRepository {
     @PersistenceContext
     private EntityManager entityManager;
     private final AuthenticationService authenticationService;
+
+    private final BlogPostRepository blogPostRepository;
+    private final JobPostRepository jobPostRepository;
+    private final QuestionPostRepository questionPostRepository;
+
 
     public FeedPageResponseDTO findAll(PageRequest pageRequest) {
         int pageNumber = pageRequest.getPageNumber();
@@ -70,6 +77,82 @@ public class FeedRepository {
                 }
             }
         }
+
+        FeedListIdResponseDTO feedIds = FeedListIdResponseDTO.builder()
+                .jobPostIds(jobPostIds)
+                .questionPostIds(questionPostIds)
+                .blogPostIds(blogPostIds)
+                .build();
+        log.warn("ids {}", feedIds);
+
+        long totals = (Long) entityManager.createQuery("SELECT COUNT(j) FROM JobPost j")
+                .getSingleResult() +
+                (Long) entityManager.createQuery("SELECT COUNT(q) FROM QuestionPost q")
+                        .getSingleResult() +
+                (Long) entityManager.createQuery("SELECT COUNT(b) FROM BlogPost b")
+                        .getSingleResult();
+
+        return new FeedPageResponseDTO(feedIds, pageRequest, totals);
+    }
+
+    public FeedPageResponseDTO findAllUserPosts(PageRequest pageRequest, Integer userId) {
+        int pageNumber = pageRequest.getPageNumber();
+        int pageSize = pageRequest.getPageSize();
+        int offset = pageNumber * pageSize;
+
+//        Query query = entityManager.createQuery(
+//                        "SELECT result.id, result.updatedAt, result.type FROM ( " +
+//                                "SELECT j.id as id, j.updatedAt as updatedAt, 'JOB_POST' as type FROM JobPost j " +
+//                                "UNION ALL " +
+//                                "SELECT q.id as id, q.updatedAt as updatedAt, 'QUESTION_POST' as type FROM QuestionPost q " +
+//                                "UNION ALL " +
+//                                "SELECT b.id as id, b.updatedAt as updatedAt, 'BLOG_POST' as type FROM BlogPost b) result " +
+//                                "ORDER BY result.updatedAt DESC "
+//                )
+//                .setFirstResult(offset)
+//                .setMaxResults(pageSize);
+        /*
+        String sql = "SELECT result.id, result.updatedAt, result.type FROM (" +
+                "SELECT j.id, j.updatedAt as updatedAt, 'JOB_POST' as type FROM JobPost j WHERE j.user_id = :userId " +
+                "UNION ALL " +
+                "SELECT q.id, q.updatedAt as updatedAt, 'QUESTION_POST' FROM QuestionPost q WHERE q.user_id = :userId " +
+                "UNION ALL " +
+                "SELECT b.id, b.updatedAt as updatedAt, 'BLOG_POST' FROM BlogPost b WHERE b.user_id = :userId) AS result " +
+                "ORDER BY updatedAt DESC";
+
+        Query query = entityManager.createQuery(sql)
+                .setFirstResult(offset)
+                .setMaxResults(pageSize);
+
+        query.setParameter("userId",userId);
+
+
+
+        List<Object[]> queryResult = query.getResultList();
+
+        if (!queryResult.isEmpty()) {
+            for (Object[] row : queryResult) {
+                if ("JOB_POST".equals(row[2])) {
+                    jobPostIds.add((Integer) row[0]);
+                } else if ("QUESTION_POST".equals(row[2])) {
+                    questionPostIds.add((Integer) row[0]);
+                } else {
+                    blogPostIds.add((Integer) row[0]);
+                }
+            }
+        }
+        */
+
+
+
+
+        List<Integer> jobPostIds = new ArrayList<>();
+        List<Integer> questionPostIds = new ArrayList<>();
+        List<Integer> blogPostIds = new ArrayList<>();
+
+        blogPostIds = blogPostRepository.findByAuthorId(userId).get().stream().map(BlogPost::getId).toList();
+        jobPostIds = jobPostRepository.findByAuthorId(userId).get().stream().map(JobPost::getId).toList();
+        questionPostIds = questionPostRepository.findByAuthorId(userId).get().stream().map(QuestionPost::getId).toList();
 
         FeedListIdResponseDTO feedIds = FeedListIdResponseDTO.builder()
                 .jobPostIds(jobPostIds)
