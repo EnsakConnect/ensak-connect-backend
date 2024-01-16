@@ -39,7 +39,7 @@ public class EnsakConnectBackendApplication {
 
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		final CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
+//		config.setAllowCredentials(true);
 		// Don't do this in production, use a proper list  of allowed origins
 		config.setAllowedOrigins(Collections.singletonList("*"));
 		config.setAllowedHeaders(List.of("*"));
