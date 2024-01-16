@@ -2,6 +2,7 @@ package com.ensak.connect.profile;
 
 import com.ensak.connect.backoffice.dto.DashboardResponseDTO;
 import com.ensak.connect.config.exception.NotFoundException;
+import com.ensak.connect.feed.dto.FeedResponceDTO;
 import com.ensak.connect.profile.dto.*;
 import com.ensak.connect.profile.model.*;
 import com.ensak.connect.profile.model.util.ProfileType;
@@ -188,10 +189,10 @@ public class ProfileService {
         return responseDTO;
     }
 
-    public Page<ProfileResponseDTO> getSearchProfiles(String fullname, Pageable pageRequest){
+    public Page<FeedResponceDTO> getSearchProfiles(String fullname, Pageable pageRequest){
         Page<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%", pageRequest);
 
-        List<ProfileResponseDTO> responseDTO = ProfileResponseDTO.map(profiles.getContent());
+        List<FeedResponceDTO> responseDTO = FeedResponceDTO.mapProfile(ProfileResponseDTO.map(profiles.getContent()));
 
         return new PageImpl<>(responseDTO, pageRequest, profiles.getTotalElements());
     }

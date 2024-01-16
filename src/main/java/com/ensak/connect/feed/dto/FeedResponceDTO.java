@@ -149,4 +149,34 @@ public class FeedResponceDTO {
         }
         return result;
     }
+
+    public static FeedResponceDTO map(ProfileResponseDTO profile){
+        PrettyTime prettyTime = new PrettyTime();
+        return FeedResponceDTO.builder()
+                .id(profile.getUserId())
+                .postType("PROFILE")
+                .title(null)
+                .description(null)
+                .company(null)
+                .resources(new ArrayList<>())
+                .author(profile)
+                .commentsCount(0)
+                .likesCount(0)
+                .isLiked(false)
+                .updatedAt(profile.getUpdatedAt())
+                .tags(null)
+                .timePassed(prettyTime.format(profile.getUpdatedAt()))
+                .build();
+    }
+
+    public static List<FeedResponceDTO> mapProfile(List<ProfileResponseDTO> profiles) {
+        if (profiles == null) {
+            return null;
+        }
+        List<FeedResponceDTO> result = new ArrayList<FeedResponceDTO>(profiles.size());
+        for (ProfileResponseDTO profile: profiles){
+            result.add(map(profile));
+        }
+        return result;
+    }
 }
