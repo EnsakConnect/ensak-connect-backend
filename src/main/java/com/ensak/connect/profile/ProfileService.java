@@ -189,10 +189,10 @@ public class ProfileService {
         return responseDTO;
     }
 
-    public Page<FeedResponceDTO> getSearchProfiles(String fullname, Pageable pageRequest){
+    public Page<ProfileResponseDTO> getSearchProfiles(String fullname, Pageable pageRequest){
         Page<Profile> profiles = profileRepository.findUsersByFullName("%"+fullname+"%", pageRequest);
 
-        List<FeedResponceDTO> responseDTO = FeedResponceDTO.mapProfile(ProfileResponseDTO.map(profiles.getContent()));
+        List<ProfileResponseDTO> responseDTO = ProfileResponseDTO.map(profiles.getContent());
 
         return new PageImpl<>(responseDTO, pageRequest, profiles.getTotalElements());
     }
