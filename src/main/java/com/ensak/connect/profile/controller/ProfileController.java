@@ -2,6 +2,7 @@ package com.ensak.connect.profile.controller;
 
 
 import com.ensak.connect.auth.AuthenticationService;
+import com.ensak.connect.feed.dto.FeedResponceDTO;
 import com.ensak.connect.profile.ProfileService;
 import com.ensak.connect.profile.dto.ProfileDetailResponseDTO;
 import com.ensak.connect.profile.dto.ProfileRequestDTO;
@@ -33,14 +34,14 @@ public class ProfileController {
     }
 
     @GetMapping("/search/{fullname}")
-    public ResponseEntity<Page<ProfileResponseDTO>> getProfiles(
+    public ResponseEntity<Page<FeedResponceDTO>> getProfiles(
             @PathVariable String fullname,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ){
         Pageable pageRequest =
                 PageRequest.of(page, size, Sort.by("fullName").descending());
-        Page<ProfileResponseDTO> profiles = profileService.getSearchProfiles(fullname, pageRequest);
+        Page<FeedResponceDTO> profiles = profileService.getSearchProfiles(fullname, pageRequest);
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 

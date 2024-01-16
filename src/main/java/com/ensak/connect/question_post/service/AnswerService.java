@@ -3,7 +3,9 @@ package com.ensak.connect.question_post.service;
 import com.ensak.connect.auth.AuthenticationService;
 import com.ensak.connect.config.exception.ForbiddenException;
 import com.ensak.connect.config.exception.NotFoundException;
+import com.ensak.connect.feed.dto.FeedResponceDTO;
 import com.ensak.connect.question_post.dto.answer.AnswerRequestDTO;
+import com.ensak.connect.question_post.dto.answer.AnswerResponseDTO;
 import com.ensak.connect.question_post.model.Answer;
 import com.ensak.connect.question_post.model.QuestionPost;
 import com.ensak.connect.question_post.repository.AnswerRepository;
@@ -15,7 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -25,27 +29,32 @@ public class AnswerService {
     private final AuthenticationService authService;
     private final ResourceService resourceService;
 
-    public List<Answer> getAnswerByQuestionId(Integer questionPostId) {
+    public List<AnswerResponseDTO> getAnswerByQuestionId(Integer questionPostId) {
+        User author = authService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
-        return questionPost.getAnswers();
+        List<Answer> answers = questionPost.getAnswers();
+        return AnswerResponseDTO.map(answers.stream().sorted(Comparator.comparing(Answer::getInteractionsCount)
+                        .thenComparing(Answer::getUpdatedAt).reversed()).toList()
+                , author.getId());
     }
 
     @SneakyThrows
-    public Answer createAnswerForQuestionPost(Integer questionPostId, AnswerRequestDTO request) {
+    public AnswerResponseDTO createAnswerForQuestionPost(Integer questionPostId, AnswerRequestDTO request) {
         QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         User author = authService.getAuthenticatedUser();
-        return answerRepository.save(
+        return AnswerResponseDTO.map(answerRepository.save(
                 Answer.builder()
                         .content(request.getContent())
                         .questionPost(questionPost)
                         .author(author)
+                        .interactionsCount(0)
                         .resources(resourceService.useResources(request.getResources(),author))
                         .build()
-        );
+        ), author.getId());
     }
 
     @SneakyThrows
-    public Answer updateAnswerById(Integer questionPostId, Integer answerId, AnswerRequestDTO request) {
+    public AnswerResponseDTO updateAnswerById(Integer questionPostId, Integer answerId, AnswerRequestDTO request) {
         User auth = authService.getAuthenticatedUser();
         QuestionPost questionPost = questionPostService.getQuestionPostByIdForAnswers(questionPostId);
         Answer answer = answerRepository.findById(answerId).orElseThrow(
@@ -64,7 +73,7 @@ public class AnswerService {
                 auth
                 )
         );
-        return answerRepository.save(answer);
+        return AnswerResponseDTO.map(answerRepository.save(answer), auth.getId());
     }
 
     @SneakyThrows

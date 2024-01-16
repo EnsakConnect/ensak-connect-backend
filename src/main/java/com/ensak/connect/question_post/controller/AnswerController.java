@@ -24,12 +24,7 @@ public class AnswerController {
     public  ResponseEntity<List<AnswerResponseDTO>> getQuestionAnswers(
             @PathVariable Integer question_id
     ) {
-        return new ResponseEntity<>(
-                answerService.getAnswerByQuestionId(question_id).stream().map(
-                        AnswerResponseDTO::map
-                ).toList(),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(answerService.getAnswerByQuestionId(question_id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -37,8 +32,7 @@ public class AnswerController {
             @PathVariable Integer question_id,
             @RequestBody @Valid AnswerRequestDTO request
     ) {
-        Answer answer = answerService.createAnswerForQuestionPost(question_id, request);
-        return new ResponseEntity<>(AnswerResponseDTO.map(answer), HttpStatus.CREATED);
+        return new ResponseEntity<>(answerService.createAnswerForQuestionPost(question_id, request), HttpStatus.CREATED);
     }
 
     @PutMapping("/{answer_id}")
@@ -47,8 +41,7 @@ public class AnswerController {
             @PathVariable Integer answer_id,
             @RequestBody @Valid AnswerRequestDTO request
     ) {
-        Answer answer = answerService.updateAnswerById(question_id, answer_id, request);
-        return new ResponseEntity<>(AnswerResponseDTO.map(answer), HttpStatus.OK);
+        return new ResponseEntity<>(answerService.updateAnswerById(question_id, answer_id, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{answer_id}")
