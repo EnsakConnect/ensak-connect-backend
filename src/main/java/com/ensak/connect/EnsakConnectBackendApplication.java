@@ -11,6 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
@@ -41,7 +42,7 @@ public class EnsakConnectBackendApplication {
 		config.setAllowCredentials(true);
 		// Don't do this in production, use a proper list  of allowed origins
 		config.setAllowedOrigins(Collections.singletonList("*"));
-		config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept"));
+		config.setAllowedHeaders(List.of("*"));
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
